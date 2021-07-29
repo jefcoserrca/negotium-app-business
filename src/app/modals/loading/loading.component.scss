@@ -1,0 +1,25 @@
+ion-content {
+  --background: var(--ion-color-primary);
+}
+
+h3,
+p {
+  color: white;
+}
+
+.text-center {
+  h3 {
+    font-size: 17px;
+    margin-top: 8px;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    padding-top: 0.5rem;
+    font-size: 12px;
+  }
+}
+
+ion-progress-bar {
+  margin-top: 1.5rem;
+}

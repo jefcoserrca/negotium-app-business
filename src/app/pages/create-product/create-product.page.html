@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-title>Crear producto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="form" class="form">
+    <ion-label position="floating">Nombre*</ion-label>
+    <ion-input
+      type="text"
+      placeholder="Nombre del producto"
+      formControlName="name"
+    ></ion-input>
+    <ion-label position="floating">Descripción(opcional)</ion-label>
+    <ion-textarea
+      type="text"
+      placeholder="Nombre del producto"
+      formControlName="name"
+    ></ion-textarea>
+    <ion-label position="floating">Precio*</ion-label>
+    <ion-input
+      type="text"
+      placeholder="Nombre del producto"
+      formControlName="name"
+    ></ion-input>
+  </form>
+</ion-content>

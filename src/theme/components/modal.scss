@@ -1,0 +1,11 @@
+.bg-primary {
+  ion-backdrop {
+    background: var(--ion-color-primary) !important;
+    opacity: 1 !important;
+  }
+}
+
+.big {
+  --width: 100%;
+  --height: 100vh;
+}

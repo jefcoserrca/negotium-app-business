@@ -1,0 +1,56 @@
+ion-content {
+  --background: transparent;
+}
+
+ion-card {
+  max-width: 600px;
+  min-width: 600px;
+}
+
+ion-button {
+  margin-top: 4rem;
+  padding: 0 1rem 0 1rem;
+}
+
+.logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-top: 2rem;
+  border: #bdbdbd solid 4px;
+}
+
+h2 {
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  ion-card {
+    max-width: 100%;
+    min-width: 100%;
+    margin: 1rem;
+  }
+}
+
+.color-change {
+  -webkit-animation: color-change-2x 5s linear infinite alternate both;
+  animation: color-change-2x 5s linear infinite alternate both;
+}
+
+@-webkit-keyframes color-change-2x {
+  0% {
+    background: #004195;
+  }
+  100% {
+    background: #2c8fff;
+  }
+}
+@keyframes color-change-2x {
+  0% {
+    background: #004195;
+  }
+  100% {
+    background: #2c8fff;
+  }
+}

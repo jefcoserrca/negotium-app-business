@@ -1,0 +1,39 @@
+.progress-bussines {
+  padding: 1rem;
+  overflow-x: none;
+  overflow-y: auto;
+}
+
+.card-progress {
+  width: 120px;
+  min-width: 120px;
+  height: 120px;
+  background-color: #e1e2e3;
+  margin: 0.25rem;
+  transition: all ease-in-out 0.3s;
+  .card-progress-content {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+  }
+  color: #9f9f9f;
+  p {
+    text-align: center;
+    margin-bottom: 0 !important;
+    margin-top: 10px;
+  }
+  ion-icon {
+    font-size: 2rem;
+  }
+
+  cursor: pointer;
+  .blocked {
+    cursor: not-allowed;
+  }
+
+  &:hover {
+    background-color: #c4c4c4;
+  }
+}

@@ -1,0 +1,47 @@
+<ion-split-pane contentId="content" *ngIf="store">
+  <ion-menu contentId="content" menuId="main">
+    <ion-content>
+      <ion-list lines="none">
+        <ion-item>
+          <ion-avatar slot="start">
+            <img [src]="store.picture" />
+          </ion-avatar>
+          <ion-label>{{ store.name }} </ion-label>
+          <ion-badge> {{ store.typeAccount | uppercase }} </ion-badge>
+          <ion-button (click)="onClick()" fill="clear" color="medium" class="ms-3">
+            <ion-icon slot="icon-only" name="settings-sharp"></ion-icon>
+          </ion-button>
+        </ion-item>
+        <ion-menu-toggle auto-hide="false" menu="main">
+          <ion-item
+            routerLink="/dashboard/home"
+            routerDirection="root"
+            routerLinkActive="active-item"
+          >
+            <ion-icon slot="start" name="home"></ion-icon>
+            <ion-label>Inicio</ion-label>
+          </ion-item>
+          <ion-item
+            *ngFor="let item of menuItems"
+            [routerLink]="item.path"
+            routerDirection="root"
+            routerLinkActive="active-item"
+          >
+            <ion-icon slot="start" [name]="item.icon"></ion-icon>
+            <ion-label> {{ item.label }} </ion-label>
+          </ion-item>
+          <ion-item
+            routerLink="/dashboard/products"
+            routerDirection="root"
+            routerLinkActive="active-item"
+          >
+            <ion-icon slot="start" name="albums"></ion-icon>
+            <ion-label>Mis productos</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <ion-router-outlet id="content"></ion-router-outlet>
+</ion-split-pane>

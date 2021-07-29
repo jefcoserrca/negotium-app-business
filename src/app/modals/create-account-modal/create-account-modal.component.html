@@ -1,0 +1,212 @@
+<ion-header>
+  <ion-toolbar color="medium">
+    <ion-title>Crea tu negocio</ion-title>
+    <ion-button
+      slot="end"
+      (click)="closeModal()"
+      fill="clear"
+      mode="ios"
+      color="light"
+    >
+      <ion-icon slot="icon-only" name="close-circle"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div *ngIf="stepper === 'step1'">
+    <div
+      class="bg-banner"
+      [ngStyle]="{
+        background: bannerImage
+          ? 'url(' + bannerImage + ')'
+          : 'url(' +
+            'https://www.esan.edu.pe/apuntes-empresariales/2019/12/11/1500x844_restaurantes_offline.jpg' +
+            ')'
+      }"
+    >
+      <ion-button color="light" class="circle-btn" (click)="uploadBannerFile()">
+        <ion-icon slot="icon-only" name="create"></ion-icon>
+      </ion-button>
+    </div>
+
+    <div class="user-card">
+      <div class="d-flex flex-column align-items-center">
+        <img
+          [src]="
+            newProfileImage
+              ? newProfileImage
+              : 'https://iammadein.com/sites/default/files/default_images/default-logo.png'
+          "
+          alt=""
+        />
+        <ion-button
+          size="small"
+          color="light"
+          fill="clear"
+          mode="ios"
+          class="circle-btn"
+          (click)="uploadProfileFile()"
+        >
+          <ion-icon slot="icon-only" name="camera"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+    <div class="form-user">
+      <form [formGroup]="form">
+        <ion-label position="floating">Nombre*</ion-label>
+        <ion-input
+          type="text"
+          placeholder="Nombre del Negocio"
+          formControlName="name"
+          [ngClass]="{
+            'mb-3': 20 - form.value.name.length >= 0,
+            'mb-0': 20 - form.value.name.length < 0
+          }"
+        ></ion-input>
+        <div class="error" *ngIf="20 - form.value.name.length < 0">
+          {{ 20 - form.value.name.length }}
+        </div>
+        <ion-label position="floating">Categoría*</ion-label>
+        <div class="w-100 mb-3">
+          <select formControlName="category">
+            <option value="abarrotes">Abarrotes</option>
+            <option value="comida">Comida y Restaurantes</option>
+            <option value="farmcia">Farmacia</option>
+            <option value="locoreria">Vinos y Licores</option>
+          </select>
+        </div>
+        <ion-label position="floating" class="pt-3"
+          >Télefono de Whatsapp*(de tu negocio)</ion-label
+        >
+        <div class="d-flex justify-content-between align-items-center">
+          <select formControlName="lada">
+            <option value="+52">
+              <ion-icon src="../../../assets/icons/mexico.svg"></ion-icon> +52
+            </option>
+          </select>
+          <div class="d-flex align-items-center w-100 ms-3">
+            <div class="icon">
+              <ion-icon src="../../../assets/icons/mexico.svg"></ion-icon>
+            </div>
+            <ion-input
+              type="text"
+              placeholder="Whatsapp"
+              formControlName="phone"
+              class="w-50 whatsapp-input"
+            ></ion-input>
+          </div>
+        </div>
+        <div
+          class="error"
+          *ngIf="
+            form.controls['phone'].invalid &&
+            (form.controls['phone'].dirty || form.controls['phone'].touched)
+          "
+        >
+          <span *ngIf="form.controls['phone'].errors.pattern">
+            Sólo números
+          </span>
+          <span
+            *ngIf="
+              (form.controls['phone'].errors.maxlength || form.controls['phone'].errors.minlength ) && !form.controls['phone'].errors.pattern
+            "
+          >
+            {{ 10 - form.value.phone.length }}
+          </span>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div *ngIf="stepper === 'step2'">
+    <div class="m-3">
+      <h1>Sólo un paso más!</h1>
+      <p>Estas por crear tu negocio digital, completa los datos...</p>
+    </div>
+
+    <div class="m-3">
+      <form [formGroup]="formAccount">
+        <ion-label position="floating">Correo*</ion-label>
+        <ion-input
+          type="text"
+          placeholder="Nombre del Negocio"
+          formControlName="email"
+          class="mb-3"
+        ></ion-input>
+        <ion-label position="floating"
+          >Contraseña* <br />
+          <small>
+            Debe contener al menos una mayúscula, una minúscula ,un número y un
+            caracter especial(@ $ ! % * ? &)
+          </small></ion-label
+        >
+        <ion-input
+          type="password"
+          placeholder="Contraseña"
+          formControlName="password"
+          clearOnEdit="false"
+          class="mb-3"
+        ></ion-input>
+        <div
+          class="error"
+          *ngIf="
+            formAccount.controls['password'].invalid &&
+            (formAccount.controls['password'].dirty ||
+              formAccount.controls['password'].touched)
+          "
+        >
+          <span *ngIf="formAccount.controls['password'].errors.pattern">
+            Debe tener el formato indicado
+          </span>
+        </div>
+        <ion-label position="floating">Confirmar contraseña*</ion-label>
+        <ion-input
+          type="password"
+          placeholder="Confrima tu contraseña"
+          formControlName="confirmPassword"
+          clearOnEdit="false"
+          class="mb-3"
+        ></ion-input>
+        <div
+          class="error"
+          *ngIf="
+            formAccount.value.password !== formAccount.value.confirmPassword &&
+            formAccount.value.confirmPassword
+          "
+        >
+          Las contraseñas no son iguales
+        </div>
+      </form>
+    </div>
+  </div>
+</ion-content>
+<ion-footer mode="ios">
+  <ion-toolbar>
+    <ion-buttons slot="start" *ngIf="stepper === 'step2'">
+      <ion-button color="primary" (click)="goToStep1()">
+        <ion-icon slot="start" name="chevron-back"></ion-icon>
+        Atrás
+      </ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button
+        *ngIf="stepper === 'step1'"
+        color="primary"
+        [disabled]="!form.valid"
+        (click)="goToStep2()"
+      >
+        <ion-icon slot="end" name="chevron-forward"></ion-icon>
+        Continuar
+      </ion-button>
+      <ion-button
+        *ngIf="stepper === 'step2'"
+        color="primary"
+        [disabled]="!formAccount.valid"
+        (click)="createAccount()"
+      >
+        <ion-icon slot="end" name="chevron-forward"></ion-icon>
+        Digitalizar mi empresa
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
