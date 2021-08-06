@@ -18,7 +18,19 @@ const routes: Routes = [
         loadChildren: () => import('../create-product/create-product.module').then( m => m.CreateProductPageModule)
       },
       {
-        path: '',
+        path: 'edit-product/:id',
+        loadChildren: () => import('../create-product/create-product.module').then( m => m.CreateProductPageModule)
+      },
+      {
+        path: 'products',
+        loadChildren: () => import('../products/products.module').then( m => m.ProductsPageModule)
+      },
+      {
+        path: 'store',
+        loadChildren: () => import('../store/store.module').then( m => m.StorePageModule)
+      },
+      {
+        path: '**',
         redirectTo: 'home',
         pathMatch: 'full',
       },

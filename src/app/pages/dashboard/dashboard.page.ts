@@ -51,9 +51,9 @@ export class DashboardPage implements OnInit {
     this.menuItems = [];
     if (this.tools.digitalMenu)
       this.menuItems.push({
-        icon: 'map',
-        label: 'Mi menu digital',
-        path: '/dashboard/menu',
+        icon: 'storefront',
+        label: 'Mi tienda online',
+        path: '/dashboard/store',
       });
     if (this.tools.couponSystem)
       this.menuItems.push({

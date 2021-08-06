@@ -1,0 +1,243 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" color="light" (click)="close()">
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Variantes</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="openCreateVariant()">
+        <ion-icon slot="start" name="add"></ion-icon>
+        Crear
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container container-fluid">
+    <div class="alert-empty" *ngIf="!variants.length">
+      <h1>Crea variantes</h1>
+      <p>
+        Las variantes te ayudan a complementar tu producto, cómo por ejemplo, preguntarle a
+        tus clientes si desea ingredientes extras, elegir colores, medidas,
+        tallas etc...
+      </p>
+      <ion-button [matMenuTriggerFor]="menuOpts"> Añadir Ejemplo </ion-button>
+
+      <mat-menu #menuOpts>
+        <ion-list lines="none">
+          <ion-item (click)="createExample('colors')" button>
+            <ion-label>Variedad de color</ion-label>
+          </ion-item>
+          <ion-item (click)="createExample('ingredients')" button>
+            <ion-label>Ingredientes</ion-label>
+          </ion-item>
+          <ion-item (click)="createExample('sizes')" button>
+            <ion-label>Tallas de ropa</ion-label>
+          </ion-item>
+        </ion-list>
+      </mat-menu>
+      
+    </div>
+    <div *ngFor="let item of variants; let i = index">
+      <ion-card *ngIf="item.type === 'radio'" mode="ios">
+        <ion-card-header>
+          <ion-card-subtitle> {{ item.title }} </ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <p>
+            Selecciona una opción
+            <small *ngIf="item.required">(Obligatoria)</small>
+          </p>
+          <ion-list>
+            <ion-radio-group>
+              <ion-item *ngFor="let option of item.options">
+                <ion-label>
+                  {{ option.label }}
+                  {{ option.price ? (option.price | currency) : "" }}
+                </ion-label>
+                <ion-radio [value]="option.label"></ion-radio>
+              </ion-item>
+            </ion-radio-group>
+          </ion-list>
+        </ion-card-content>
+        <div class="d-flex align-items-center justify-content-end">
+          <ion-button
+            size="small"
+            fill="clear"
+            (click)="editVariant(item, i)"
+            color="medium"
+          >
+            <ion-icon slot="icon-only" name="create"></ion-icon>
+          </ion-button>
+          <ion-button
+            size="small"
+            fill="clear"
+            color="medium"
+            (click)="cloneVariant(item)"
+          >
+            <ion-icon slot="icon-only" name="copy"></ion-icon>
+          </ion-button>
+          <ion-button
+            size="small"
+            fill="clear"
+            color="medium"
+            (click)="deleteVariant(i)"
+          >
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-card>
+      <ion-card *ngIf="item.type === 'color'" mode="ios">
+        <ion-card-header>
+          <ion-card-subtitle> {{ item.title }} </ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <p>
+            Selecciona un color
+            <small *ngIf="item.required">(Obligatoria)</small>
+          </p>
+          <ion-list>
+            <ion-radio-group>
+              <ion-item *ngFor="let option of item.options">
+                <div
+                  slot="start"
+                  class="color-circle"
+                  [ngStyle]="{ background: option.color }"
+                ></div>
+                <ion-label>
+                  {{ option.label }}
+                  {{ option.price ? (option.price | currency) : "" }}
+                </ion-label>
+                <ion-radio [value]="option.label"></ion-radio>
+              </ion-item>
+            </ion-radio-group>
+          </ion-list>
+        </ion-card-content>
+        <div class="d-flex align-items-center justify-content-end">
+          <ion-button
+            size="small"
+            fill="clear"
+            (click)="editVariant(item, i)"
+            color="medium"
+          >
+            <ion-icon slot="icon-only" name="create"></ion-icon>
+          </ion-button>
+          <ion-button
+            size="small"
+            fill="clear"
+            color="medium"
+            (click)="cloneVariant(item)"
+          >
+            <ion-icon slot="icon-only" name="copy"></ion-icon>
+          </ion-button>
+          <ion-button
+            size="small"
+            fill="clear"
+            color="medium"
+            (click)="deleteVariant(i)"
+          >
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-card>
+      <ion-card *ngIf="item.type === 'checkbox'" mode="ios">
+        <ion-card-header>
+          <ion-card-subtitle> {{ item.title }} </ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <p>
+            Puedes seleccionar multiples opciones
+            <small *ngIf="item.required">(Obligatoria)</small>
+          </p>
+          <ion-list>
+            <ion-item *ngFor="let option of item.options">
+              <ion-checkbox [value]="option.label"></ion-checkbox>
+              <ion-label>
+                {{ option.label }}
+                {{ option.price ? (option.price | currency) : "" }}
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+        <div class="d-flex align-items-center justify-content-end">
+          <ion-button
+            size="small"
+            fill="clear"
+            (click)="editVariant(item, i)"
+            color="medium"
+          >
+            <ion-icon slot="icon-only" name="create"></ion-icon>
+          </ion-button>
+          <ion-button
+            size="small"
+            fill="clear"
+            color="medium"
+            (click)="cloneVariant(item)"
+          >
+            <ion-icon slot="icon-only" name="copy"></ion-icon>
+          </ion-button>
+          <ion-button
+            size="small"
+            fill="clear"
+            color="medium"
+            (click)="deleteVariant(i)"
+          >
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-card>
+      <ion-card *ngIf="item.type === 'text'" mode="ios">
+        <ion-card-header>
+          <ion-card-subtitle> {{ item.title }} </ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <p>
+            Escribe en el siguiente campo
+            <small *ngIf="item.required">(Obligatoria)</small>
+          </p>
+          <ion-textarea></ion-textarea>
+        </ion-card-content>
+        <div class="d-flex align-items-center justify-content-end">
+          <ion-button
+            size="small"
+            fill="clear"
+            (click)="editVariant(item, i)"
+            color="medium"
+          >
+            <ion-icon slot="icon-only" name="create"></ion-icon>
+          </ion-button>
+          <ion-button
+            size="small"
+            fill="clear"
+            color="medium"
+            (click)="cloneVariant(item)"
+          >
+            <ion-icon slot="icon-only" name="copy"></ion-icon>
+          </ion-button>
+          <ion-button
+            size="small"
+            fill="clear"
+            color="medium"
+            (click)="deleteVariant(i)"
+          >
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-card>
+    </div>
+  </div>
+  <br />
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="saveVariants()">
+        <ion-icon slot="start" name="save"></ion-icon>
+        Guardar
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

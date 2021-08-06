@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" color="light" (click)="close()">
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      {{ alertInputModal.header }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="m-4">
+    <form [formGroup]="form">
+      <ion-label position="floating">
+        {{ alertInputModal.label }}
+      </ion-label>
+      <ion-textarea
+        type="text"
+        [placeholder]="alertInputModal.placeholder"
+        formControlName="name"
+      ></ion-textarea>
+      <div
+        class="error"
+        *ngIf="alertInputModal.maxLength - form.value.name.length < 0"
+      >
+        {{ alertInputModal.maxLength - form.value.name.length }}
+      </div>
+      <ion-button
+        expand="block"
+        color="secondary"
+        class="mt-3"
+        mode="ios"
+        [disabled]="form.invalid"
+        (click)="save()"
+      >
+        Aceptar
+      </ion-button>
+    </form>
+  </div>
+</ion-content>

@@ -1,0 +1,20 @@
+ion-label {
+  --color: #363636;
+  color: #363636;
+}
+
+ion-textarea {
+  --background: #e2e2e2;
+  --border-radius: 12px;
+  --padding-start: 10px;
+  border-radius: 12px;
+  --color: black;
+  font-weight: 600;
+  min-height: 100px;
+}
+
+.error {
+  text-align: end;
+  margin-right: 1rem;
+  color: #e52222;
+}

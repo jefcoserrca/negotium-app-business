@@ -39,7 +39,7 @@ export class CreateAccountModalComponent implements OnInit {
         '',
         [
           Validators.required,
-          Validators.maxLength(20),
+          Validators.maxLength(60),
           Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/),
         ],
       ],

@@ -15,6 +15,7 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 import { CommonsModule } from './modules/commons/commons.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthenticationService, factoryUserSession } from './services/authentication.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -28,6 +29,7 @@ import { AuthenticationService, factoryUserSession } from './services/authentica
     IonicModule.forRoot(),
     IonicStorageModule.forRoot(),
     AppRoutingModule,
+    BrowserAnimationsModule,
   ],
   providers: [
     NgxImageCompressService,

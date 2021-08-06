@@ -1,11 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-loading',
+  selector: 'app-loading-modal',
   templateUrl: './loading.component.html',
   styleUrls: ['./loading.component.scss'],
 })
-export class LoadingComponent implements OnInit {
+export class LoadingComponentModal implements OnInit {
   @Input() message = 'Cargando, por favor espere...' 
   constructor() { }
 

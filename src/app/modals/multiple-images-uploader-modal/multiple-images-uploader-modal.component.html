@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" color="light" (click)="close()">
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Añadir imagenes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container container-fluid">
+    <p class="mt-3">Añade más imagenes a tu producto</p>
+    <div class="d-flex align-items-center justify-content-around my-4">
+      <div class="square-content" *ngFor="let item of [0, 1, 2]">
+        <div class="square">
+          <img
+            *ngIf="images[item]"
+            [src]="
+              images[item]
+                ? images[item]
+                : 'http://unblast.com/wp-content/uploads/2018/08/Coffee-Package-Mockup-PSD-aa.jpg'
+            "
+            class="sq-setter-w"
+          />
+          <div 
+          *ngIf="images[item]" class="sq-content d-flex justify-content-end p-1">
+            <ion-icon
+              (click)="removeImage(item)"
+              name="close-circle"
+            ></ion-icon>
+          </div>
+          <div
+            class="sq-setter-w"
+            *ngIf="!images[item]"
+            (click)="uploadProductFile(item)"
+          >
+            <div class="sq-empty">
+              <ion-icon name="add"></ion-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="m3 pt-4">
+      <ion-button
+      expand="block"
+      color="secondary"
+      mode="ios"
+      (click)="saveImages()"
+    >
+      Guardar
+    </ion-button>
+    </div>
+  </div>
+</ion-content>

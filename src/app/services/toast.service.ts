@@ -19,11 +19,11 @@ export class ToastService {
     return toast.present().then();
   }
 
-  async showDefaultNotify(message: string): Promise<void> {
+  async showDefaultNotify(message: string, color: string = 'secondary'): Promise<void> {
     const toast = await this.toastCtrl.create({
       message: message,
       mode: 'ios',
-      color: 'light',
+      color: color,
       position: 'top',
       duration: 3000,
     });

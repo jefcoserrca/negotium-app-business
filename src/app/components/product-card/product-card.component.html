@@ -1,0 +1,43 @@
+<ion-card mode="ios" class="m-0 product-card">
+  <div class="square">
+    <img
+      [src]="
+        product.pictures.length
+          ? product.pictures[0]
+          : 'https://firebasestorage.googleapis.com/v0/b/digitaliza-tu-empresa.appspot.com/o/asstes%2Fproduct-min%20(1).png?alt=media&token=ae5a810f-d9d1-4240-8070-787b20d5eeed'
+      "
+      class="sq-setter-w"
+    />
+  </div>
+  <ion-card-header
+    [ngStyle]="{
+      background: product.styles?.bgColor ? product.styles.bgColor : '#ffffff'
+    }"
+  >
+    <ion-card-title
+      [ngStyle]="{
+        color: product.styles?.txtColor ? product.styles.txtColor : '#000'
+      }"
+      >{{ product.name }}</ion-card-title
+    >
+    <ion-card-subtitle
+      [ngStyle]="{
+        color: product.styles?.txtColor ? product.styles.txtColor : '#000'
+      }"
+    >
+      {{ product.price | currency }}
+    </ion-card-subtitle>
+    <div
+      class="d-flex align-items-baseline recomendation"
+      *ngIf="product.suggest"
+    >
+      <ion-icon name="star" color="warning"></ion-icon>
+      <span
+        [ngStyle]="{
+          color: product.styles?.txtColor ? product.styles.txtColor : '#000'
+        }"
+        >Recomendado</span
+      >
+    </div>
+  </ion-card-header>
+</ion-card>

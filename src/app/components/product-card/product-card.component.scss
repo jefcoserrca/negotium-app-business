@@ -1,0 +1,52 @@
+.square {
+  position: relative;
+  width: 100%;
+  display: inline-block; /* could be float */
+}
+.sq-setter-w {
+  width: 100%;
+  height: auto;
+}
+
+.sq-content {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  font-size: 24px;
+  height: 32px;
+  ion-icon {
+    cursor: pointer;
+    color: rgb(243, 55, 55) !important;
+    transition: all ease-in-out 100ms;
+    &:hover {
+      font-size: 28px;
+      color: rgb(165, 13, 13) !important;
+    }
+  }
+}
+
+.product-card {
+  width: 50%;
+  transition: heigth 0.5s ease-in-out 0s;
+  ion-card-header {
+    padding: 0.5rem !important;
+    transition: all 0.5s ease-in-out 0s;
+  }
+  ion-card-title {
+    font-size: 1.2rem;
+  }
+
+  ion-card-subtitle {
+    opacity: 0.75;
+  }
+
+  .recomendation {
+    font-size: 12px;
+    span {
+      margin-left: 0.25rem;
+    }
+  }
+}

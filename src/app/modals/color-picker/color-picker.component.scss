@@ -1,0 +1,44 @@
+ion-card.text-card {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all ease-in-out 0.25s;
+}
+
+.circle-empty {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: solid 1px rgb(221, 221, 221);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  color: #e97a7a;
+  transition: all ease-in-out 0.1s;
+  cursor: pointer;
+  &.active {
+    border: solid 3px #919191;
+  }
+
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+
+::ng-deep {
+  .mat-menu-content:not(:empty) {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  ::ng-deep {
+    color-circle-swatch {
+      width: 25%;
+    }
+  }
+}

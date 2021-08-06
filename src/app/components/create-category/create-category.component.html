@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" color="light" (click)="close()">
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      {{ items && index !== null ? 'Editar categoría' : "Crear categoría" }}
+    </ion-title>
+    <ion-buttons slot="end" *ngIf="items && index !== null ">
+      <ion-button (click)="deleteCategory()">
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="m-4" *ngIf="!showLoading">
+    <form [formGroup]="form">
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-textarea
+        type="text"
+        placeholder="ej: Bebidas"
+        formControlName="name"
+      ></ion-textarea>
+      <div class="error" *ngIf="12 - form.value.name.length < 0">
+        {{ 12 - form.value.name.length }}
+      </div>
+      <ion-button
+        expand="block"
+        color="secondary"
+        class="mt-3"
+        mode="ios"
+        [disabled]="form.invalid"
+        (click)="saveCategory()"
+      >
+        Guardar
+      </ion-button>
+    </form>
+  </div>
+  <div class="mt-4" *ngIf="showLoading">
+    <app-loading></app-loading>
+  </div>
+</ion-content>

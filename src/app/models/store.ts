@@ -20,3 +20,10 @@ export class Tools {
   customDomain?: boolean;
   payments?: boolean;
 }
+
+export class StoreSimpleData {
+  name: string;
+  picture: string;
+  banner: string;
+  phone: string;
+}

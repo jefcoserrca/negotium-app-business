@@ -1,0 +1,366 @@
+<ion-header>
+  <ion-toolbar
+    [ngStyle]="{'background': formatColorBars.bgColor, 'color': formatColorBars.txtColor}"
+  >
+    <ion-buttons slot="start">
+      <ion-menu-button menu="main"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Mi tienda online</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [matMenuTriggerFor]="menuCustomColors">
+        <ion-icon slot="start" name="color-palette"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content
+  [ngStyle]="{'background': formatColorPage.bgColor, 'color': formatColorPage.txtColor}"
+>
+  <div
+    class="bg-banner"
+    [ngStyle]="{
+    background: storeData?.banner
+      ? 'url(' + storeData.banner + ')'
+      : 'url(' +
+        'https://www.esan.edu.pe/apuntes-empresariales/2019/12/11/1500x844_restaurantes_offline.jpg' +
+        ')'
+  }"
+  ></div>
+  <ion-card
+    class="store-info"
+    [ngStyle]="{'color': formatColorStoreCard.txtColor, 'background': formatColorStoreCard.bgColor}"
+  >
+    <div class="d-flex p-3 pb-0">
+      <div class="store-picture">
+        <img
+          [src]="storeData?.picture ? storeData.picture :'https://www.esan.edu.pe/apuntes-empresariales/2019/12/11/1500x844_restaurantes_offline.jpg'"
+          alt=""
+        />
+        <ion-button
+          (click)="revertProfile()"
+          *ngIf=" storeData?.picture && (storeData?.picture.split(':')[0] !== 'https')"
+          fill="clear"
+          size="small"
+          shape="round"
+        >
+          Revertir
+        </ion-button>
+      </div>
+      <div class="store-data">
+        <h4>{{ storeData?.name }}</h4>
+        <p>Contacto</p>
+        <div class="social-buttons">
+          <div class="container-btn" *ngFor="let contact of contactData">
+            <a
+              [href]="contact.path ? contact.path+contact.link : contact.link"
+              target="_blank"
+              class="social-btn"
+              *ngIf="contact.show"
+              [ngClass]="{'whatsapp': contact.name === 'whatsapp', 'facebook': contact.name === 'facebook', 'instagram': contact.name === 'instagram', 'phone': contact.name === 'phone'}"
+            >
+              <ion-icon slot="icon-only" [icon]="contact.icon"></ion-icon>
+            </a>
+            <ion-icon
+              *ngIf="contact.show"
+              slot="icon-only"
+              name="close-circle"
+              class="remove-btn"
+              (click)="removeContactLink(contact)"
+            ></ion-icon>
+          </div>
+          <div class="social-btn add" [matMenuTriggerFor]="menuLinks">
+            <ion-icon slot="icon-only" name="add"></ion-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-end w-100">
+      <ion-button
+        class="settings-btn"
+        mode="md"
+        fill="clear"
+        [matMenuTriggerFor]="menuStoreData"
+      >
+        <ion-icon slot="icon-only" name="settings-sharp"></ion-icon>
+      </ion-button>
+    </div>
+  </ion-card>
+  <div class="container container-fluid">
+    <div>
+      <div class="element-header mt-2">
+        <h5
+          class="mb-0"
+          [ngClass]="{'hide-element': !formatStructureRecommendations.show}"
+        >
+          {{ formatStructureRecommendations.label }}
+        </h5>
+        <div class="d-flex align-items-center">
+          <ion-button
+            class="settings-btn icon-small"
+            mode="md"
+            fill="clear"
+            (click)="changeRecomendationsStructure()"
+          >
+            <ion-icon
+              *ngIf="formatStructureRecommendations.type === 'row-image'"
+              slot="icon-only"
+              src="../../../assets/icons/grid.svg"
+            ></ion-icon>
+            <ion-icon
+              *ngIf="formatStructureRecommendations.type === 'row-card'"
+              slot="icon-only"
+              src="../../../assets/icons/blocks.svg"
+            ></ion-icon>
+            <ion-icon
+              *ngIf="formatStructureRecommendations.type === 'block'"
+              slot="icon-only"
+              src="../../../assets/icons/image.svg"
+            ></ion-icon>
+          </ion-button>
+          <ion-button
+            class="settings-btn"
+            mode="md"
+            fill="clear"
+            (click)="toggleShowRecommendations()"
+          >
+            <ion-icon
+              *ngIf="formatStructureRecommendations.show"
+              slot="icon-only"
+              name="eye-off"
+            ></ion-icon>
+            <ion-icon
+              *ngIf="!formatStructureRecommendations.show"
+              slot="icon-only"
+              name="eye"
+            ></ion-icon>
+          </ion-button>
+          <ion-button
+            class="settings-btn"
+            mode="md"
+            fill="clear"
+            (click)="editText('recommendations')"
+          >
+            <ion-icon slot="icon-only" name="text"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+      <div
+        class="mt-2"
+        [ngClass]="{'products-one-row': formatStructureRecommendations.type === 'row-image', 'products-block ': formatStructureRecommendations.type === 'block', 'products-one-row-complete': formatStructureRecommendations.type === 'row-card', 'hide-element': !formatStructureRecommendations.show}"
+      >
+        <app-product-card
+          *ngFor="let product of products"
+          [product]="product"
+        ></app-product-card>
+      </div>
+    </div>
+    <div class="mt-3">
+      <div class="element-header mt-2">
+        <h5
+          class="mb-0"
+          [ngClass]="{'hide-element': !formatStructureRecommendations.show}"
+        >
+          {{ formatStructureProducts.label }}
+        </h5>
+        <div class="d-flex align-items-center">
+          <ion-button
+            class="settings-btn icon-small"
+            mode="md"
+            fill="clear"
+            (click)="changeStructureProducts()"
+          >
+            <ion-icon
+              *ngIf="formatStructureProducts.type === 'block'"
+              slot="icon-only"
+              name="list-sharp"
+            ></ion-icon>
+            <ion-icon
+              *ngIf="formatStructureProducts.type === 'list'"
+              slot="icon-only"
+              name="grid"
+            ></ion-icon>
+          </ion-button>
+          <ion-button
+            class="settings-btn"
+            mode="md"
+            fill="clear"
+            (click)="editText('products')"
+          >
+            <ion-icon slot="icon-only" name="text"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+    </div>
+    <mat-tab-group
+      [animationDuration]="500"
+      (selectedTabChange)="tabChange($event)"
+      class="mb-5"
+      dynamicHeight
+    >
+      <mat-tab label="Todos">
+        <ion-list-header>
+          <ion-label>Todos</ion-label>
+        </ion-list-header>
+        <ion-list *ngIf="formatStructureProducts.type === 'list'">
+          <ion-item
+            *ngFor="let product of products"
+            button
+            [routerLink]="['/dashboard/edit-product', product.id]"
+          >
+            <ion-thumbnail slot="start">
+              <img
+                [src]="product.pictures[0] ? product.pictures[0] : 'https://firebasestorage.googleapis.com/v0/b/digitaliza-tu-empresa.appspot.com/o/asstes%2Fproduct-min%20(1).png?alt=media&token=ae5a810f-d9d1-4240-8070-787b20d5eeed' "
+              />
+            </ion-thumbnail>
+            <ion-label>
+              <h3>{{ product.name }}</h3>
+              <p>{{ product.category }}</p>
+            </ion-label>
+            <ion-note slot="end"> {{ product.price | currency }} </ion-note>
+          </ion-item>
+        </ion-list>
+        <div
+          class="mt-2 products-block"
+          *ngIf="formatStructureProducts.type === 'block'"
+        >
+          <app-product-card
+            *ngFor="let product of products"
+            [product]="product"
+          ></app-product-card>
+        </div>
+      </mat-tab>
+      <mat-tab *ngFor="let category of categories" [label]="category">
+        <ion-list-header>
+          <ion-label> {{ category }} </ion-label>
+        </ion-list-header>
+        <ion-list *ngIf="formatStructureProducts.type === 'list'">
+          <ion-item
+            *ngFor="let product of productsByCategory"
+            button
+            [routerLink]="['/dashboard/edit-product', product.id]"
+          >
+            <ion-thumbnail slot="start">
+              <img
+                [src]="product.pictures[0] ? product.pictures[0] : 'https://firebasestorage.googleapis.com/v0/b/digitaliza-tu-empresa.appspot.com/o/asstes%2Fproduct-min%20(1).png?alt=media&token=ae5a810f-d9d1-4240-8070-787b20d5eeed' "
+              />
+            </ion-thumbnail>
+            <ion-label>
+              <h3>{{ product.name }}</h3>
+              <p>{{ product.category }}</p>
+            </ion-label>
+            <ion-note slot="end"> {{ product.price | currency }} </ion-note>
+          </ion-item>
+        </ion-list>
+        <div
+          class="mt-2 products-block"
+          *ngIf="formatStructureProducts.type === 'block'"
+        >
+          <app-product-card
+            *ngFor="let product of productsByCategory"
+            [product]="product"
+          ></app-product-card>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</ion-content>
+
+<mat-menu #menuLinks="matMenu">
+  <div class="m-3">
+    <h5>Links de contacto</h5>
+    <p>Añade o edita un link de contacto</p>
+  </div>
+  <ion-list lines="none">
+    <ion-item
+      *ngFor="let item of contactData"
+      button
+      (click)="addContactLink(item)"
+    >
+      <ion-icon slot="start" [name]="item.icon"></ion-icon>
+      <ion-label>{{item.name | titlecase}}</ion-label>
+    </ion-item>
+  </ion-list>
+</mat-menu>
+
+<mat-menu #menuStoreData="matMenu">
+  <div class="m-3">
+    <h5>Ajustes</h5>
+  </div>
+  <ion-list lines="none">
+    <ion-item button (click)="editStoreName()">
+      <ion-icon slot="start" name="text"></ion-icon>
+      <ion-label>Editar nombre</ion-label>
+    </ion-item>
+    <ion-item button (click)="uploadProfileFile()">
+      <ion-icon slot="start" name="image"></ion-icon>
+      <ion-label>Cambiar logo</ion-label>
+    </ion-item>
+  </ion-list>
+</mat-menu>
+
+<mat-menu #menuCustomColors="matMenu">
+  <div class="m-3">
+    <h5>Personaliza componentes</h5>
+  </div>
+  <ion-list lines="none">
+    <ion-item button (click)="openColorPicker('bars', formatColorBars)">
+      <ion-icon slot="start" name="browsers-outline"></ion-icon>
+      <ion-label class="d-flex align-items-center"
+        >Barras superiores
+        <ion-badge
+          *ngIf="account === 'free'"
+          color="primary"
+          mode="ios"
+          class="ms-2"
+          >PRO</ion-badge
+        >
+      </ion-label>
+    </ion-item>
+    <ion-item button (click)="openColorPicker('page', formatColorPage)">
+      <ion-icon slot="start" name="browsers"></ion-icon>
+      <ion-label class="d-flex align-items-center"
+        >Contenido
+        <ion-badge
+          *ngIf="account === 'free'"
+          color="primary"
+          mode="ios"
+          class="ms-2"
+          >PRO</ion-badge
+        >
+      </ion-label>
+    </ion-item>
+
+    <ion-item
+      button
+      (click)="openColorPicker('storeCard', formatColorStoreCard)"
+    >
+      <ion-icon slot="start" name="square"></ion-icon>
+      <ion-label class="d-flex align-items-center"
+        >Tarjeta del negocio
+        <ion-badge
+          *ngIf="account === 'free'"
+          color="primary"
+          mode="ios"
+          class="ms-2"
+          >PRO</ion-badge
+        >
+      </ion-label>
+    </ion-item>
+    <ion-item
+      button
+      (click)="openColorPicker('categoriesBar', formatColorCategoriesBar)"
+    >
+      <ion-icon slot="start" name="phone-landscape-sharp"></ion-icon>
+      <ion-label class="d-flex align-items-center">
+        Barra de categorías
+        <ion-badge
+          *ngIf="account === 'free'"
+          color="primary"
+          mode="ios"
+          class="ms-2"
+          >PRO</ion-badge
+        >
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</mat-menu>

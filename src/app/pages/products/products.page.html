@@ -1,0 +1,156 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-menu-button menu="main"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Mis productos</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <mat-tab-group (selectedTabChange)="tabChange($event)">
+    <mat-tab label="Productos">
+      <div class="d-flex align-items-center justify-content-around">
+        <ion-searchbar
+          placeholder="Buscar"
+          [debounce]="250"
+          mode="ios"
+          [(ngModel)]="searchTerm"
+          (ionChange)="searchByTerm('products')"
+        ></ion-searchbar>
+        <ion-button
+          fill="clear"
+          color="secondary"
+          [routerLink]="['/dashboard/create-product']"
+        >
+          <ion-icon slot="icon-only" name="add"></ion-icon>
+        </ion-button>
+      </div>
+      <ion-list *ngIf="!showLoading">
+        <ion-item
+          *ngFor="let product of products"
+          button
+          [routerLink]="['/dashboard/edit-product', product.id]"
+        >
+          <ion-thumbnail slot="start">
+            <img
+              [src]="product.pictures[0] ? product.pictures[0] : 'https://firebasestorage.googleapis.com/v0/b/digitaliza-tu-empresa.appspot.com/o/asstes%2Fproduct-min%20(1).png?alt=media&token=ae5a810f-d9d1-4240-8070-787b20d5eeed' "
+            />
+          </ion-thumbnail>
+          <ion-label>
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.category }}</p>
+          </ion-label>
+          <ion-note slot="end"> {{ product.price | currency }} </ion-note>
+        </ion-item>
+      </ion-list>
+      <div class="mt-5" *ngIf="showLoading">
+        <app-loading></app-loading>
+      </div>
+      <div
+        class="mt-5 p-5 text-center"
+        *ngIf="!showLoading && !products.length"
+      >
+        <h4>Sin productos</h4>
+        <p>Añade productos a tu empresa y multiplica tus ventas!</p>
+        <ion-button class="mt-3" [routerLink]="['/dashboard/create-product']">
+          Crear producto
+        </ion-button>
+      </div>
+    </mat-tab>
+    <mat-tab label="Stock">
+      <div class="d-flex align-items-center justify-content-around">
+        <ion-searchbar
+          placeholder="Buscar"
+          [debounce]="250"
+          mode="ios"
+          [(ngModel)]="searchTermStock"
+          (ionChange)="searchByTerm('stock')"
+        ></ion-searchbar>
+        <ion-button
+          fill="clear"
+          color="secondary"
+          [routerLink]="['/dashboard/create-product']"
+        >
+          <ion-icon slot="icon-only" name="add"></ion-icon>
+        </ion-button>
+      </div>
+      <ion-list *ngIf="account === 'pro'">
+        <ion-item
+          *ngFor="let product of stockProducts"
+          button
+          (click)="openProductStock(product)"
+        >
+          <ion-thumbnail slot="start">
+            <img
+              [src]="product.pictures[0] ? product.pictures[0] : 'https://firebasestorage.googleapis.com/v0/b/digitaliza-tu-empresa.appspot.com/o/asstes%2Fproduct-min%20(1).png?alt=media&token=ae5a810f-d9d1-4240-8070-787b20d5eeed' "
+            />
+          </ion-thumbnail>
+          <ion-label>
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.category }}</p>
+          </ion-label>
+          <ion-note
+            slot="end"
+            [ngClass]="{'warning-stock': product.stock.availableStock <= product.stock.minimumStock}"
+          >
+            {{ product.stock.availableStock !== 0 ? product.stock.availableStock
+            : 'Agotado'}}
+            <small *ngIf="product.stock.availableStock !== 0"
+              >Disponibles</small
+            >
+          </ion-note>
+        </ion-item>
+      </ion-list>
+      <div
+        class="mt-5 p-5 text-center"
+        *ngIf="!stockProducts.length && account !=='free'"
+      >
+        <h4>Sin Stock!</h4>
+        <p>
+          Habilita la opción 'Controlar stock' dentro de 'Producto' > 'Más
+          opciones' > 'Control de Stock'.
+        </p>
+      </div>
+      <div class="mt-5 p-5 text-center" *ngIf="account ==='free'">
+        <h4>Stock</h4>
+        <p>
+          Esta herramienta te permite controlar el inventario de tus productos.
+          Lleva tu empresa al siguiente nivel.
+        </p>
+        <ion-button class="mt-3" [routerLink]="['/dashboard/create-product']">
+          Ver planes
+        </ion-button>
+      </div>
+    </mat-tab>
+    <mat-tab label="Categorías">
+      <div class="d-flex align-items-center justify-content-around">
+        <ion-searchbar
+          placeholder="Buscar"
+          [debounce]="250"
+          mode="ios"
+          [(ngModel)]="searchTermCategory"
+          (ionChange)="searchByTerm('categories')"
+        ></ion-searchbar>
+        <ion-button
+          fill="clear"
+          color="secondary"
+          (click)="openCreateCategory(null)"
+        >
+          <ion-icon slot="icon-only" name="add"></ion-icon>
+        </ion-button>
+      </div>
+      <ion-list *ngIf="!showLoading">
+        <ion-item
+          *ngFor="let category of categories; let i = index"
+          button
+          (click)="openCreateCategory(category)"
+        >
+          <ion-label> {{ category }} </ion-label>
+        </ion-item>
+      </ion-list>
+      <div class="mt-5" *ngIf="showLoading">
+        <app-loading></app-loading>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</ion-content>

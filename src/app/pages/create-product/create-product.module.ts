@@ -8,7 +8,6 @@ import { CreateProductPageRoutingModule } from './create-product-routing.module'
 
 import { CreateProductPage } from './create-product.page';
 import { CommonsModule } from '../../modules/commons/commons.module';
-
 @NgModule({
   imports: [
     CommonModule,
@@ -16,7 +15,7 @@ import { CommonsModule } from '../../modules/commons/commons.module';
     CommonsModule,
     ReactiveFormsModule,
     IonicModule,
-    CreateProductPageRoutingModule
+    CreateProductPageRoutingModule,
   ],
   declarations: [CreateProductPage]
 })

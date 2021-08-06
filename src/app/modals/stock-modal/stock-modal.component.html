@@ -1,0 +1,83 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" color="light" (click)="close()">
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Stock</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container container-fluid">
+    <ion-item lines="none">
+      <ion-label>Controlar Stock</ion-label>
+      <ion-toggle
+        slot="end"
+        mode="md"
+        [(ngModel)]="stock.stockController"
+      ></ion-toggle>
+    </ion-item>
+    <ion-item-divider>
+      <ion-label>Opciones</ion-label>
+    </ion-item-divider>
+    <ion-list lines="none">
+      <ion-item [disabled]="!stock.stockController">
+        <ion-label>Stock disponible*</ion-label>
+        <ion-input
+          type="number"
+          placeholder="Productos disponibles"
+          [(ngModel)]="stock.availableStock"
+        ></ion-input>
+      </ion-item>
+      <ion-item [disabled]="!stock.stockController">
+        <ion-label class="d-flex justify-content-center"
+          >Stock mínimo
+          <ion-button size="small" fill="clear" [matMenuTriggerFor]="menuHelp">
+            <ion-icon slot="icon-only" name="help-circle"></ion-icon>
+          </ion-button>
+        </ion-label>
+        <ion-input
+          [(ngModel)]="stock.minimumStock"
+          type="number"
+          placeholder="Productos mínimos"
+        ></ion-input>
+      </ion-item>
+    </ion-list>
+    <mat-menu #menuHelp>
+      <div class="m-3">
+        <h4>Stock Mínimo?</h4>
+        <p>
+          Cuando el Stock es menor o igual a este número, lanza una notificación
+          de alerta, así tambien muestra una leyenda en el producto para tus
+          clientes:
+        </p>
+        <div class="d-flex justify-content-center">
+          <ion-card mode="ios" class="m-0 product-card">
+            <div class="square">
+              <img
+                [src]="
+                  'http://unblast.com/wp-content/uploads/2018/08/Coffee-Package-Mockup-PSD-aa.jpg'
+                "
+                class="sq-setter-w"
+              />
+            </div>
+            <ion-card-header>
+              <ion-card-title>Café Serrano</ion-card-title>
+              <ion-card-subtitle> {{ 98 | currency }} </ion-card-subtitle>
+              <div class="d-flex align-items-baseline recomendation">
+                <span> <strong>!Sólo 2 disponibles!</strong> </span>
+              </div>
+            </ion-card-header>
+          </ion-card>
+        </div>
+      </div>
+    </mat-menu>
+    <div class="m-3">
+      <ion-button expand="block" color="secondary" mode="ios" (click)="saveStock()">
+        Guardar
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

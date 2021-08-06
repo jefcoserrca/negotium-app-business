@@ -1,0 +1,202 @@
+ion-content {
+  --background: transparent;
+  --color: auto !important;
+}
+
+ion-toolbar {
+  --background: transparent;
+  ion-button,
+  ion-menu-button {
+    --color: auto !important;
+  }
+}
+
+
+.bg-banner {
+  width: 100%;
+  height: 150px;
+  background-position: center !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  text-align: right;
+}
+
+.settings-btn {
+  top: 0;
+  border-radius: 50%;
+  right: 0;
+  margin: 5px;
+  --border-radius: 50% !important;
+  width: 30px;
+  height: 30px;
+  --padding-end: 0;
+  --padding-start: 0;
+  font-size: 12px;
+  --background: #e5e5e5;
+  --color: black;
+
+  &.icon-small {
+    font-size: 10px !important;
+  }
+}
+
+.store-info {
+  margin: -50px 15px 15px;
+  transition: all ease-in-out 0.3s;
+  .store-picture {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    img {
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+    }
+    ion-button {
+      --padding-start: 0;
+      --padding-end: 0;
+    }
+  }
+  .store-data {
+    margin-left: 1rem;
+    p {
+      opacity: 0.75;
+    }
+  }
+
+  .social-buttons {
+    display: flex;
+    align-items: center;
+
+    .container-btn {
+      position: relative;
+
+      .remove-btn {
+        position: absolute;
+        top: -10px;
+        color: grey;
+        left: 20px;
+        background: white;
+        border-radius: 50%;
+        font-size: 20px;
+        cursor: pointer;
+
+        &:hover {
+          color: rgb(94, 94, 94);
+        }
+      }
+    }
+
+    .social-btn {
+      width: 32px;
+      height: 32px;
+      font-size: 22px;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin-right: 0.5rem;
+      &:hover {
+        opacity: 0.75;
+      }
+      &.whatsapp {
+        background: #25d366;
+        color: white;
+      }
+      &.facebook {
+        background: #1877f2;
+        color: white;
+      }
+
+      &.instagram {
+        background: #c13584;
+        color: white;
+      }
+
+      &.phone {
+        background: #141414;
+        color: white;
+      }
+
+      &.add {
+        background: #eeeeee;
+        color: black;
+      }
+    }
+  }
+}
+
+.element-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.products-one-row {
+  display: flex;
+  align-items: center;
+  overflow-y: auto;
+  overflow-x: none !important;
+  app-product-card::ng-deep {
+    ion-card {
+      min-width: 200px;
+      width: 200px;
+      height: 200px;
+      margin-left: 1rem !important;
+      margin-top: 1rem !important;
+      margin-bottom: 1rem !important;
+      img {
+        height: 200px !important;
+      }
+    }
+    ion-card-header {
+      display: none !important;
+    }
+  }
+}
+
+.products-block {
+  display: flex;
+  flex-wrap: wrap;
+  app-product-card::ng-deep {
+    flex: 0 0 50%;
+    max-width: 200px;
+    padding: 5px;
+    ion-card {
+      width: 100%;
+    }
+  }
+}
+
+.products-one-row-complete {
+  display: flex;
+  align-items: center;
+  overflow-y: auto;
+  overflow-x: none !important;
+  app-product-card::ng-deep {
+    ion-card {
+      min-width: 200px;
+      width: 200px;
+      margin-left: 1rem !important;
+      margin-top: 1rem !important;
+      margin-bottom: 1rem !important;
+    }
+  }
+}
+
+.hide-element {
+  opacity: 0.25;
+}
+
+app-product-card::ng-deep {
+  transition: all ease-in-out 0.3s;
+  ion-card {
+    transition: all ease-in-out 0.3s;
+    ion-card-header {
+      transition: all ease-in-out 0.3s;
+    }
+  }
+}
