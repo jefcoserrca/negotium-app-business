@@ -26,6 +26,10 @@ ion-card.text-card {
   &:hover {
     transform: scale(1.2);
   }
+
+  &.invert {
+    color: #3dc2ff;
+  }
 }
 
 ::ng-deep {

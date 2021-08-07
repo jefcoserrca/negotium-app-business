@@ -70,4 +70,9 @@ export class ColorPickerComponent implements OnInit {
 
     await this.modalCtrl.dismiss(formatColor);
   }
+
+  setInvert(format: {bg: string, txt: string}): void {
+    this.background = format.txt;
+    this.colorText = format.bg;
+  }
 }

@@ -48,7 +48,11 @@ export class StorePage implements OnInit {
   };
   formatStructureProducts: StructureProducts = {
     type: 'block',
-    label: 'Productos',
+    label: 'Todos los productos',
+  };
+  formatStructureProductsByCategory: StructureProducts = {
+    type: 'block',
+    label: null,
   };
   categories: Array<string> = [];
   productsByCategory: Array<Product> = [];
@@ -65,6 +69,7 @@ export class StorePage implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.store = await this.storeSrv.store.pipe(first()).toPromise();
+    this.setStyles();
     this.storeData = {
       name: this.store.name,
       picture: this.store.picture,
@@ -72,6 +77,9 @@ export class StorePage implements OnInit {
       phone: this.store.phone,
     };
     this.account = this.store.typeAccount;
+    this.contactData = this.store.contactData
+      ? this.store.contactData
+      : this.contactData;
     this.products = await this.productsSrv.getProducts();
     this.getActiveCategories();
   }
@@ -104,7 +112,7 @@ export class StorePage implements OnInit {
           text: 'Aceptar',
           handler: (data) => {
             item.link = data.link ? data.link : item.link;
-            item.show = true;
+            item.show = data.link ? true : false;
           },
         },
       ],
@@ -211,11 +219,19 @@ export class StorePage implements OnInit {
     const accent = document.getElementsByClassName('mat-ink-bar')[0];
     const bar = document.getElementsByTagName('mat-tab-header')[0];
     const labels = document.getElementsByClassName('mat-tab-label-content');
+    const chevron: any = document.getElementsByClassName(
+      'mat-tab-header-pagination-chevron'
+    );
     this.renderer.setStyle(accent, 'background', format.txtColor);
     this.renderer.setStyle(bar, 'background', format.bgColor);
     for (let index = 0; index < labels.length; index++) {
       const element = labels[index];
       this.renderer.setStyle(element, 'color', format.txtColor);
+    }
+    for (let index = 0; index < chevron.length; index++) {
+      const element = chevron[index];
+      this.renderer.setStyle(element, 'border-color', format.txtColor);
+      this.renderer.setStyle(element, 'opacity', '0.87');
     }
   }
 
@@ -230,14 +246,15 @@ export class StorePage implements OnInit {
   }
 
   tabChange(ev: any) {
-    if (ev.tab.textLabel !== 'Todos') {
+    if (ev.tab.textLabel !== 'Inicio') {
+      this.productsByCategory = [];
       setTimeout(() => {
         const category = ev.tab.textLabel;
         this.categorySelected = category;
         this.productsByCategory = this.products.filter((product) => {
           return product.category === category;
         });
-      }, 100);
+      }, 450);
     }
   }
 
@@ -248,6 +265,17 @@ export class StorePage implements OnInit {
         break;
       case 'list':
         this.formatStructureProducts.type = 'block';
+        break;
+    }
+  }
+
+  changeStructureProductsByCategory(): void {
+    switch (this.formatStructureProductsByCategory.type) {
+      case 'block':
+        this.formatStructureProductsByCategory.type = 'list';
+        break;
+      case 'list':
+        this.formatStructureProductsByCategory.type = 'block';
         break;
     }
   }
@@ -278,6 +306,36 @@ export class StorePage implements OnInit {
 
         break;
     }
-    console.log(newLabel)
+    console.log(newLabel);
+  }
+
+  setStyles(): void {
+    this.formatColorStoreCard = this.store.styles?.storeCard
+      ? this.store.styles.storeCard
+      : this.formatColorStoreCard;
+    this.formatColorBars = this.store.styles?.topbar
+      ? this.store.styles.topbar
+      : this.formatColorBars;
+
+    this.formatColorPage = this.store.styles?.content
+      ? this.store.styles.content
+      : this.formatColorPage;
+
+    this.formatColorCategoriesBar = this.store.styles?.navbar
+      ? this.store.styles.navbar
+      : this.formatColorCategoriesBar;
+
+    this.formatStructureRecommendations = this.store.styles?.structureHighlights
+      ? this.store.styles.structureHighlights
+      : this.formatStructureRecommendations;
+
+    this.formatStructureProducts = this.store.styles?.structureProducts
+      ? this.store.styles.structureProducts
+      : this.formatStructureProducts;
+
+    this.formatStructureProductsByCategory = this.store.styles
+      ?.structureProductsByCategory
+      ? this.store.styles.structureProducts
+      : this.formatStructureProductsByCategory;
   }
 }

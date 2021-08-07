@@ -1,3 +1,9 @@
+import { FormatColor } from '../interfaces/format-color';
+import { ContactData } from '../interfaces/contact-data';
+import {
+  StructureRecommendations,
+  StructureProducts,
+} from '../interfaces/format-structure';
 export class Store {
   id: string;
   name: string;
@@ -8,6 +14,8 @@ export class Store {
   stripeAccount: string;
   typeAccount: 'free' | 'pro' | 'gold';
   activeTools: Tools;
+  styles?: StoreStyles;
+  contactData?: Array<ContactData>;
 }
 
 export class Tools {
@@ -26,4 +34,14 @@ export class StoreSimpleData {
   picture: string;
   banner: string;
   phone: string;
+}
+
+export class StoreStyles {
+  storeCard: FormatColor;
+  topbar: FormatColor;
+  content: FormatColor;
+  navbar: FormatColor;
+  structureHighlights: StructureRecommendations;
+  structureProducts: StructureProducts;
+  structureProductsByCategory: StructureProducts;
 }

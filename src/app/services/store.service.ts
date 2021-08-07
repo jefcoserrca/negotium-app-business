@@ -3,7 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import firebase from 'firebase';
 import { first } from 'rxjs/operators';
 import { Builder } from 'builder-pattern';
-import { Store, Tools } from '../models/store';
+import { Store, Tools, StoreStyles } from '../models/store';
 import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
@@ -135,6 +135,18 @@ export class StoreService {
           .whatsappOrders(data.activeTools.whatsappOrders)
           .build()
       )
+      .styles(
+        Builder(StoreStyles)
+          .content(data.styles.content)
+          .navbar(data.styles.navbar)
+          .storeCard(data.styles.storeCard)
+          .structureHighlights(data.styles.structureHighlights)
+          .structureProducts(data.styles.structureProducts)
+          .structureProductsByCategory(data.styles.structureProductsByCategory)
+          .topbar(data.styles.topbar)
+          .build()
+      )
+      .contactData(data.contactData)
       .build();
   }
 }

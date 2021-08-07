@@ -15,15 +15,24 @@
       <h1 [ngStyle]="{ color: colorText }">Aa</h1>
     </ion-card>
   </div>
-  <div class="d-flex justify-content-center mt-3">
-    <div
-      class="circle-empty"
-      (click)="setWhite()"
-      [ngClass]="{
-        active: background === '#ffffff' || !background || background === '#fff'
-      }"
-    >
-      <ion-icon name="ban"></ion-icon>
+  <div class="d-flex justify-content-center mt-1 mb-3">
+    <div class="w-25 d-flex justify-content-between">
+      <div
+        class="circle-empty"
+        (click)="setWhite()"
+        [ngClass]="{
+          active:
+            background === '#ffffff' || !background || background === '#fff'
+        }"
+      >
+        <ion-icon name="ban"></ion-icon>
+      </div>
+      <div
+        class="circle-empty invert"
+        (click)="setInvert({ bg: background, txt: colorText })"
+      >
+        <ion-icon name="sync"></ion-icon>
+      </div>
     </div>
   </div>
   <div class="d-flex justify-content-center mt-2 mb-4">
@@ -65,7 +74,7 @@
           <ion-icon slot="start" name="text"></ion-icon>
           <ion-label>
             <h3>Color del texto</h3>
-            <p>{{ "No disponible" }}</p>
+            <p>{{ account === "free" ? "No disponible" : colorText }}</p>
           </ion-label>
         </ion-item>
         <ion-item
@@ -76,7 +85,7 @@
           <ion-icon slot="start" name="color-fill"></ion-icon>
           <ion-label>
             <h3>Color de fondo</h3>
-            <p>{{ "No disponible" }}</p>
+            <p>{{ account === "free" ? "No disponible" : background }}</p>
           </ion-label>
         </ion-item>
       </mat-expansion-panel>

@@ -8,11 +8,14 @@ import { StorePageRoutingModule } from './store-routing.module';
 
 import { StorePage } from './store.page';
 import { CommonsModule } from '../../modules/commons/commons.module';
+import { StoreHeaderDirective } from '../../directives/store-header.directive';
+import { CommonDirectivesModule } from '../../directives/common-directives.module';
 
 @NgModule({
   imports: [
     CommonModule,
     CommonsModule,
+    CommonDirectivesModule,
     FormsModule,
     IonicModule,
     StorePageRoutingModule
