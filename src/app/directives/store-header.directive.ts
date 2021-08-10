@@ -32,8 +32,9 @@ export class StoreHeaderDirective implements OnInit {
 
   @HostListener('ionScroll', ['$event']) onContentScroll($event) {
     this.toolbarHeight = this.toolbar.clientHeight;
-    this.storeDataHeight = this.storeData.clientHeight; //this.storeDataHeight = this.storeData.clientHeight - this.toolbarHeight;
+    this.storeDataHeight = this.storeDataHeight = this.storeData.clientHeight - this.toolbarHeight;
     this.stickyHeader($event);
+    this.fadeHeader($event);
   }
 
   fadeHeader($event) {

@@ -1,12 +1,12 @@
 <ion-header>
   <ion-toolbar
     #toolbar
-    [ngStyle]="{'color': formatColorBars.txtColor, 'background': formatColorBars.bgColor}"
+    [ngStyle]="{'color': formatColorBars? formatColorBars.txtColor: '#fff', 'background': !showLoading ? 'transparent' : '#222428'}"
   >
     <ion-buttons slot="start">
       <ion-menu-button menu="main"></ion-menu-button>
     </ion-buttons>
-    <ion-buttons slot="end">
+    <ion-buttons slot="end" *ngIf="!showLoading">
       <ion-button [matMenuTriggerFor]="menuCustomColors">
         <ion-icon slot="start" name="color-palette"></ion-icon>
       </ion-button>
@@ -14,21 +14,25 @@
   </ion-toolbar>
 </ion-header>
 <ion-content
+  *ngIf="!showLoading"
   storeHeader
-  [color]="formatColorBars.bgColor"
+  [color]="formatColorBars?.bgColor"
   [toolbar]="toolbar"
   [storeData]="storeInfo"
   [fullscreen]="true"
   [ngStyle]="{'background': formatColorPage.bgColor, 'color': formatColorPage.txtColor}"
   scrollEvents="true"
+  [ngClass]="{'pb-44': newChanges}"
 >
   <div #storeInfo>
     <div
       class="bg-banner"
       [ngStyle]="{
   background: storeData?.banner
-    ? 'url(' + storeData.banner + ')'
-    : 'url(' +
+    ? this.linearGradient
+    +','+'url(' + storeData.banner + ')'
+    : this.linearGradient
+    +','+'url(' +
       'https://www.esan.edu.pe/apuntes-empresariales/2019/12/11/1500x844_restaurantes_offline.jpg' +
       ')'
 }"
@@ -101,7 +105,7 @@
             >
               {{ formatStructureRecommendations.label }}
             </h5>
-            <div class="d-flex align-items-center">
+            <div>
               <ion-button
                 class="settings-btn icon-small"
                 mode="md"
@@ -156,7 +160,7 @@
             [ngClass]="{'products-one-row': formatStructureRecommendations.type === 'row-image', 'products-block ': formatStructureRecommendations.type === 'block', 'products-one-row-complete': formatStructureRecommendations.type === 'row-card', 'hide-element': !formatStructureRecommendations.show}"
           >
             <app-product-card
-              *ngFor="let product of products"
+              *ngFor="let product of productsHighlights"
               [product]="product"
             ></app-product-card>
           </div>
@@ -169,7 +173,7 @@
             >
               {{ formatStructureProducts.label }}
             </h5>
-            <div class="d-flex align-items-center">
+            <div>
               <ion-button
                 class="settings-btn icon-small"
                 mode="md"
@@ -297,10 +301,27 @@
     </mat-tab>
   </mat-tab-group>
 </ion-content>
-<ion-footer class="d-none">
-  <ion-toolbar color="light">
+<ion-content *ngIf="showLoading">
+  <div class="mb-5 loading-content">
+    <app-loading></app-loading>
+  </div>
+</ion-content>
+<ion-footer
+  *ngIf="!showLoading && newChanges"
+  class="position-absolute slide-in-bottom"
+  mode="ios"
+>
+  <ion-toolbar
+    [ngStyle]="{'background': formatColorPage?.bgColor, 'color': formatColorPage?.txtColor}"
+  >
+    <ion-buttons slot="start">
+      <ion-button (click)="undoChanges()">
+        <ion-icon slot="start" name="arrow-undo"></ion-icon>
+        Revertir cambios
+      </ion-button>
+    </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button>
+      <ion-button (click)="saveChanges()">
         <ion-icon slot="start" name="globe"></ion-icon>
         Publicar tienda
       </ion-button>
@@ -335,10 +356,13 @@
       <ion-label>Editar nombre</ion-label>
     </ion-item>
     <ion-item button (click)="uploadProfileFile()">
-      <ion-icon slot="start" src="../../../assets/icons/round-image.svg"></ion-icon>
+      <ion-icon
+        slot="start"
+        src="../../../assets/icons/round-image.svg"
+      ></ion-icon>
       <ion-label>Cambiar logo</ion-label>
     </ion-item>
-    <ion-item button (click)="uploadProfileFile()">
+    <ion-item button (click)="uploadBannerFile()">
       <ion-icon slot="start" name="image"></ion-icon>
       <ion-label>Cambiar banner</ion-label>
     </ion-item>
@@ -347,67 +371,60 @@
 
 <mat-menu #menuCustomColors="matMenu">
   <div class="m-3">
-    <h5>Personaliza componentes</h5>
+    <h5>Personaliza tu negocio</h5>
   </div>
   <ion-list lines="none">
-    <ion-item button (click)="openColorPicker('bars', formatColorBars)">
-      <ion-icon slot="start" name="browsers-outline"></ion-icon>
-      <ion-label class="d-flex align-items-center"
-        >Barras superiores
-        <ion-badge
-          *ngIf="account === 'free'"
-          color="primary"
-          mode="ios"
-          class="ms-2"
-          >PRO</ion-badge
-        >
-      </ion-label>
-    </ion-item>
-    <ion-item button (click)="openColorPicker('page', formatColorPage)">
-      <ion-icon slot="start" name="browsers"></ion-icon>
-      <ion-label class="d-flex align-items-center"
-        >Contenido
-        <ion-badge
-          *ngIf="account === 'free'"
-          color="primary"
-          mode="ios"
-          class="ms-2"
-          >PRO</ion-badge
-        >
-      </ion-label>
+    <ion-item-divider>
+      <ion-label>Temas</ion-label>
+    </ion-item-divider>
+    <ion-item button (click)="openThemePicker()">
+      <ion-icon slot="start" name="color-filter"></ion-icon>
+      <ion-label>Elegir tema </ion-label>
     </ion-item>
 
-    <ion-item
-      button
-      (click)="openColorPicker('storeCard', formatColorStoreCard)"
-    >
-      <ion-icon slot="start" name="square"></ion-icon>
+    <ion-item-divider>
       <ion-label class="d-flex align-items-center"
-        >Tarjeta del negocio
+        >Componentes
         <ion-badge
           *ngIf="account === 'free'"
           color="primary"
           mode="ios"
           class="ms-2"
           >PRO</ion-badge
-        >
-      </ion-label>
+        ></ion-label
+      >
+    </ion-item-divider>
+    <ion-item
+      button
+      (click)="openColorPicker('bars', formatColorBars, 'Barras superiores')"
+      [disabled]="account === 'free'"
+    >
+      <ion-icon slot="start" name="browsers-outline"></ion-icon>
+      <ion-label>Barras superiores </ion-label>
     </ion-item>
     <ion-item
       button
-      (click)="openColorPicker('categoriesBar', formatColorCategoriesBar)"
+      (click)="openColorPicker('storeCard', formatColorStoreCard, 'Datos de la empresa')"
+      [disabled]="account === 'free'"
     >
-      <ion-icon slot="start" name="phone-landscape-sharp"></ion-icon>
-      <ion-label class="d-flex align-items-center">
-        Barra de categorías
-        <ion-badge
-          *ngIf="account === 'free'"
-          color="primary"
-          mode="ios"
-          class="ms-2"
-          >PRO</ion-badge
-        >
-      </ion-label>
+      <ion-icon slot="start" src="../../../assets/icons/store_card.svg"></ion-icon>
+      <ion-label>Datos de la empresa </ion-label>
+    </ion-item>
+    <ion-item
+      button
+      (click)="openColorPicker('categoriesBar', formatColorCategoriesBar, 'Barra de navegación')"
+      [disabled]="account === 'free'"
+    >
+      <ion-icon slot="start" src="../../../assets/icons/navbar.svg"></ion-icon>
+      <ion-label> Barra de navegación</ion-label>
+    </ion-item>
+    <ion-item
+      button
+      (click)="openColorPicker('page', formatColorPage, 'Contenido')"
+      [disabled]="account === 'free'"
+    >
+      <ion-icon slot="start" name="browsers"></ion-icon>
+      <ion-label>Contenido </ion-label>
     </ion-item>
   </ion-list>
 </mat-menu>

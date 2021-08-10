@@ -44,4 +44,5 @@ export class StoreStyles {
   structureHighlights: StructureRecommendations;
   structureProducts: StructureProducts;
   structureProductsByCategory: StructureProducts;
+  linearGradient: string;
 }

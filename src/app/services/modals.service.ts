@@ -13,6 +13,7 @@ import { ProductVariationsComponent } from '../modals/product-variations/product
 import { ProductVariant, ProductStock } from '../models/product';
 import { StockModalComponent } from '../modals/stock-modal/stock-modal.component';
 import { InputAlertComponent } from '../modals/input-alert/input-alert.component';
+import { ThemePickerModalComponent } from '../modals/theme-picker-modal/theme-picker-modal.component';
 
 @Injectable({
   providedIn: 'root',
@@ -40,6 +41,7 @@ export class ModalsService {
         items,
         index,
       },
+      cssClass: 'tab-modal'
     });
 
     await modal.present();
@@ -61,6 +63,7 @@ export class ModalsService {
       componentProps: {
         alertInputModal,
       },
+      cssClass: 'tab-modal'
     });
 
     await modal.present();
@@ -76,6 +79,7 @@ export class ModalsService {
       componentProps: {
         isModal,
       },
+      cssClass: 'tab-modal'
     });
 
     await modal.present();
@@ -93,6 +97,7 @@ export class ModalsService {
       componentProps: {
         productVaraint,
       },
+      cssClass: 'tab-modal'
     });
     await modal.present();
 
@@ -108,6 +113,7 @@ export class ModalsService {
       componentProps: {
         variants,
       },
+      cssClass: 'tab-modal'
     });
 
     await modal.present();
@@ -143,6 +149,7 @@ export class ModalsService {
       componentProps: {
         images,
       },
+      cssClass: 'tab-modal'
     });
 
     await modal.present();
@@ -152,14 +159,30 @@ export class ModalsService {
     return data;
   }
 
-  public async openColorPickerModal(formatColor: FormatColor): Promise<any> {
+  public async openColorPickerModal(formatColor: FormatColor, title: string = null): Promise<any> {
     const modal = await this.modalCtrl.create({
       component: ColorPickerComponent,
       backdropDismiss: true,
       componentProps: {
         background: formatColor?.bgColor,
         colorText: formatColor?.txtColor,
+        title
       },
+      cssClass: 'tab-modal'
+    });
+
+    await modal.present();
+
+    const data = (await modal.onWillDismiss()).data;
+
+    return data;
+  }
+
+  public async openThemePickerModal(): Promise<any> {
+    const modal = await this.modalCtrl.create({
+      component: ThemePickerModalComponent,
+      backdropDismiss: true,
+      cssClass: 'tab-modal'
     });
 
     await modal.present();
@@ -176,6 +199,7 @@ export class ModalsService {
       componentProps: {
         stock,
       },
+      cssClass: 'tab-modal'
     });
 
     await modal.present();

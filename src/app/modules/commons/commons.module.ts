@@ -19,9 +19,10 @@ import { MultipleImagesUploaderModalComponent } from '../../modals/multiple-imag
 import { CreateProductVariationsComponent } from 'src/app/modals/create-product-variations/create-product-variations.component';
 import { ProductVariationsComponent } from '../../modals/product-variations/product-variations.component';
 import { StockModalComponent } from '../../modals/stock-modal/stock-modal.component';
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { InputAlertComponent } from '../../modals/input-alert/input-alert.component';
 import { ProductCardComponent } from '../../components/product-card/product-card.component';
+import { ThemePickerModalComponent } from '../../modals/theme-picker-modal/theme-picker-modal.component';
 @NgModule({
   declarations: [
     CreateAccountModalComponent,
@@ -38,6 +39,7 @@ import { ProductCardComponent } from '../../components/product-card/product-card
     StockModalComponent,
     InputAlertComponent,
     ProductCardComponent,
+    ThemePickerModalComponent,
   ],
   imports: [
     CommonModule,
@@ -50,7 +52,7 @@ import { ProductCardComponent } from '../../components/product-card/product-card
     ColorSketchModule,
     ColorCircleModule,
     MatMenuModule,
-    MatTabsModule
+    MatTabsModule,
   ],
   exports: [
     CreateAccountModalComponent,
@@ -67,9 +69,10 @@ import { ProductCardComponent } from '../../components/product-card/product-card
     StockModalComponent,
     InputAlertComponent,
     ProductCardComponent,
+    ThemePickerModalComponent,
     MatExpansionModule,
     MatMenuModule,
-    MatTabsModule
+    MatTabsModule,
   ],
 })
 export class CommonsModule {}

@@ -10,6 +10,7 @@ import { NgxImageCompressService } from 'ngx-image-compress';
 import { FormatColor } from '../../interfaces/format-color';
 import { Product } from '../../models/product';
 import { ContactData } from 'src/app/interfaces/contact-data';
+import { AuthenticationService } from '../../services/authentication.service';
 import {
   StructureProducts,
   StructureRecommendations,
@@ -24,40 +25,24 @@ export class StorePage implements OnInit {
   private store: Store;
   storeData: StoreSimpleData;
   account: string;
-  contactData: Array<ContactData> = [
-    {
-      name: 'whatsapp',
-      link: '524661003644',
-      show: true,
-      icon: 'logo-whatsapp',
-      path: 'https://wa.me/',
-    },
-    { name: 'facebook', link: null, show: false, icon: 'logo-facebook' },
-    { name: 'instagram', link: null, show: false, icon: 'logo-instagram' },
-    { name: 'phone', link: null, show: false, icon: 'call', path: 'tel:' },
-  ];
-  formatColorStoreCard: FormatColor = { bgColor: '#fff', txtColor: '#000' };
-  formatColorBars: FormatColor = { bgColor: '#222428', txtColor: '#fff' };
-  formatColorPage: FormatColor = { bgColor: '#fff', txtColor: '#000' };
-  formatColorCategoriesBar: FormatColor = { bgColor: '#fff', txtColor: '#000' };
+  contactData: Array<ContactData> = [];
+  formatColorStoreCard: FormatColor;
+  formatColorBars: FormatColor;
+  formatColorPage: FormatColor;
+  formatColorCategoriesBar: FormatColor;
   products: Array<Product> = [];
-  formatStructureRecommendations: StructureRecommendations = {
-    type: 'row-image',
-    show: true,
-    label: 'Recomendaciones',
-  };
-  formatStructureProducts: StructureProducts = {
-    type: 'block',
-    label: 'Todos los productos',
-  };
-  formatStructureProductsByCategory: StructureProducts = {
-    type: 'block',
-    label: null,
-  };
+  productsHighlights: Array<Product> = [];
+  formatStructureRecommendations: StructureRecommendations;
+  formatStructureProducts: StructureProducts;
+  formatStructureProductsByCategory: StructureProducts;
   categories: Array<string> = [];
   productsByCategory: Array<Product> = [];
   categorySelected: string = '';
+  linearGradient: string;
+  newChanges: boolean = false;
+  showLoading = true;
   constructor(
+    private authSrv: AuthenticationService,
     private storeSrv: StoreService,
     private alertCtrl: AlertController,
     private productsSrv: ProductsService,
@@ -68,20 +53,19 @@ export class StorePage implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
+    this.showLoading = true;
     this.store = await this.storeSrv.store.pipe(first()).toPromise();
-    this.setStyles();
-    this.storeData = {
-      name: this.store.name,
-      picture: this.store.picture,
-      banner: this.store.banner,
-      phone: this.store.phone,
-    };
     this.account = this.store.typeAccount;
-    this.contactData = this.store.contactData
-      ? this.store.contactData
-      : this.contactData;
+    this.initStore();
     this.products = await this.productsSrv.getProducts();
     this.getActiveCategories();
+    this.productsHighlights = this.products.filter(
+      (product) => product.suggest === true
+    );
+    this.showLoading = false;
+    setTimeout(() => {
+      this.customizeCategoryBar(this.formatColorCategoriesBar);
+    }, 150);
   }
 
   async addContactLink(item: any): Promise<void> {
@@ -113,6 +97,7 @@ export class StorePage implements OnInit {
           handler: (data) => {
             item.link = data.link ? data.link : item.link;
             item.show = data.link ? true : false;
+            this.newChanges = data.link ? true : this.newChanges;
           },
         },
       ],
@@ -124,6 +109,7 @@ export class StorePage implements OnInit {
   removeContactLink(item): void {
     item.link = item.name === 'whatsapp' ? item.link : null;
     item.show = false;
+    this.newChanges = true;
   }
 
   async editStoreName(): Promise<void> {
@@ -136,6 +122,8 @@ export class StorePage implements OnInit {
     });
 
     this.storeData.name = newName?.name ? newName.name : this.storeData.name;
+
+    this.newChanges = newName?.name ? true : this.newChanges;
   }
 
   async uploadProfileFile(): Promise<void> {
@@ -147,7 +135,11 @@ export class StorePage implements OnInit {
       90
     );
     const imageCropped = await this.modalsSrv.openCropperImageModal(image);
-    this.storeData.picture = imageCropped ? imageCropped.image : null;
+    this.storeData.picture = imageCropped
+      ? imageCropped.image
+      : this.storeData.picture;
+
+    this.newChanges = imageCropped?.image ? true : this.newChanges;
   }
 
   async uploadBannerFile(): Promise<void> {
@@ -163,19 +155,28 @@ export class StorePage implements OnInit {
       'banner'
     );
     this.storeData.banner = imageCropped ? imageCropped.image : null;
+    this.newChanges = imageCropped?.image ? true : this.newChanges;
   }
 
   revertProfile(): void {
     this.storeData.picture = this.store.picture;
   }
 
-  async openColorPicker(type: string, format: FormatColor): Promise<void> {
-    const newFormat = await this.modalsSrv.openColorPickerModal({
-      ...format,
-    });
+  async openColorPicker(
+    type: string,
+    format: FormatColor,
+    title: string
+  ): Promise<void> {
+    const newFormat = await this.modalsSrv.openColorPickerModal(
+      {
+        ...format,
+      },
+      title
+    );
     switch (type) {
       case 'bars':
         this.formatColorBars = newFormat ? newFormat : this.formatColorBars;
+        this.autoLinearGradient(this.formatColorBars.txtColor);
         break;
       case 'page':
         this.formatColorPage = newFormat ? newFormat : this.formatColorPage;
@@ -194,6 +195,8 @@ export class StorePage implements OnInit {
         this.customizeCategoryBar(this.formatColorCategoriesBar);
         break;
     }
+
+    this.newChanges = newFormat ? true : this.newChanges;
   }
 
   changeRecomendationsStructure(): void {
@@ -208,11 +211,13 @@ export class StorePage implements OnInit {
         this.formatStructureRecommendations.type = 'row-image';
         break;
     }
+    this.newChanges = true;
   }
 
   toggleShowRecommendations() {
     this.formatStructureRecommendations.show =
       !this.formatStructureRecommendations.show;
+    this.newChanges = true;
   }
 
   customizeCategoryBar(format: FormatColor): void {
@@ -267,6 +272,7 @@ export class StorePage implements OnInit {
         this.formatStructureProducts.type = 'block';
         break;
     }
+    this.newChanges = true;
   }
 
   changeStructureProductsByCategory(): void {
@@ -278,6 +284,7 @@ export class StorePage implements OnInit {
         this.formatStructureProductsByCategory.type = 'block';
         break;
     }
+    this.newChanges = true;
   }
 
   async editText(type: string): Promise<void> {
@@ -306,36 +313,188 @@ export class StorePage implements OnInit {
 
         break;
     }
-    console.log(newLabel);
+    this.newChanges = newLabel?.name ? true : this.newChanges;
   }
 
-  setStyles(): void {
+  initStore(): void {
+    this.linearGradient = this.store.styles?.linearGradient
+      ? this.store.styles.linearGradient
+      : 'linear-gradient(#00000080, #ffffff36)';
     this.formatColorStoreCard = this.store.styles?.storeCard
       ? this.store.styles.storeCard
-      : this.formatColorStoreCard;
+      : { bgColor: '#ffffff', txtColor: '#000000' };
     this.formatColorBars = this.store.styles?.topbar
       ? this.store.styles.topbar
-      : this.formatColorBars;
+      : { bgColor: '#222428', txtColor: '#ffffff' };
 
     this.formatColorPage = this.store.styles?.content
       ? this.store.styles.content
-      : this.formatColorPage;
+      : { bgColor: '#ffffff', txtColor: '#000000' };
 
     this.formatColorCategoriesBar = this.store.styles?.navbar
       ? this.store.styles.navbar
-      : this.formatColorCategoriesBar;
+      : { bgColor: '#ffffff', txtColor: '#000000' };
 
     this.formatStructureRecommendations = this.store.styles?.structureHighlights
-      ? this.store.styles.structureHighlights
-      : this.formatStructureRecommendations;
+      ? { ...this.store.styles.structureHighlights }
+      : {
+          type: 'row-image',
+          show: true,
+          label: 'Recomendaciones',
+        };
 
     this.formatStructureProducts = this.store.styles?.structureProducts
-      ? this.store.styles.structureProducts
-      : this.formatStructureProducts;
+      ? { ...this.store.styles.structureProducts }
+      : {
+          type: 'block',
+          label: 'Todos los productos',
+        };
 
     this.formatStructureProductsByCategory = this.store.styles
       ?.structureProductsByCategory
-      ? this.store.styles.structureProducts
-      : this.formatStructureProductsByCategory;
+      ? { ...this.store.styles.structureProductsByCategory }
+      : {
+          type: 'block',
+          label: null,
+        };
+
+    this.storeData = {
+      name: this.store.name,
+      picture: this.store.picture,
+      banner: this.store.banner,
+      phone: this.store.phone,
+    };
+
+    this.contactData = this.store.contactData
+      ? this.store.contactData
+      : [
+          {
+            name: 'whatsapp',
+            link: this.store.phone,
+            show: true,
+            icon: 'logo-whatsapp',
+            path: 'https://wa.me/',
+          },
+          { name: 'facebook', link: null, show: false, icon: 'logo-facebook' },
+          {
+            name: 'instagram',
+            link: null,
+            show: false,
+            icon: 'logo-instagram',
+          },
+          {
+            name: 'phone',
+            link: null,
+            show: false,
+            icon: 'call',
+            path: 'tel:',
+          },
+        ];
+    this.contactData[0].link = this.contactData[0].link
+      ? this.contactData[0].link
+      : this.storeData.phone;
+  }
+
+  hexToRgb(hex: string): { r: number; g: number; b: number } {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result
+      ? {
+          r: parseInt(result[1], 16),
+          g: parseInt(result[2], 16),
+          b: parseInt(result[3], 16),
+        }
+      : null;
+  }
+
+  autoLinearGradient(hex: string) {
+    const rgb = this.hexToRgb(hex);
+    var opacity = Math.round((rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000);
+    if (opacity > 125) {
+      this.linearGradient = 'linear-gradient(#00000080, #ffffff36)';
+    } else {
+      this.linearGradient = 'linear-gradient(#ffffffa8, #00000000)';
+    }
+  }
+
+  async openThemePicker(): Promise<void> {
+    const newTheme = await this.modalsSrv.openThemePickerModal();
+    if (newTheme) {
+      this.formatColorBars = newTheme.topbar;
+      this.formatColorStoreCard = newTheme.storeCard;
+      this.formatColorCategoriesBar = newTheme.navbar;
+      this.customizeCategoryBar(this.formatColorCategoriesBar);
+      this.formatColorPage = newTheme.content;
+      this.autoLinearGradient(this.formatColorBars.txtColor);
+      this.newChanges = true;
+    }
+  }
+
+  async saveChanges(): Promise<void> {
+    try {
+      await this.modalsSrv.openLoadingModal();
+      const user = await this.authSrv.user.pipe(first()).toPromise();
+      const newChanges = {
+        name: this.storeData.name,
+        styles: {
+          storeCard: this.formatColorStoreCard,
+          topbar: this.formatColorBars,
+          content: this.formatColorPage,
+          navbar: this.formatColorCategoriesBar,
+          structureHighlights: this.formatStructureRecommendations,
+          structureProducts: this.formatStructureProducts,
+          structureProductsByCategory: this.formatStructureProductsByCategory,
+          linearGradient: this.linearGradient,
+        },
+        contactData: this.contactData,
+      };
+      await this.storeSrv.updateStore(newChanges, user.id, this.store.id);
+      if (this.storeData.picture.split(':')[0] !== 'https') {
+        await this.storeSrv.updatePictureStore(
+          this.storeData.picture,
+          this.store.id,
+          user.id
+        );
+      }
+
+      if (this.storeData.banner.split(':')[0] !== 'https') {
+        await this.storeSrv.updateBannerStore(
+          this.storeData.banner,
+          this.store.id,
+          user.id
+        );
+      }
+      this.newChanges = false;
+      await this.modalsSrv.dismissLoadingModal();
+      await this.toastSrv.showDefaultNotify(
+        'Los cambios se han guardado',
+        'success'
+      );
+    } catch (error) {
+      await this.modalsSrv.dismissLoadingModal();
+      await this.toastSrv.showErrorNotify(
+        'Ha ocurrido un error, intentalo más tarde'
+      );
+    }
+  }
+
+  async undoChanges() {
+    const alert = await this.alertCtrl.create({
+      header: 'Aviso',
+      message: 'Se perderan todos los cambios. ¿Desea continuar?',
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        {
+          text: 'Revertir cambios',
+          handler: () => {
+            this.initStore();
+            this.customizeCategoryBar(this.formatColorCategoriesBar);
+            this.newChanges = false;
+            console.log(this.store);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 }

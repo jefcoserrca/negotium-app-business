@@ -33,6 +33,15 @@ export class StoreService {
     return storeId;
   }
 
+  async updateStore(
+    storeData: any,
+    userId: string,
+    storeId: string
+  ): Promise<boolean> {
+    await this.af.doc(`users/${userId}/stores/${storeId}`).update(storeData);
+    return true;
+  }
+
   async getStore(userId: string, storeId: string): Promise<Store> {
     const doc = await this.af
       .doc(`users/${userId}/stores/${storeId}`)
@@ -144,6 +153,7 @@ export class StoreService {
           .structureProducts(data.styles.structureProducts)
           .structureProductsByCategory(data.styles.structureProductsByCategory)
           .topbar(data.styles.topbar)
+          .linearGradient(data.styles.linearGradient)
           .build()
       )
       .contactData(data.contactData)

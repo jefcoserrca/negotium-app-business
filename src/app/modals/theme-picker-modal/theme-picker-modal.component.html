@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" color="light" (click)="close()">
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title> Temas </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list lines="none">
+    <ion-list-header>
+      <ion-label>Tema</ion-label>
+    </ion-list-header>
+    <p class="ps-4">Selecciona un tema para tu negocio!</p>
+    <div *ngFor="let theme of themes">
+      <ion-item-divider>
+        <ion-label> {{ theme.name }} </ion-label>
+      </ion-item-divider>
+      <ion-item button (click)="selectTheme(theme)">
+        <ion-icon
+          *ngFor="let color of theme.colors"
+          slot="start"
+          name="square"
+          [ngStyle]="{'color': color}"
+        ></ion-icon>
+      </ion-item>
+    </div>
+  </ion-list>
+  <br>
+</ion-content>

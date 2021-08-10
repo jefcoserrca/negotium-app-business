@@ -5,7 +5,7 @@
         <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Personaliza</ion-title>
+    <ion-title>{{title ? title :'Personaliza'}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -16,7 +16,23 @@
     </ion-card>
   </div>
   <div class="d-flex justify-content-center mt-1 mb-3">
-    <div class="w-25 d-flex justify-content-between">
+    <div class="w-50 d-flex justify-content-between">
+      <div
+        *ngIf="account === 'pro'"
+        class="circle-empty invert"
+        [matMenuTriggerFor]="menuTxt"
+        [ngStyle]="{ color: '#000' }"
+      >
+        <ion-icon name="text"></ion-icon>
+      </div>
+      <div
+        *ngIf="account === 'pro'"
+        class="circle-empty"
+        [ngStyle]="{ color: '#000' }"
+        [matMenuTriggerFor]="menuBg"
+      >
+        <ion-icon name="color-fill"></ion-icon>
+      </div>
       <div
         class="circle-empty"
         (click)="setWhite()"
@@ -32,6 +48,13 @@
         (click)="setInvert({ bg: background, txt: colorText })"
       >
         <ion-icon name="sync"></ion-icon>
+      </div>
+      <div
+        class="circle-empty"
+        [ngStyle]="{ color: '#000' }"
+        (click)="undoChanges()"
+      >
+        <ion-icon name="arrow-undo"></ion-icon>
       </div>
     </div>
   </div>
@@ -51,7 +74,7 @@
       (onChangeComplete)="setColorBackground($event)"
     ></color-circle>
   </div>
-  <div class="p-3">
+  <div class="p-3" *ngIf="account === 'free'">
     <mat-accordion>
       <mat-expansion-panel>
         <mat-expansion-panel-header>
@@ -90,18 +113,6 @@
         </ion-item>
       </mat-expansion-panel>
     </mat-accordion>
-    <mat-menu #menuTxt="matMenu">
-      <color-sketch
-        [color]="colorText"
-        (onChangeComplete)="setColorText($event)"
-      ></color-sketch>
-    </mat-menu>
-    <mat-menu #menuBg="matMenu">
-      <color-sketch
-        [color]="background"
-        (onChangeComplete)="setColorBackground($event)"
-      ></color-sketch>
-    </mat-menu>
   </div>
   <ion-button
     expand="block"
@@ -112,4 +123,19 @@
   >
     Guardar
   </ion-button>
+  <br>
 </ion-content>
+<mat-menu #menuTxt="matMenu">
+  <color-sketch
+    [color]="colorText"
+    (onChangeComplete)="setColorText($event)"
+    (click)="$event.stopPropagation()"
+  ></color-sketch>
+</mat-menu>
+<mat-menu #menuBg="matMenu">
+  <color-sketch
+    [color]="background"
+    (onChangeComplete)="setColorBackground($event)"
+    (click)="$event.stopPropagation()"
+  ></color-sketch>
+</mat-menu>

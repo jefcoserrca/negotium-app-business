@@ -13,8 +13,10 @@ import { FormatColor } from '../../interfaces/format-color';
 export class ColorPickerComponent implements OnInit {
   @Input() background: string;
   @Input() colorText: string = '#000000';
+  @Input() title: string;
   private store: Store;
   account: string = 'free';
+  private oldColors: { backgorund: string; colorText: string };
   private defaultColors = [
     '#e4e4e4',
     '#85b6ff',
@@ -35,6 +37,7 @@ export class ColorPickerComponent implements OnInit {
     this.colorText = this.colorText ? this.colorText : '#000000';
     this.store = await this.storeSrv.store.pipe(first()).toPromise();
     this.account = this.store.typeAccount;
+    this.oldColors = { backgorund: this.background, colorText: this.colorText };
   }
 
   setColorBackground(ev: any) {
@@ -71,8 +74,13 @@ export class ColorPickerComponent implements OnInit {
     await this.modalCtrl.dismiss(formatColor);
   }
 
-  setInvert(format: {bg: string, txt: string}): void {
+  setInvert(format: { bg: string; txt: string }): void {
     this.background = format.txt;
     this.colorText = format.bg;
+  }
+
+  undoChanges(): void {
+    this.background = this.oldColors.backgorund;
+    this.colorText = this.oldColors.colorText;
   }
 }
