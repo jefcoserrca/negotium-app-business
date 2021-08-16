@@ -1,0 +1,20 @@
+.to-img {
+  color: #ffffff;
+  font-size: 6rem;
+  position: relative;
+  margin-bottom: 1.5rem;
+  ion-badge {
+    position: absolute;
+    top: 78px;
+    left: 55%;
+  }
+}
+
+h3,
+p {
+  color: #6c757d;
+}
+.radient {
+  background: linear-gradient(159deg, #0dcaf0, #7900ff);
+  padding-bottom: 0.25rem;
+}

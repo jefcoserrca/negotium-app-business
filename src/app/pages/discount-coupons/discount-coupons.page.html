@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-menu-button menu="main"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Ofertas y cupones</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <mat-tab-group (selectedTabChange)="tabChange($event)">
+    <mat-tab label="Ofertas">
+      <div class="d-flex align-items-center justify-content-around">
+        <ion-searchbar
+          placeholder="Buscar"
+          [debounce]="250"
+          mode="ios"
+          [(ngModel)]="searchTerm"
+          (ionChange)="searchByTerm('products')"
+        ></ion-searchbar>
+        <ion-button
+          fill="clear"
+          color="secondary"
+          [routerLink]="['/dashboard/create-coupon']"
+        >
+          <ion-icon slot="icon-only" name="add"></ion-icon>
+        </ion-button>
+      </div>
+      <ion-list *ngIf="!showLoading">
+        <ion-item
+          *ngFor="let coupon of coupons"
+          button
+          [routerLink]="['/dashboard/edit-coupon', coupon.id]"
+        >
+          <ion-label>
+            <h3>{{ coupon.title }}</h3>
+            <p>
+              tipo: {{ coupon.type === 'discount' ? 'Descuento' : 'Precio' }}
+            </p>
+          </ion-label>
+          <ion-note *ngIf="coupon.type !== 'discount'" slot="end">
+            {{ coupon.value | currency }}
+          </ion-note>
+          <ion-note *ngIf="coupon.type === 'discount'" slot="end">
+            - {{ coupon.value }} %
+          </ion-note>
+        </ion-item>
+      </ion-list>
+      <div class="mt-5" *ngIf="showLoading">
+        <app-loading></app-loading>
+      </div>
+      <div class="mt-5 p-5 text-center" *ngIf="!showLoading && !coupons.length">
+        <h4>Sin Cupones</h4>
+        <p>Añade cupones y ofertas para generar popularidad!</p>
+        <ion-button class="mt-3" [routerLink]="['/dashboard/create-coupon']">
+          Crear oferta
+        </ion-button>
+      </div>
+    </mat-tab>
+    <mat-tab label="Ajustes"> </mat-tab>
+  </mat-tab-group>
+</ion-content>

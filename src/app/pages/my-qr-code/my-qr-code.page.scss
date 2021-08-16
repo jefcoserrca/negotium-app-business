@@ -1,0 +1,139 @@
+.toolsbar {
+  ion-button {
+    width: 32px;
+    height: 32px;
+    --padding-start: 0;
+    --padding-end: 0;
+    --border-radius: 50%;
+    --padding-start: 5px;
+    --padding-end: 5px;
+    --background: rgb(250, 250, 250);
+  }
+}
+
+.qr-content {
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  ::ng-deep {
+    img {
+      width: 300px;
+      border-radius: 8px;
+    }
+  }
+}
+
+ion-card {
+  max-width: 400px;
+  ion-item {
+    --background: auto;
+    --color: auto;
+    --padding-start: 0;
+  }
+
+  p {
+    margin-top: 1rem;
+    font-size: 1.25rem;
+  }
+}
+
+.logo-card {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  img {
+    position: absolute;
+    z-index: 2;
+    top: -2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    border: solid 10px;
+    width: 100px;
+    height: 100px;
+    border-color: transparent;
+    box-shadow: rgb(0 0 0 / 20%) 0px 3px 1px -2px,
+      rgb(0 0 0 / 14%) 0px 2px 2px 0px, rgb(0 0 0 / 12%) 0px 1px 5px 0px;
+    background-color: #fafafa;
+  }
+  .qr-content {
+    margin-top: 3rem;
+  }
+  ion-card-content {
+    padding-top: 0 !important;
+  }
+}
+
+.social-card {
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  ion-card {
+    max-width: 230px !important;
+    min-width: 230px !important;
+  }
+  .header-card {
+    margin: 1rem 1rem 0;
+    img {
+      width: 28px;
+    }
+    span {
+      margin-bottom: 0 !important;
+      font-size: 16px;
+      width: 100%;
+    }
+  }
+  .qr-content {
+    display: flex;
+    justify-content: center;
+    background-color: white;
+    ::ng-deep {
+      img {
+        width: 200px;
+        border-radius: 8px;
+      }
+    }
+  }
+
+  .whatsapp {
+    background: linear-gradient(45deg, #459c55, #55cd6c);
+    color: white;
+  }
+  .facebook {
+    background: linear-gradient(0deg, #2d446c, #4d6fa9);
+    color: white;
+  }
+
+  .instagram {
+    background: linear-gradient(
+      45deg,
+      #f09433 0%,
+      #e6683c 25%,
+      #dc2743 50%,
+      #cc2366 75%,
+      #bc1888 100%
+    );
+    color: white;
+  }
+
+  .phone {
+    background: linear-gradient(330deg, #b2b2b2, #e0e0e0);
+    color: #141414;
+  }
+}
+
+.one-row {
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+
+.no-visible {
+  filter: opacity(0.5) blur(1px);
+}
+
+@media (min-width: 768px) {
+  ion-card {
+    min-width: 400px !important;
+  }
+}

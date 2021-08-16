@@ -1,0 +1,28 @@
+<ion-content [scrollY]="false">
+  <div class="radient">
+    <div class="d-flex justify-content-end align-items-center">
+      <ion-button fill="clear" size="small" color="light" (click)="close()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </div>
+    <div class="d-flex justify-content-center align-items-center to-img">
+      <ion-icon name="storefront"></ion-icon>
+      <ion-badge color="primary" mode="ios">PRO</ion-badge>
+    </div>
+  </div>
+  <div class="m-3">
+    <h3>Convierte tu negocio en Pro!</h3>
+    <p>
+      Con el plan Pro goza de las herramientas y beneficios que te ofrecemos
+      para que tu negocio crezca.
+    </p>
+    <div class="d-flex justify-content-around align-items-center pt-3">
+      <ion-button fill="clear"  color="medium" (click)="close()" mode="ios">
+        Más tarde
+      </ion-button>
+      <ion-button fill="outline" color="primary" mode="ios">
+        Ver Precios
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

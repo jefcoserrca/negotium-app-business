@@ -1,0 +1,144 @@
+.ticket {
+  position: relative;
+  box-sizing: border-box;
+  width: 270px;
+  min-height: 350px;
+  margin: 1rem auto 1rem;
+  padding: 10px;
+  border-radius: 10px;
+  background: #fbfbfb;
+  box-shadow: 2px 3px 20px 2px #78787885;
+  transition: all 0.3s ease-in-out 0s;
+
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    height: 6px;
+    width: 260px;
+  }
+
+  &:before {
+    top: -5px;
+    background: var(--coupon-cut-top);
+  }
+
+  &:after {
+    bottom: -5px;
+    background: var(--coupon-cut-bottom);
+  }
+}
+
+.ticket__content {
+  box-sizing: border-box;
+  height: 100%;
+  min-height: 350px;
+  width: 100%;
+  border: 6px solid #d8d8d8;
+  border-radius: 8px;
+  h3 {
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: 0.5rem;
+    font-weight: 600;
+  }
+  p {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+ion-label {
+  --color: #363636;
+  color: #363636;
+  h3 {
+    font-size: 17px;
+  }
+}
+
+ion-input,
+ion-textarea {
+  --background: #e2e2e2;
+  --border-radius: 12px;
+  --padding-start: 10px;
+  border-radius: 12px;
+  --color: black;
+  font-weight: 600;
+}
+
+select {
+  border: none;
+  height: 44px;
+  background: #e2e2e2;
+  border-radius: 10px;
+  font-weight: 600;
+  padding-left: 0.5rem;
+}
+::ng-deep {
+  .mat-chip {
+    background: #212529 !important;
+    color: #ffffff !important;
+  }
+  .mat-option {
+    height: auto !important;
+    ion-item {
+      --padding-start: 0;
+      --padding-bottom: 0;
+      --background: transparent;
+    }
+  }
+  .mat-form-field-flex {
+    border-radius: 12px !important;
+    padding: 0em 0.75em 0 0.75em !important;
+    background: #e2e2e2 !important;
+  }
+
+  .mat-form-field-underline {
+    display: none;
+  }
+}
+
+ion-item {
+  margin-top: 1rem;
+  --padding-start: 0.5rem;
+  --padding-bottom: 0;
+}
+
+input[type="time"] {
+  border: none;
+  background: #e2e2e2;
+  padding: 0.5rem;
+  border-radius: 8px;
+  min-width: 40%;
+  &:focus {
+    outline: none;
+  }
+}
+
+::ng-deep {
+  .mat-expansion-panel-body {
+    padding: 0 10px 20px !important;
+  }
+}
+
+.qr-code-container {
+  display: flex;
+  justify-content: center;
+}
+
+.button-bar {
+  padding: 1rem;
+  ion-button {
+    width: 100%;
+    --background: #e2e2e2;
+    --color: #6e6e6e;
+    --color-activated: #6e6e6e;
+    --color-focused: #6e6e6e;
+    --color-hover: #6e6e6e;
+    --background-activated: #cecece;
+    --background-focused: #cecece;
+    --background-hover: #cecece;
+    --ripple-color: #1e1e1e;
+  }
+}

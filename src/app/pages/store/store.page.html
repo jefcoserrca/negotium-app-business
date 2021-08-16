@@ -59,6 +59,17 @@
             <ion-icon slot="icon-only" name="settings-sharp"></ion-icon>
           </ion-button>
         </div>
+        <ion-chip
+          mode="ios"
+          outline="true"
+          [ngStyle]="{'color':  formatColorStoreCard.txtColor, 'border-color':  formatColorStoreCard.txtColor}"
+        >
+          <ion-label> {{ storeData.category }} </ion-label>
+          <ion-icon
+            [name]="iconCategory"
+            [ngStyle]="{'color':  formatColorStoreCard.txtColor}"
+          ></ion-icon>
+        </ion-chip>
         <p>Contacto</p>
         <div class="social-buttons">
           <div class="container-btn" *ngFor="let contact of contactData">
@@ -355,6 +366,10 @@
       <ion-icon slot="start" name="text"></ion-icon>
       <ion-label>Editar nombre</ion-label>
     </ion-item>
+    <ion-item button (click)="editStoreCategory()">
+      <ion-icon slot="start" name="bookmark"></ion-icon>
+      <ion-label>Cambiar categoría</ion-label>
+    </ion-item>
     <ion-item button (click)="uploadProfileFile()">
       <ion-icon
         slot="start"
@@ -407,7 +422,10 @@
       (click)="openColorPicker('storeCard', formatColorStoreCard, 'Datos de la empresa')"
       [disabled]="account === 'free'"
     >
-      <ion-icon slot="start" src="../../../assets/icons/store_card.svg"></ion-icon>
+      <ion-icon
+        slot="start"
+        src="../../../assets/icons/store_card.svg"
+      ></ion-icon>
       <ion-label>Datos de la empresa </ion-label>
     </ion-item>
     <ion-item

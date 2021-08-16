@@ -17,7 +17,6 @@ export class StoreHeaderDirective implements OnInit {
   private toolbarHeight = 44;
   private storeDataHeight = 275;
   constructor(private renderer: Renderer2, private domCtrl: DomController) {
-    console.log('holi');
   }
 
   ngOnInit() {
@@ -32,20 +31,19 @@ export class StoreHeaderDirective implements OnInit {
 
   @HostListener('ionScroll', ['$event']) onContentScroll($event) {
     this.toolbarHeight = this.toolbar.clientHeight;
-    this.storeDataHeight = this.storeDataHeight = this.storeData.clientHeight - this.toolbarHeight;
+    this.storeDataHeight = this.storeDataHeight =
+      this.storeData.clientHeight - this.toolbarHeight;
     this.stickyHeader($event);
     this.fadeHeader($event);
   }
 
   fadeHeader($event) {
     let scrollTop = $event.detail.scrollTop;
-    console.log(scrollTop);
     if (scrollTop >= 90) {
       scrollTop = 90;
     }
 
-    const hexDist = (Math.round(scrollTop * 2.8)).toString(16);
-    console.log(scrollTop);
+    const hexDist = Math.round(scrollTop * 2.8).toString(16);
     this.domCtrl.write(() => {
       this.toolbar.style.setProperty('--background', `${this.color}${hexDist}`);
     });

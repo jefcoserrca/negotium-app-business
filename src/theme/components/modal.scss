@@ -9,6 +9,11 @@
   --width: 90%;
   --border-radius: 12px;
   --height: 100vw;
+
+  div[role="dialog"] {
+    max-width: 400px;
+    max-height: 400px;
+  }
 }
 
 .tab-modal {

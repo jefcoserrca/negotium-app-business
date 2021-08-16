@@ -41,6 +41,7 @@ export class StorePage implements OnInit {
   linearGradient: string;
   newChanges: boolean = false;
   showLoading = true;
+  iconCategory: string;
   constructor(
     private authSrv: AuthenticationService,
     private storeSrv: StoreService,
@@ -167,36 +168,40 @@ export class StorePage implements OnInit {
     format: FormatColor,
     title: string
   ): Promise<void> {
-    const newFormat = await this.modalsSrv.openColorPickerModal(
-      {
-        ...format,
-      },
-      title
-    );
-    switch (type) {
-      case 'bars':
-        this.formatColorBars = newFormat ? newFormat : this.formatColorBars;
-        this.autoLinearGradient(this.formatColorBars.txtColor);
-        break;
-      case 'page':
-        this.formatColorPage = newFormat ? newFormat : this.formatColorPage;
-        break;
-      case 'storeCard':
-        this.formatColorStoreCard = newFormat
-          ? newFormat
-          : this.formatColorStoreCard;
-        break;
+    if (this.store.typeAccount === 'free') {
+      await this.modalsSrv.openActivateProModal();
+    } else {
+      const newFormat = await this.modalsSrv.openColorPickerModal(
+        {
+          ...format,
+        },
+        title
+      );
+      switch (type) {
+        case 'bars':
+          this.formatColorBars = newFormat ? newFormat : this.formatColorBars;
+          this.autoLinearGradient(this.formatColorBars.txtColor);
+          break;
+        case 'page':
+          this.formatColorPage = newFormat ? newFormat : this.formatColorPage;
+          break;
+        case 'storeCard':
+          this.formatColorStoreCard = newFormat
+            ? newFormat
+            : this.formatColorStoreCard;
+          break;
 
-      case 'categoriesBar':
-        this.formatColorCategoriesBar = newFormat
-          ? newFormat
-          : this.formatColorCategoriesBar;
+        case 'categoriesBar':
+          this.formatColorCategoriesBar = newFormat
+            ? newFormat
+            : this.formatColorCategoriesBar;
 
-        this.customizeCategoryBar(this.formatColorCategoriesBar);
-        break;
+          this.customizeCategoryBar(this.formatColorCategoriesBar);
+          break;
+      }
+
+      this.newChanges = newFormat ? true : this.newChanges;
     }
-
-    this.newChanges = newFormat ? true : this.newChanges;
   }
 
   changeRecomendationsStructure(): void {
@@ -214,10 +219,14 @@ export class StorePage implements OnInit {
     this.newChanges = true;
   }
 
-  toggleShowRecommendations() {
-    this.formatStructureRecommendations.show =
-      !this.formatStructureRecommendations.show;
-    this.newChanges = true;
+  async toggleShowRecommendations(): Promise<void> {
+    if (this.store.typeAccount === 'free') {
+      await this.modalsSrv.openActivateProModal();
+    } else {
+      this.formatStructureRecommendations.show =
+        !this.formatStructureRecommendations.show;
+      this.newChanges = true;
+    }
   }
 
   customizeCategoryBar(format: FormatColor): void {
@@ -288,32 +297,36 @@ export class StorePage implements OnInit {
   }
 
   async editText(type: string): Promise<void> {
-    const newLabel = await this.modalsSrv.openAlertInputModal({
-      header: 'Cambiar título',
-      value:
-        type === 'products'
-          ? this.formatStructureProducts.label
-          : this.formatStructureRecommendations.label,
-      maxLength: 25,
-      placeholder: 'Introduce nuevo título',
-      label: 'Nombre',
-    });
-    switch (type) {
-      case 'recommendations':
-        this.formatStructureRecommendations.label = newLabel
-          ? newLabel.name
-          : this.formatStructureRecommendations.label;
+    if (this.store.typeAccount === 'free') {
+      await this.modalsSrv.openActivateProModal();
+    } else {
+      const newLabel = await this.modalsSrv.openAlertInputModal({
+        header: 'Cambiar título',
+        value:
+          type === 'products'
+            ? this.formatStructureProducts.label
+            : this.formatStructureRecommendations.label,
+        maxLength: 25,
+        placeholder: 'Introduce nuevo título',
+        label: 'Nombre',
+      });
+      switch (type) {
+        case 'recommendations':
+          this.formatStructureRecommendations.label = newLabel
+            ? newLabel.name
+            : this.formatStructureRecommendations.label;
 
-        break;
+          break;
 
-      case 'products':
-        this.formatStructureProducts.label = newLabel
-          ? newLabel.name
-          : this.formatStructureProducts.label;
+        case 'products':
+          this.formatStructureProducts.label = newLabel
+            ? newLabel.name
+            : this.formatStructureProducts.label;
 
-        break;
+          break;
+      }
+      this.newChanges = newLabel?.name ? true : this.newChanges;
     }
-    this.newChanges = newLabel?.name ? true : this.newChanges;
   }
 
   initStore(): void {
@@ -359,6 +372,7 @@ export class StorePage implements OnInit {
         };
 
     this.storeData = {
+      category: this.store.category,
       name: this.store.name,
       picture: this.store.picture,
       banner: this.store.banner,
@@ -390,9 +404,28 @@ export class StorePage implements OnInit {
             path: 'tel:',
           },
         ];
-    this.contactData[0].link = this.contactData[0].link
-      ? this.contactData[0].link
-      : this.storeData.phone;
+    if (this.store.categoryIcon) {
+      this.iconCategory = this.store.categoryIcon;
+    } else {
+      this.getCategoryIcon();
+    }
+  }
+
+  getCategoryIcon(): void {
+    switch (this.storeData.category) {
+      case 'comida':
+        this.iconCategory = 'restaurant';
+        break;
+      case 'abarrotes':
+        this.iconCategory = 'basket';
+        break;
+      case 'farmacia':
+        this.iconCategory = 'medkit';
+        break;
+      case 'licoreria':
+        this.iconCategory = 'beer';
+        break;
+    }
   }
 
   hexToRgb(hex: string): { r: number; g: number; b: number } {
@@ -435,6 +468,8 @@ export class StorePage implements OnInit {
       const user = await this.authSrv.user.pipe(first()).toPromise();
       const newChanges = {
         name: this.storeData.name,
+        category: this.storeData.category,
+        categoryIcon: this.iconCategory,
         styles: {
           storeCard: this.formatColorStoreCard,
           topbar: this.formatColorBars,
@@ -496,5 +531,16 @@ export class StorePage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async editStoreCategory() {
+    const newCategory = await this.modalsSrv.openEditStoreCategory(
+      this.storeData.category
+    );
+    this.storeData.category = newCategory
+      ? newCategory
+      : this.storeData.category;
+    this.getCategoryIcon();
+    this.newChanges = newCategory ? true : false;
   }
 }

@@ -15,19 +15,58 @@ const routes: Routes = [
       },
       {
         path: 'create-product',
-        loadChildren: () => import('../create-product/create-product.module').then( m => m.CreateProductPageModule)
+        loadChildren: () =>
+          import('../create-product/create-product.module').then(
+            (m) => m.CreateProductPageModule
+          ),
       },
       {
         path: 'edit-product/:id',
-        loadChildren: () => import('../create-product/create-product.module').then( m => m.CreateProductPageModule)
+        loadChildren: () =>
+          import('../create-product/create-product.module').then(
+            (m) => m.CreateProductPageModule
+          ),
       },
       {
         path: 'products',
-        loadChildren: () => import('../products/products.module').then( m => m.ProductsPageModule)
+        loadChildren: () =>
+          import('../products/products.module').then(
+            (m) => m.ProductsPageModule
+          ),
       },
       {
         path: 'store',
-        loadChildren: () => import('../store/store.module').then( m => m.StorePageModule)
+        loadChildren: () =>
+          import('../store/store.module').then((m) => m.StorePageModule),
+      },
+      {
+        path: 'my-qr-code',
+        loadChildren: () =>
+          import('../my-qr-code/my-qr-code.module').then(
+            (m) => m.MyQrCodePageModule
+          ),
+      },
+
+      {
+        path: 'discount-coupons',
+        loadChildren: () =>
+          import('../discount-coupons/discount-coupons.module').then(
+            (m) => m.DiscountCouponsPageModule
+          ),
+      },
+      {
+        path: 'create-coupon',
+        loadChildren: () =>
+          import('../create-coupon/create-coupon.module').then(
+            (m) => m.CreateCouponPageModule
+          ),
+      },
+      {
+        path: 'edit-coupon/:id',
+        loadChildren: () =>
+          import('../create-coupon/create-coupon.module').then(
+            (m) => m.CreateCouponPageModule
+          ),
       },
       {
         path: '**',

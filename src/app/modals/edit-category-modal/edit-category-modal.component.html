@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" color="light" (click)="close()">
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Editar categoría</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-radio-group name="auto" [value]="value" [(ngModel)]="categorySelected">
+      <ion-list-header>
+        <ion-label>Categorías</ion-label>
+      </ion-list-header>
+      <ion-item>
+        <ion-label>Abarrotes</ion-label>
+        <ion-radio value="abarrotes"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Comida y Restaurantes</ion-label>
+        <ion-radio value="comida"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Farmacia</ion-label>
+        <ion-radio value="farmacia"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Vinos y licores</ion-label>
+        <ion-radio value="licoreria"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+  <ion-button
+    expand="block"
+    color="secondary"
+    class="mt-3 px-3"
+    mode="ios"
+    (click)="returnCategory()"
+  >
+    Aceptar
+  </ion-button>
+  <br />
+</ion-content>

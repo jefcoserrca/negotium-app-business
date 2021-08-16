@@ -23,6 +23,13 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { InputAlertComponent } from '../../modals/input-alert/input-alert.component';
 import { ProductCardComponent } from '../../components/product-card/product-card.component';
 import { ThemePickerModalComponent } from '../../modals/theme-picker-modal/theme-picker-modal.component';
+import { EditCategoryModalComponent } from '../../modals/edit-category-modal/edit-category-modal.component';
+import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
+import { ActivateProComponent } from '../../modals/activate-pro/activate-pro.component';
+import { MessageEmbeddedComponent } from '../../components/message-embedded/message-embedded.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 @NgModule({
   declarations: [
     CreateAccountModalComponent,
@@ -40,6 +47,9 @@ import { ThemePickerModalComponent } from '../../modals/theme-picker-modal/theme
     InputAlertComponent,
     ProductCardComponent,
     ThemePickerModalComponent,
+    EditCategoryModalComponent,
+    ActivateProComponent,
+    MessageEmbeddedComponent,
   ],
   imports: [
     CommonModule,
@@ -53,6 +63,10 @@ import { ThemePickerModalComponent } from '../../modals/theme-picker-modal/theme
     ColorCircleModule,
     MatMenuModule,
     MatTabsModule,
+    NgxQRCodeModule,
+    MatFormFieldModule,
+    MatChipsModule,
+    MatAutocompleteModule,
   ],
   exports: [
     CreateAccountModalComponent,
@@ -70,9 +84,17 @@ import { ThemePickerModalComponent } from '../../modals/theme-picker-modal/theme
     InputAlertComponent,
     ProductCardComponent,
     ThemePickerModalComponent,
+    EditCategoryModalComponent,
+    ActivateProComponent,
+    MessageEmbeddedComponent,
     MatExpansionModule,
     MatMenuModule,
     MatTabsModule,
+    NgxQRCodeModule,
+    MatFormFieldModule,
+    MatChipsModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
   ],
 })
 export class CommonsModule {}

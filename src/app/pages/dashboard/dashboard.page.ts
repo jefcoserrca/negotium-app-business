@@ -58,9 +58,14 @@ export class DashboardPage implements OnInit {
     if (this.tools.couponSystem)
       this.menuItems.push({
         icon: 'ticket',
-        label: 'Mis cupones',
-        path: '/dashboard/coupon',
+        label: 'Ofertas y cupones',
+        path: '/dashboard/discount-coupons',
       });
+    this.menuItems.push({
+      icon: 'qr-code',
+      label: 'Mi QR',
+      path: '/dashboard/my-qr-code',
+    });
     if (this.tools.customStore)
       this.menuItems.push({
         icon: 'storefront',

@@ -157,6 +157,7 @@ export class StoreService {
           .build()
       )
       .contactData(data.contactData)
+      .categoryIcon(data.categoryIcon)
       .build();
   }
 }

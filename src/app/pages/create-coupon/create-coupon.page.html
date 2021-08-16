@@ -1,0 +1,245 @@
+<ion-header *ngIf="!showLoading">
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button
+        [defaultHref]="'dashboard/discount-coupons'"
+        text=""
+      ></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{!editMode ? 'Crear oferta': 'Editar oferta'}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content *ngIf="!showLoading">
+  <div>
+    <div
+      class="ticket"
+      [ngStyle]="{'background': couponStyle.bgColor, 'color': couponStyle.txtColor}"
+      [style]="'--coupon-cut-top:' + couponStyle.cutTop + '; --coupon-cut-bottom:' + couponStyle.cutBottom "
+    >
+      <div
+        class="ticket__content"
+        [ngStyle]="{'border-color': couponStyle.txtColor + '30'}"
+      >
+        <h3>{{ form.value.title ? form.value.title : 'Título de oferta' }}</h3>
+        <p *ngIf="form.value.type === 'discount'">
+          <strong> {{ form.value.value }}% </strong> de descuento en {{
+          products.length ? products[0].name : 'Sin producto' }}
+        </p>
+        <p *ngIf="form.value.type !== 'discount'">
+          {{ couponLabel }} por
+          <strong> {{ form.value.value | currency }} </strong>
+        </p>
+        <ngx-qrcode
+          [elementType]="'svg'"
+          [value]="couponId"
+          errorCorrectionLevel="H"
+          margin="1"
+          cssClass="d-flex justify-content-center"
+          colorLight="#00000000"
+          [colorDark]="couponStyle.txtColor"
+          width="140"
+        >
+        </ngx-qrcode>
+        <div class="text-center">
+          <p class="mb-0 mt-3"><small>código:</small></p>
+          <h4>{{ couponId }}</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="container-fluid">
+      <div class="d-flex justify-content-around align-items-center button-bar">
+        <ion-button expand="block" (click)="openPickerColor()">
+          <ion-icon slot="start" name="color-palette"></ion-icon>
+          Cambiar color
+        </ion-button>
+      </div>
+      <div>
+        <form [formGroup]="form" class="mb-3">
+          <ion-label position="floating">Título*</ion-label>
+          <ion-input
+            type="text"
+            placeholder="Título de la promoción"
+            formControlName="title"
+          ></ion-input>
+          <ion-label position="floating">Tipo*</ion-label>
+          <div class="w-100 mb-3">
+            <select formControlName="type" (change)="onTypeChange()">
+              <option value="discount">Descuento por producto</option>
+              <option value="group">Precio por producto/os</option>
+            </select>
+          </div>
+          <ion-label position="floating">
+            {{form.value.type === 'group' ? 'Costo($)*': 'Descuento(%)*'}}
+          </ion-label>
+          <ion-input
+            type="number"
+            formControlName="value"
+            [placeholder]="form.value.type === 'group' ?'$35': '10%'"
+          ></ion-input>
+          <ion-label position="floating">Productos*</ion-label>
+
+          <mat-form-field
+            class="example-chip-list"
+            appearance="fill"
+            class="w-100"
+          >
+            <mat-chip-list #chipList aria-label="Fruit selection">
+              <mat-chip
+                *ngFor="let product of products"
+                [selectable]="true"
+                [removable]="true"
+                (removed)="remove(product)"
+              >
+                {{product.name}}
+                <ion-icon
+                  matChipRemove
+                  *ngIf="true"
+                  name="close-circle"
+                  color="light"
+                ></ion-icon>
+              </mat-chip>
+              <input
+                placeholder="Escribe el nombre..."
+                #productInput
+                [formControl]="fruitCtrl"
+                [matAutocomplete]="auto"
+                [matChipInputFor]="chipList"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (matChipInputTokenEnd)="add($event)"
+              />
+            </mat-chip-list>
+            <mat-autocomplete
+              #auto="matAutocomplete"
+              (optionSelected)="selected($event)"
+            >
+              <mat-option
+                *ngFor="let product of filteredProducts | async"
+                [value]="product"
+              >
+                <ion-item>
+                  <ion-thumbnail slot="start">
+                    <img [src]="product.pictures[0]" />
+                  </ion-thumbnail>
+                  <ion-label>{{product.name}}</ion-label>
+                  <ion-note>{{ product.price | currency }} </ion-note>
+                </ion-item>
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <ion-item lines="none">
+            <ion-label>Oferta activa</ion-label>
+            <ion-toggle
+              slot="end"
+              mode="md"
+              formControlName="isActive"
+            ></ion-toggle>
+          </ion-item>
+          <mat-expansion-panel [expanded]="account === 'pro'">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Más opciones
+                <ion-badge
+                  *ngIf="account === 'free'"
+                  color="primary"
+                  mode="ios"
+                  class="ms-1"
+                  >PRO</ion-badge
+                ></mat-panel-title
+              >
+            </mat-expansion-panel-header>
+            <ion-item [disabled]="account === 'free'">
+              <ion-label>
+                <h3>Aplicable en mostrador</h3>
+                <p *ngIf="account === 'free'">No disponible</p>
+              </ion-label>
+              <ion-toggle
+                slot="end"
+                mode="md"
+                (ionChange)="verifyToogle()"
+                formControlName="redeemableInStore"
+              ></ion-toggle>
+            </ion-item>
+            <ion-item [disabled]="account === 'free'">
+              <ion-label>
+                <h3>Aplicable en web</h3>
+                <p *ngIf="account === 'free'">No disponible</p>
+              </ion-label>
+              <ion-toggle
+                slot="end"
+                mode="md"
+                (ionChange)="verifyToogle()"
+                formControlName="redeemableInWeb"
+              ></ion-toggle>
+            </ion-item>
+            <ion-item [disabled]="account === 'free'">
+              <ion-label> Aplicable en día específico </ion-label>
+              <ion-select
+                [interfaceOptions]="alertOpts"
+                interface="popover"
+                placeholder="Selecciona"
+                multiple="true"
+                formControlName="availableDays"
+                (ionChange)="verifyMeasurementUnits()"
+              >
+                <ion-select-option value="0">Domingo</ion-select-option>
+                <ion-select-option value="1">Lunes</ion-select-option>
+                <ion-select-option value="2">Martes</ion-select-option>
+                <ion-select-option value="3">Miércoles</ion-select-option>
+                <ion-select-option value="4">Jueves</ion-select-option>
+                <ion-select-option value="5">Viernes</ion-select-option>
+                <ion-select-option value="6">Sábado</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item [disabled]="account === 'free'" lines="none">
+              <ion-label> Aplicable en horario específico </ion-label>
+              <ion-toggle
+                slot="end"
+                mode="md"
+                (ionChange)="verifyToogleDays()"
+                formControlName="availableHours"
+              ></ion-toggle>
+            </ion-item>
+            <div
+              class="d-flex justify-content-between align-items-center mt-2"
+              *ngIf="this.form.value.availableHours"
+            >
+              <input type="time" formControlName="availableStartHour" />
+              <span class="mx-2"> - </span
+              ><input type="time" formControlName="availableEndHour" />
+            </div>
+          </mat-expansion-panel>
+        </form>
+        <br />
+      </div>
+    </div>
+  </div>
+</ion-content>
+<ion-content *ngIf="showLoading">
+  <div class="mt-5">
+    <app-loading></app-loading>
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="start" *ngIf="editMode">
+      <ion-button fill="clear" (click)="deleteCoupon()" color="danger">
+        <ion-icon slot="start" name="trash"></ion-icon>
+        Borrar
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button
+        fill="clear"
+        (click)="saveCoupon()"
+        color="secondary"
+        [disabled]="this.form.invalid || !this.products.length"
+      >
+        <ion-icon slot="start" name="save"></ion-icon>
+        Guardar
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

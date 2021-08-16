@@ -16,6 +16,7 @@ export class Store {
   activeTools: Tools;
   styles?: StoreStyles;
   contactData?: Array<ContactData>;
+  categoryIcon?: string;
 }
 
 export class Tools {
@@ -34,6 +35,7 @@ export class StoreSimpleData {
   picture: string;
   banner: string;
   phone: string;
+  category: string;
 }
 
 export class StoreStyles {

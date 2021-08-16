@@ -14,6 +14,8 @@ import { ProductVariant, ProductStock } from '../models/product';
 import { StockModalComponent } from '../modals/stock-modal/stock-modal.component';
 import { InputAlertComponent } from '../modals/input-alert/input-alert.component';
 import { ThemePickerModalComponent } from '../modals/theme-picker-modal/theme-picker-modal.component';
+import { EditCategoryModalComponent } from '../modals/edit-category-modal/edit-category-modal.component';
+import { ActivateProComponent } from '../modals/activate-pro/activate-pro.component';
 
 @Injectable({
   providedIn: 'root',
@@ -41,7 +43,7 @@ export class ModalsService {
         items,
         index,
       },
-      cssClass: 'tab-modal'
+      cssClass: 'tab-modal',
     });
 
     await modal.present();
@@ -63,7 +65,7 @@ export class ModalsService {
       componentProps: {
         alertInputModal,
       },
-      cssClass: 'tab-modal'
+      cssClass: 'tab-modal',
     });
 
     await modal.present();
@@ -79,7 +81,7 @@ export class ModalsService {
       componentProps: {
         isModal,
       },
-      cssClass: 'tab-modal'
+      cssClass: 'tab-modal',
     });
 
     await modal.present();
@@ -88,6 +90,24 @@ export class ModalsService {
 
     return data;
   }
+
+  async openEditStoreCategory(value: string): Promise<any> {
+    const modal = await this.modalCtrl.create({
+      component: EditCategoryModalComponent,
+      backdropDismiss: true,
+      componentProps: {
+        value,
+      },
+      cssClass: 'tab-modal',
+    });
+
+    await modal.present();
+
+    const data = (await modal.onWillDismiss()).data;
+
+    return data;
+  }
+
   async openCreateProductVariations(
     productVaraint: ProductVariant = null
   ): Promise<any> {
@@ -97,7 +117,7 @@ export class ModalsService {
       componentProps: {
         productVaraint,
       },
-      cssClass: 'tab-modal'
+      cssClass: 'tab-modal',
     });
     await modal.present();
 
@@ -113,7 +133,7 @@ export class ModalsService {
       componentProps: {
         variants,
       },
-      cssClass: 'tab-modal'
+      cssClass: 'tab-modal',
     });
 
     await modal.present();
@@ -149,7 +169,7 @@ export class ModalsService {
       componentProps: {
         images,
       },
-      cssClass: 'tab-modal'
+      cssClass: 'tab-modal',
     });
 
     await modal.present();
@@ -159,16 +179,19 @@ export class ModalsService {
     return data;
   }
 
-  public async openColorPickerModal(formatColor: FormatColor, title: string = null): Promise<any> {
+  public async openColorPickerModal(
+    formatColor: FormatColor,
+    title: string = null
+  ): Promise<any> {
     const modal = await this.modalCtrl.create({
       component: ColorPickerComponent,
       backdropDismiss: true,
       componentProps: {
         background: formatColor?.bgColor,
         colorText: formatColor?.txtColor,
-        title
+        title,
       },
-      cssClass: 'tab-modal'
+      cssClass: 'tab-modal',
     });
 
     await modal.present();
@@ -182,7 +205,7 @@ export class ModalsService {
     const modal = await this.modalCtrl.create({
       component: ThemePickerModalComponent,
       backdropDismiss: true,
-      cssClass: 'tab-modal'
+      cssClass: 'tab-modal',
     });
 
     await modal.present();
@@ -199,7 +222,7 @@ export class ModalsService {
       componentProps: {
         stock,
       },
-      cssClass: 'tab-modal'
+      cssClass: 'tab-modal',
     });
 
     await modal.present();
@@ -218,6 +241,19 @@ export class ModalsService {
         message,
       },
       id: 'loading-modal',
+    });
+
+    return await modal.present();
+  }
+
+  async openActivateProModal(message?: string): Promise<void> {
+    const modal = await this.modalCtrl.create({
+      component: ActivateProComponent,
+      backdropDismiss: true,
+      cssClass: 'sq-modal',
+      componentProps: {
+        message,
+      },
     });
 
     return await modal.present();
