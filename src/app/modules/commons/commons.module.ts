@@ -33,6 +33,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { ResetPasswordComponent } from '../../modals/reset-password/reset-password.component';
 import {MatStepperModule} from '@angular/material/stepper';
+import { AgmCoreModule } from '@agm/core';
+import { DeliveryZonesModalComponent } from '../../modals/delivery-zones-modal/delivery-zones-modal.component';
 @NgModule({
   declarations: [
     CreateAccountModalComponent,
@@ -53,7 +55,8 @@ import {MatStepperModule} from '@angular/material/stepper';
     EditCategoryModalComponent,
     ActivateProComponent,
     MessageEmbeddedComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    DeliveryZonesModalComponent,
   ],
   imports: [
     CommonModule,
@@ -73,6 +76,10 @@ import {MatStepperModule} from '@angular/material/stepper';
     MatAutocompleteModule,
     ZXingScannerModule,
     MatStepperModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyCjUgRLk7Nh2dvRo7NEEx_idocUIyyKztU',
+      libraries: ['places']
+    }),
   ],
   exports: [
     CreateAccountModalComponent,
@@ -104,6 +111,8 @@ import {MatStepperModule} from '@angular/material/stepper';
     ZXingScannerModule,
     ResetPasswordComponent,
     MatStepperModule,
+    AgmCoreModule,
+    DeliveryZonesModalComponent,
   ],
 })
 export class CommonsModule {}

@@ -7,40 +7,76 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <p class="m-3">Configura el servicio a domicilio cuando tu <strong> tienes tus propios repartidores</strong></p>
-  <mat-stepper orientation="vertical">
+  <p class="m-3">
+    Configura el servicio a domicilio cuando tu
+    <strong> tienes tus propios repartidores</strong>
+  </p>
+  <mat-stepper orientation="vertical" (selectionChange)="stepperChange($event)">
     <mat-step>
       <ng-template matStepLabel>Paso 1: Configuración</ng-template>
       <ng-template matStepContent>
         <ion-item>
-          <ion-label>Costo de envío <ion-text color="danger">*</ion-text></ion-label>
+          <ion-label
+            >Costo de envío <ion-text color="danger">*</ion-text></ion-label
+          >
           <ion-input required placeholder="$25.00" type="number"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label>
             <h3>Mínimo de compra</h3>
-            <p>El cliente debe cumplir con un monto de compra para el servicio</p>
-           </ion-label>
+            <p>
+              El cliente debe cumplir con un monto de compra para el servicio
+            </p>
+          </ion-label>
           <ion-input required placeholder="$25.00" type="number"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label>
             <h3>Envío gratis</h3>
-            <p>A partir de esta cantidad(monto total de compra) el envío es gratis</p>
-           </ion-label>
+            <p>
+              A partir de esta cantidad(monto total de compra) el envío es
+              gratis
+            </p>
+          </ion-label>
           <ion-input required placeholder="$25.00" type="number"></ion-input>
         </ion-item>
-        <button matStepperNext class="mt-2 ms-3">
-          Siguiente
-        </button>
+        <button matStepperNext class="mt-2 ms-3">Siguiente</button>
       </ng-template>
     </mat-step>
     <mat-step>
-      <ng-template matStepLabel>Paso 2: Rango de envíos</ng-template>
+      <ng-template matStepLabel>Paso 2: Cobertura de envíos</ng-template>
       <ng-template matStepContent>
-        <p>This content was also rendered lazily</p>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
+        <div class="mt-2">
+          <agm-map [zoom]="zoom" [latitude]="latitude" [longitude]="longitude">
+            <div *ngFor="let zone of zones">
+              <agm-marker
+                [latitude]="zone.latitude"
+                [longitude]="zone.longitude"
+                [label]="'$45'"
+              ></agm-marker>
+              <agm-circle
+                [latitude]="zone.latitude"
+                [longitude]="zone.longitude"
+                [radius]="zone.radius"
+              ></agm-circle>
+            </div>
+          </agm-map>
+        </div>
+        <ion-list>
+          <ion-list-header>
+            <ion-label class="mt-2">Zonas</ion-label>
+            <ion-button (click)="addZone()">
+              <ion-icon slot="icon-only" name="add-circle"></ion-icon>
+            </ion-button>
+          </ion-list-header>
+          <ion-item *ngFor="let zone of zones" button>
+            <ion-label>
+              <h3>{{ zone.address }}</h3>
+              <p>radio: {{ zone.radius }} m</p></ion-label
+            >
+            <ion-note>{{ zone.extraFee | currency }}</ion-note>
+          </ion-item>
+        </ion-list>
       </ng-template>
     </mat-step>
     <mat-step>

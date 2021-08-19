@@ -16,6 +16,7 @@ import { CommonsModule } from './modules/commons/commons.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthenticationService, factoryUserSession } from './services/authentication.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AgmCoreModule } from '@agm/core';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],

@@ -17,6 +17,8 @@ import { ThemePickerModalComponent } from '../modals/theme-picker-modal/theme-pi
 import { EditCategoryModalComponent } from '../modals/edit-category-modal/edit-category-modal.component';
 import { ActivateProComponent } from '../modals/activate-pro/activate-pro.component';
 import { ResetPasswordComponent } from '../modals/reset-password/reset-password.component';
+import { DeliveryZonesModalComponent } from '../modals/delivery-zones-modal/delivery-zones-modal.component';
+import { DeliveryZone } from '../interfaces/delivery-zone';
 
 @Injectable({
   providedIn: 'root',
@@ -232,6 +234,23 @@ export class ModalsService {
       backdropDismiss: true,
       componentProps: {
         stock,
+      },
+      cssClass: 'tab-modal',
+    });
+
+    await modal.present();
+
+    const data = (await modal.onWillDismiss()).data;
+
+    return data;
+  }
+
+  public async openDeliveryZoneModal(zone: DeliveryZone = null): Promise<any> {
+    const modal = await this.modalCtrl.create({
+      component: DeliveryZonesModalComponent,
+      backdropDismiss: true,
+      componentProps: {
+        zone,
       },
       cssClass: 'tab-modal',
     });
