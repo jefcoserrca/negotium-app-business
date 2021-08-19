@@ -43,4 +43,8 @@ export class LoginPage implements OnInit {
       await this.toastSrv.showErrorNotify(message);
     }
   }
+
+  async resetPassword(): Promise<void> {
+    await this.modalSrv.openResetModal();
+  }
 }

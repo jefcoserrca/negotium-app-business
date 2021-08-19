@@ -1,0 +1,17 @@
+::ng-deep {
+    .mat-vertical-content {
+        padding: 0 10px 10px 10px !important;
+    }
+}
+
+button {
+    background: none;
+    color: var(--ion-color-primary);
+    padding: 5px;
+}
+
+ion-item {
+    ion-label {
+        white-space: normal !important;
+    }
+}

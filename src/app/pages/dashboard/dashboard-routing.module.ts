@@ -69,6 +69,10 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'delivery',
+        loadChildren: () => import('../delivery/delivery.module').then( m => m.DeliveryPageModule)
+      },
+      {
         path: '**',
         redirectTo: 'home',
         pathMatch: 'full',

@@ -22,7 +22,7 @@
           color="secondary"
           [routerLink]="['/dashboard/create-product']"
         >
-          <ion-icon slot="icon-only" name="add"></ion-icon>
+          <ion-icon slot="icon-only" name="add-circle"></ion-icon>
         </ion-button>
       </div>
       <ion-list *ngIf="!showLoading">
@@ -71,7 +71,7 @@
           color="secondary"
           [routerLink]="['/dashboard/create-product']"
         >
-          <ion-icon slot="icon-only" name="add"></ion-icon>
+          <ion-icon slot="icon-only" name="add-circle"></ion-icon>
         </ion-button>
       </div>
       <ion-list *ngIf="account === 'pro'">
@@ -136,7 +136,7 @@
           color="secondary"
           (click)="openCreateCategory(null)"
         >
-          <ion-icon slot="icon-only" name="add"></ion-icon>
+          <ion-icon slot="icon-only" name="add-circle"></ion-icon>
         </ion-button>
       </div>
       <ion-list *ngIf="!showLoading">
@@ -150,6 +150,16 @@
       </ion-list>
       <div class="mt-5" *ngIf="showLoading">
         <app-loading></app-loading>
+      </div>
+      <div
+        class="mt-5 p-5 text-center"
+        *ngIf="!showLoading && !categories.length"
+      >
+        <h4>Sin Categorías</h4>
+        <p>Añade categorías para organizar tus productos</p>
+        <ion-button class="mt-3" (click)="openCreateCategory(null)">
+          Crear categoría
+        </ion-button>
       </div>
     </mat-tab>
   </mat-tab-group>

@@ -70,6 +70,31 @@ export class CouponsService {
       .update(data);
   }
 
+  public addRedeemed(couponId: string, userId: string): Promise<boolean> {
+    return new Promise<boolean>(async (resolve, reject) => {
+      try {
+        const coupon = await this.getCouponById(couponId);
+        if (coupon && coupon?.isActive) {
+          const id = this.af.createId();
+          await this.af
+            .doc(
+              `users/${this.user.id}/stores/${this.store.id}/coupons/${coupon.id}/redeemed/${id}`
+            )
+            .set({
+              userId: userId,
+              couponId: couponId,
+              date: new Date().toISOString(),
+            });
+          resolve(true);
+        } else {
+          reject('Este cupón no es válido');
+        }
+      } catch (error) {
+        reject('Este cupón no es válido');
+      }
+    });
+  }
+
   async deleteCoupon(couponId: string): Promise<void> {
     return await this.af
       .collection(`users/${this.user.id}/stores/${this.store.id}/coupons`)

@@ -8,16 +8,24 @@ ion-card {
 }
 
 ion-button {
-  margin-top: 4rem;
+  margin-top: 2.5rem;
   padding: 0 1rem 0 1rem;
+}
+
+a {
+  padding-left: 1rem;
+  cursor: pointer;
+  &:hover {
+    span {
+      text-decoration: underline;
+    }
+  }
 }
 
 .logo {
   width: 80px;
   height: 80px;
-  border-radius: 50%;
   margin-top: 2rem;
-  border: #bdbdbd solid 4px;
 }
 
 h2 {
@@ -40,17 +48,17 @@ h2 {
 
 @-webkit-keyframes color-change-2x {
   0% {
-    background: #004195;
+    background: #30348c;
   }
   100% {
-    background: #2c8fff;
+    background: #6060f1;
   }
 }
 @keyframes color-change-2x {
   0% {
-    background: #004195;
+    background: #30348c;
   }
   100% {
-    background: #2c8fff;
+    background: #6060f1;
   }
 }

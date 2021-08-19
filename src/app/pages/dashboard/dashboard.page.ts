@@ -55,17 +55,17 @@ export class DashboardPage implements OnInit {
         label: 'Mi tienda online',
         path: '/dashboard/store',
       });
+    this.menuItems.push({
+      icon: 'qr-code',
+      label: 'Mi QR',
+      path: '/dashboard/my-qr-code',
+    });
     if (this.tools.couponSystem)
       this.menuItems.push({
         icon: 'ticket',
         label: 'Ofertas y cupones',
         path: '/dashboard/discount-coupons',
       });
-    this.menuItems.push({
-      icon: 'qr-code',
-      label: 'Mi QR',
-      path: '/dashboard/my-qr-code',
-    });
     if (this.tools.customStore)
       this.menuItems.push({
         icon: 'storefront',
@@ -77,6 +77,13 @@ export class DashboardPage implements OnInit {
         icon: 'clipboard',
         label: 'Ordenes',
         path: '/dashboard/orders',
+      });
+
+    if (true)
+      this.menuItems.push({
+        icon: 'bicycle',
+        label: 'Servicio a domicilio',
+        path: '/dashboard/delivery',
       });
 
     if (true)

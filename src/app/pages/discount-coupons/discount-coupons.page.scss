@@ -1,9 +1,15 @@
 ::ng-deep .mat-ink-bar {
-    background-color: #494949 !important;
-  }
+  background-color: #494949 !important;
+}
 
-  ion-item {
-      ion-label h3 {
-          font-size: 16px;
-      }
+ion-item {
+  ion-label h3 {
+    font-size: 16px;
   }
+}
+
+zxing-scanner::ng-deep {
+  video {
+    height: calc(100vh - 92px);
+  }
+}

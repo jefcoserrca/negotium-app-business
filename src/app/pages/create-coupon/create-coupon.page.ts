@@ -140,6 +140,7 @@ export class CreateCouponPage implements OnInit {
         availableEndHour: coupon.availableEndHour,
         availableHours: coupon.availableHours,
       });
+      this.couponLabel = coupon.text ? coupon.text : null;
     } catch (error) {
       await this.toastSrv.showErrorNotify('No se pudo obtener la oferta');
       await this.router.navigate(['/dashboard/discount-coupons']);

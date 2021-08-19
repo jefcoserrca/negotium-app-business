@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-menu-button menu="main"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Servicio a domicilio</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <p class="m-3">Configura el servicio a domicilio cuando tu <strong> tienes tus propios repartidores</strong></p>
+  <mat-stepper orientation="vertical">
+    <mat-step>
+      <ng-template matStepLabel>Paso 1: Configuración</ng-template>
+      <ng-template matStepContent>
+        <ion-item>
+          <ion-label>Costo de envío <ion-text color="danger">*</ion-text></ion-label>
+          <ion-input required placeholder="$25.00" type="number"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h3>Mínimo de compra</h3>
+            <p>El cliente debe cumplir con un monto de compra para el servicio</p>
+           </ion-label>
+          <ion-input required placeholder="$25.00" type="number"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h3>Envío gratis</h3>
+            <p>A partir de esta cantidad(monto total de compra) el envío es gratis</p>
+           </ion-label>
+          <ion-input required placeholder="$25.00" type="number"></ion-input>
+        </ion-item>
+        <button matStepperNext class="mt-2 ms-3">
+          Siguiente
+        </button>
+      </ng-template>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Paso 2: Rango de envíos</ng-template>
+      <ng-template matStepContent>
+        <p>This content was also rendered lazily</p>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </ng-template>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Paso 3: Personalización</ng-template>
+      <p>This content was rendered eagerly</p>
+      <button mat-button matStepperPrevious>Back</button>
+    </mat-step>
+  </mat-stepper>
+</ion-content>

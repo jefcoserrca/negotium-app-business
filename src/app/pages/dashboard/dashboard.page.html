@@ -22,6 +22,14 @@
             <ion-label>Inicio</ion-label>
           </ion-item>
           <ion-item
+            routerLink="/dashboard/products"
+            routerDirection="root"
+            routerLinkActive="active-item"
+          >
+            <ion-icon slot="start" name="albums"></ion-icon>
+            <ion-label>Mis productos</ion-label>
+          </ion-item>
+          <ion-item
             *ngFor="let item of menuItems"
             [routerLink]="item.path"
             routerDirection="root"
@@ -31,21 +39,21 @@
             <ion-label> {{ item.label }} </ion-label>
           </ion-item>
           <ion-item
-            routerLink="/dashboard/products"
+            routerLink="/dashboard/clients"
             routerDirection="root"
             routerLinkActive="active-item"
           >
-            <ion-icon slot="start" name="albums"></ion-icon>
-            <ion-label>Mis productos</ion-label>
+            <ion-icon slot="start" name="people"></ion-icon>
+            <ion-label>Mis clientes</ion-label>
           </ion-item>
           <ion-item
-          routerLink="/dashboard/notifications"
-          routerDirection="root"
-          routerLinkActive="active-item"
-        >
-          <ion-icon slot="start" name="notifications"></ion-icon>
-          <ion-label>Notificaciones</ion-label>
-        </ion-item>
+            routerLink="/dashboard/notifications"
+            routerDirection="root"
+            routerLinkActive="active-item"
+          >
+            <ion-icon slot="start" name="notifications"></ion-icon>
+            <ion-label>Notificaciones</ion-label>
+          </ion-item>
         </ion-menu-toggle>
       </ion-list>
     </ion-content>
@@ -53,3 +61,6 @@
 
   <ion-router-outlet id="content"></ion-router-outlet>
 </ion-split-pane>
+<div class="mt-5" *ngIf="!store">
+  <app-loading text="Inicializando tu negocio..."></app-loading>
+</div>

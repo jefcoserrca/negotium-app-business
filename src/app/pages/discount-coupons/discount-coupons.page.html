@@ -23,7 +23,7 @@
           color="secondary"
           [routerLink]="['/dashboard/create-coupon']"
         >
-          <ion-icon slot="icon-only" name="add"></ion-icon>
+          <ion-icon slot="icon-only" name="add-circle"></ion-icon>
         </ion-button>
       </div>
       <ion-list *ngIf="!showLoading">
@@ -57,6 +57,22 @@
         </ion-button>
       </div>
     </mat-tab>
-    <mat-tab label="Ajustes"> </mat-tab>
+    <mat-tab label="Escáner">
+      <div class="mt-5" *ngIf="showLoading">
+        <app-loading></app-loading>
+      </div>
+      <div class="mt-5 p-5 text-center" *ngIf="!showLoading && showAlert">
+        <h4> {{ alertType === 'error' ? 'Algo salió mal' : 'Cupón aplicado'  }} </h4>
+        <p>{{ alertType === 'error' ? 'El cupón no exite o ya ha caducado' : 'El cupón ha sido verificado correctamente'}} </p>
+        <ion-button class="mt-3" (click)="reset()">
+          {{ alertType === 'error' ? 'Volver a escanear' : 'Continuar'  }} 
+        </ion-button>
+      </div>
+      <zxing-scanner
+        *ngIf="!showLoading && !showAlert"
+        [enable]="scannerEnable"
+        (scanComplete)="scanCompleteHandler($event)"
+      ></zxing-scanner>
+    </mat-tab>
   </mat-tab-group>
 </ion-content>

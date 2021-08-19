@@ -16,6 +16,7 @@ import { InputAlertComponent } from '../modals/input-alert/input-alert.component
 import { ThemePickerModalComponent } from '../modals/theme-picker-modal/theme-picker-modal.component';
 import { EditCategoryModalComponent } from '../modals/edit-category-modal/edit-category-modal.component';
 import { ActivateProComponent } from '../modals/activate-pro/activate-pro.component';
+import { ResetPasswordComponent } from '../modals/reset-password/reset-password.component';
 
 @Injectable({
   providedIn: 'root',
@@ -72,6 +73,16 @@ export class ModalsService {
     const data = (await modal.onWillDismiss()).data;
 
     return data;
+  }
+
+  async openResetModal(): Promise<any> {
+    const modal = await this.modalCtrl.create({
+      component: ResetPasswordComponent,
+      backdropDismiss: true,
+      cssClass: 'tab-modal',
+    });
+
+    return await modal.present();
   }
 
   async openCategoriesList(isModal: boolean = false): Promise<any> {

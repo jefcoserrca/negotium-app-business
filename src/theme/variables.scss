@@ -39,20 +39,20 @@ $app-theme: mat.define-light-theme((
 /** Ionic CSS Variables **/
 :root {
   /** primary **/
-  --ion-color-primary: #3880ff;
-  --ion-color-primary-rgb: 56, 128, 255;
+  --ion-color-primary: #6060f1;
+  --ion-color-primary-rgb: 96, 96, 241;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #3171e0;
-  --ion-color-primary-tint: #4c8dff;
+  --ion-color-primary-shade: #30348C;
+  --ion-color-primary-tint: #9498F2;
 
   /** secondary **/
-  --ion-color-secondary: #3dc2ff;
-  --ion-color-secondary-rgb: 61, 194, 255;
+  --ion-color-secondary: #9898FF;
+  --ion-color-secondary-rgb: 152, 152, 255;
   --ion-color-secondary-contrast: #ffffff;
   --ion-color-secondary-contrast-rgb: 255, 255, 255;
-  --ion-color-secondary-shade: #36abe0;
-  --ion-color-secondary-tint: #50c8ff;
+  --ion-color-secondary-shade: #333399;
+  --ion-color-secondary-tint: #AEAEF5;
 
   /** tertiary **/
   --ion-color-tertiary: #5260ff;

@@ -4,7 +4,7 @@
       <div class="d-flex justify-content-center align-items-center vh-100">
         <ion-card mode="ios">
           <div class="d-flex justify-content-center">
-            <img src="../../../assets/logo.jpg" alt="logo" class="logo" />
+            <img src="../../../assets/logo.png" alt="logo" class="logo" />
           </div>
           <h2 class="mt-2">Digitaliza tu empresa</h2>
           <ion-card-header>
@@ -32,6 +32,11 @@
                 [(ngModel)]="password"
               ></ion-input>
             </ion-item>
+            <div class="ps-4">
+              <a (click)="resetPassword()">
+                ¿Olvidaste tu contraseña? <span>Pulsa aquí </span>
+              </a>
+            </div>
             <ion-button
               expand="block"
               shape="round"

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { ModalsService } from '../../services/modals.service';
@@ -44,7 +44,7 @@ export class CreateAccountModalComponent implements OnInit {
         ],
       ],
       category: ['abarrotes', Validators.required],
-      lada: ['+52', Validators.required],
+      lada: ['52', Validators.required],
       phone: [
         '',
         [
@@ -59,7 +59,14 @@ export class CreateAccountModalComponent implements OnInit {
   initFormAccount(): void {
     this.formAccount = this.fb.group(
       {
-        email: ['', [Validators.required]],
+        email: [
+          '',
+          [
+            Validators.required,
+            Validators.email,
+            Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+          ],
+        ],
         password: [
           '',
           [
@@ -71,7 +78,7 @@ export class CreateAccountModalComponent implements OnInit {
         ],
         confirmPassword: ['', Validators.required],
       },
-      { validator: this.checkPasswords }
+      { validator: this.checkPasswords, validators: this.validatePatternEmail }
     );
   }
   async closeModal(): Promise<void> {
@@ -143,6 +150,15 @@ export class CreateAccountModalComponent implements OnInit {
       }
     } else {
       await this.toastSrv.showErrorNotify('Verifica los campos');
+    }
+  }
+
+  private validatePatternEmail(abstractControl: AbstractControl): void {
+    const errorEmailPattern = abstractControl.get('email').errors;
+    if (errorEmailPattern && errorEmailPattern.pattern) {
+      abstractControl.get('email').setErrors({
+        email: true,
+      });
     }
   }
 

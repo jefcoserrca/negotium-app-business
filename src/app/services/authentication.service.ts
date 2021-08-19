@@ -132,6 +132,10 @@ export class AuthenticationService {
   public async logout(): Promise<void> {
     await this.afAuth.signOut();
   }
+
+  public async resetPassword(email: string): Promise<void> {
+    await this.afAuth.sendPasswordResetEmail(email);
+  }
 }
 
 export function factoryUserSession(authSrv: AuthenticationService) {

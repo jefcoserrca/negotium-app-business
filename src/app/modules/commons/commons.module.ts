@@ -30,6 +30,9 @@ import { MessageEmbeddedComponent } from '../../components/message-embedded/mess
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { ResetPasswordComponent } from '../../modals/reset-password/reset-password.component';
+import {MatStepperModule} from '@angular/material/stepper';
 @NgModule({
   declarations: [
     CreateAccountModalComponent,
@@ -50,6 +53,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     EditCategoryModalComponent,
     ActivateProComponent,
     MessageEmbeddedComponent,
+    ResetPasswordComponent
   ],
   imports: [
     CommonModule,
@@ -67,6 +71,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatFormFieldModule,
     MatChipsModule,
     MatAutocompleteModule,
+    ZXingScannerModule,
+    MatStepperModule,
   ],
   exports: [
     CreateAccountModalComponent,
@@ -95,6 +101,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatChipsModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
+    ZXingScannerModule,
+    ResetPasswordComponent,
+    MatStepperModule,
   ],
 })
 export class CommonsModule {}
