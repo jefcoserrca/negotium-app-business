@@ -86,11 +86,5 @@ export class DashboardPage implements OnInit {
         path: '/dashboard/delivery',
       });
 
-    if (true)
-      this.menuItems.push({
-        icon: 'cash',
-        label: 'Mis Ventas',
-        path: '/dashboard/orders',
-      });
   }
 }
