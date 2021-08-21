@@ -4,4 +4,5 @@ export interface DeliveryZone {
     latitude: number;
     longitude: number;
     radius: number;
+    color?: string;
 }

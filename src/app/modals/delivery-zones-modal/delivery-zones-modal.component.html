@@ -5,7 +5,9 @@
         <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Zonas de envío</ion-title>
+    <ion-title>{{
+      !zone ? "Nueva zona de envío" : "Editar Zona " + (index + 1)
+    }}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="remove()" *ngIf="zone">
         <ion-icon slot="icon-only" name="trash"></ion-icon>
@@ -15,7 +17,11 @@
 </ion-header>
 <ion-content>
   <div class="container container-fluid">
-    <p class="mt-3">Introduce una colonia, localidad o delegación</p>
+    <h3 *ngIf="zone" class="mt-3 d-flex align-items-center">
+      <ion-icon name="square" class="me-2" [ngStyle]="{ color: zone.color }"></ion-icon>
+      Zona {{ index + 1 }}
+    </h3>
+    <p class="mt-2">Introduce una colonia, localidad o delegación</p>
     <input
       #search
       autocorrect="off"
@@ -24,14 +30,13 @@
       autocomplete="off"
       type="text"
       class="form-control"
-      [(ngModel)]="address"
       (change)="searcherChange()"
     />
     <div class="my-3">
       <form [formGroup]="form">
         <ion-item>
           <ion-label>
-            <h3>Radio*</h3>
+            <h3>Radio(metros)*</h3>
             <p>Metros a la redonda que cubre la zona</p>
           </ion-label>
           <ion-input
@@ -59,7 +64,7 @@
       class="mt-2 px-3"
       mode="ios"
       (click)="addZone()"
-      [disabled]="!address || !latitude || !longitude || form.invalid"
+      [disabled]="!latitude || !longitude || form.invalid"
     >
       Añadir
     </ion-button>

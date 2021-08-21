@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -7,6 +7,8 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./activate-pro.component.scss'],
 })
 export class ActivateProComponent implements OnInit {
+  @Input() message: string =
+    'Con el plan Pro goza de las herramientas y beneficios que te ofrecemospara que tu negocio crezca.';
   constructor(private modalCtrl: ModalController) {}
 
   ngOnInit() {}

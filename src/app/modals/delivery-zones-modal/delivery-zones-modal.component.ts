@@ -26,6 +26,7 @@ export class DeliveryZonesModalComponent implements OnInit {
   radius: number = 1000;
   @ViewChild('search') searchElementRef: ElementRef;
   @Input() zone: DeliveryZone;
+  @Input() index: number;
   form: FormGroup;
   constructor(
     private fb: FormBuilder,
@@ -40,6 +41,7 @@ export class DeliveryZonesModalComponent implements OnInit {
     this.address = this.zone ? this.zone.address : null;
     this.latitude = this.zone ? this.zone.latitude : null;
     this.longitude = this.zone ? this.zone.longitude : null;
+    console.log(this.zone)
   }
 
   ngAfterViewInit(): void {
@@ -79,7 +81,7 @@ export class DeliveryZonesModalComponent implements OnInit {
   }
 
   async addZone(): Promise<void> {
-    if (this.form.valid && this.address && this.latitude && this.longitude) {
+    if (this.form.valid && this.latitude && this.longitude) {
       const newZone: DeliveryZone = {
         address: this.address,
         latitude: this.latitude,

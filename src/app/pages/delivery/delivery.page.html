@@ -7,82 +7,367 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <p class="m-3">
-    Configura el servicio a domicilio cuando tu
-    <strong> tienes tus propios repartidores</strong>
-  </p>
-  <mat-stepper orientation="vertical" (selectionChange)="stepperChange($event)">
-    <mat-step>
-      <ng-template matStepLabel>Paso 1: Configuración</ng-template>
-      <ng-template matStepContent>
-        <ion-item>
-          <ion-label
-            >Costo de envío <ion-text color="danger">*</ion-text></ion-label
-          >
-          <ion-input required placeholder="$25.00" type="number"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            <h3>Mínimo de compra</h3>
-            <p>
-              El cliente debe cumplir con un monto de compra para el servicio
-            </p>
-          </ion-label>
-          <ion-input required placeholder="$25.00" type="number"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            <h3>Envío gratis</h3>
-            <p>
-              A partir de esta cantidad(monto total de compra) el envío es
-              gratis
-            </p>
-          </ion-label>
-          <ion-input required placeholder="$25.00" type="number"></ion-input>
-        </ion-item>
-        <button matStepperNext class="mt-2 ms-3">Siguiente</button>
-      </ng-template>
-    </mat-step>
-    <mat-step>
-      <ng-template matStepLabel>Paso 2: Cobertura de envíos</ng-template>
-      <ng-template matStepContent>
-        <div class="mt-2">
-          <agm-map [zoom]="zoom" [latitude]="latitude" [longitude]="longitude">
-            <div *ngFor="let zone of zones">
-              <agm-marker
-                [latitude]="zone.latitude"
-                [longitude]="zone.longitude"
-                [label]="'$45'"
-              ></agm-marker>
-              <agm-circle
-                [latitude]="zone.latitude"
-                [longitude]="zone.longitude"
-                [radius]="zone.radius"
-              ></agm-circle>
-            </div>
-          </agm-map>
-        </div>
-        <ion-list>
+  <div *ngIf="delivery">
+    <mat-tab-group>
+      <mat-tab label="Zonas">
+        <agm-map [zoom]="zoom" [latitude]="latitude" [longitude]="longitude">
+          <div *ngFor="let zone of zones; let i = index">
+            <agm-marker
+              [latitude]="zone.latitude"
+              [longitude]="zone.longitude"
+              [label]="'$'+(zone.extraFee + delivery.deliveryCost)"
+              (dragEnd)="markerDragEnd($event, i)"
+              [markerDraggable]="true"
+            ></agm-marker>
+            <agm-circle
+              [latitude]="zone.latitude"
+              [longitude]="zone.longitude"
+              [radius]="zone.radius"
+              [fillColor]="zone.color"
+              [fillOpacity]="0.35"
+            ></agm-circle>
+          </div>
+        </agm-map>
+        <ion-list mode="ios">
           <ion-list-header>
-            <ion-label class="mt-2">Zonas</ion-label>
+            <ion-label class="mt-2">Áreas de cobertura</ion-label>
             <ion-button (click)="addZone()">
               <ion-icon slot="icon-only" name="add-circle"></ion-icon>
             </ion-button>
           </ion-list-header>
-          <ion-item *ngFor="let zone of zones" button>
+          <ion-item
+            *ngFor="let zone of zones; let i = index"
+            button
+            (click)="editZone(zone, i)"
+          >
+            <ion-icon
+              slot="start"
+              name="ellipse"
+              [ngStyle]="{'color': zone.color}"
+            ></ion-icon>
             <ion-label>
-              <h3>{{ zone.address }}</h3>
+              <h3>Zona {{ i + 1 }}</h3>
               <p>radio: {{ zone.radius }} m</p></ion-label
             >
             <ion-note>{{ zone.extraFee | currency }}</ion-note>
           </ion-item>
+          <div class="mt-3 p-3 text-center" *ngIf="!zones.length">
+            <h4>Sin Zonas</h4>
+            <p>Añade las zonas de envío disponible</p>
+            <ion-button class="mt-3" (click)="addZone(null)">
+              Añadir zona
+            </ion-button>
+          </div>
         </ion-list>
-      </ng-template>
-    </mat-step>
-    <mat-step>
-      <ng-template matStepLabel>Paso 3: Personalización</ng-template>
-      <p>This content was rendered eagerly</p>
-      <button mat-button matStepperPrevious>Back</button>
-    </mat-step>
-  </mat-stepper>
+      </mat-tab>
+      <mat-tab label="Repartidores">
+        <div class="d-flex align-items-center justify-content-around">
+          <ion-searchbar
+            placeholder="Buscar"
+            [debounce]="250"
+            mode="ios"
+            [(ngModel)]="searchTerm"
+            (ionChange)="searchByTerm()"
+          ></ion-searchbar>
+          <ion-button
+            fill="clear"
+            color="secondary"
+            (click)="openCreateOrUpdateDeliverier()"
+          >
+            <ion-icon slot="icon-only" name="add-circle"></ion-icon>
+          </ion-button>
+        </div>
+        <ion-list *ngIf="account === 'pro'">
+          <ion-item
+            *ngFor="let deliverier of deliveriers"
+            button
+            (click)="openCreateOrUpdateDeliverier(deliverier)"
+          >
+            <ion-avatar
+              class="d-flex justify-content-center align-items-center me-3"
+              [ngStyle]="{'background': deliverier.style.bgColor, 'color': deliverier.style.txtColor}"
+            >
+              <span> {{ deliverier.label }} </span>
+            </ion-avatar>
+            <ion-label>
+              <h3>{{ deliverier.name }}</h3>
+              <p>{{ deliverier.phone }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        <div
+          class="mt-5 p-5 text-center"
+          *ngIf="!deliveriers?.length && account !== 'free'"
+        >
+          <h4>Sin Repartidores!</h4>
+          <p>
+            Añade repartidores para compartirles la orden con la ubicación vía
+            Whatsapp esto hará que la entrega sea rápida y eficiente.
+          </p>
+          <ion-button class="mt-3" (click)="openCreateOrUpdateDeliverier()">
+            Añadir nuevo
+          </ion-button>
+        </div>
+        <div class="mt-5 p-5 text-center" *ngIf="account ==='free'">
+          <h4>Reparidores</h4>
+          <p>
+            Esta herramienta te permite poder enviar la orden que quieres que
+            entreguen tus repartidores vía whatsapp, facilitando la gestión del
+            delivery.
+          </p>
+          <ion-button class="mt-3" [routerLink]="['/dashboard/create-product']">
+            Ver planes
+          </ion-button>
+        </div>
+      </mat-tab>
+      <mat-tab label="Ajustes">
+        <ion-list mode="ios">
+          <ion-list-header>
+            <ion-label class="mt-3">Ajustes</ion-label>
+          </ion-list-header>
+          <ion-item>
+            <ion-label>
+              <h3>Servicio a domicilio</h3>
+              <p>
+                {{ isActive ? 'Al deshabilitar el usuario no puede enviar órdenes de servicio a domicilio' : 'Al activar permites que tu cliente pueda recibir servicio a domicilio' }}
+              </p>
+            </ion-label>
+            <ion-toggle
+              slot="end"
+              [(ngModel)]="isActive"
+              (ionChange)="setNewChanges()"
+            ></ion-toggle>
+          </ion-item>
+          <form [formGroup]="step1">
+            <ion-item>
+              <ion-label
+                >Costo de envío <ion-text color="danger">*</ion-text></ion-label
+              >
+              <ion-input
+                required
+                placeholder="$25.00"
+                type="number"
+                formControlName="deliveryCost"
+                (ionChange)="setNewChanges()"
+              ></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <h3>Mínimo de compra</h3>
+                <p>
+                  El cliente debe cumplir con un monto de compra para el
+                  servicio
+                </p>
+              </ion-label>
+              <ion-input
+                placeholder="$25.00"
+                type="number"
+                formControlName="minPurchaseAmount"
+                (ionChange)="setNewChanges()"
+              ></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <h3>Envío gratis</h3>
+                <p>
+                  A partir de esta cantidad(monto total de compra) el envío es
+                  gratis
+                </p>
+              </ion-label>
+              <ion-input
+                placeholder="$25.00"
+                type="number"
+                formControlName="freeShippingAmount"
+                (ionChange)="setNewChanges()"
+              ></ion-input>
+            </ion-item>
+          </form>
+        </ion-list>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  <div *ngIf="!delivery">
+    <p class="m-3">
+      Configura el servicio a domicilio cuando tu
+      <strong> tienes tus propios repartidores</strong>
+    </p>
+    <mat-stepper
+      orientation="vertical"
+      (selectionChange)="stepperChange($event)"
+    >
+      <mat-step [stepControl]="step1" errorMessage="Costo de envío requerido">
+        <ng-template matStepLabel>Paso 1: Configuración</ng-template>
+        <ng-template matStepContent>
+          <form [formGroup]="step1">
+            <ion-item>
+              <ion-label
+                >Costo de envío <ion-text color="danger">*</ion-text></ion-label
+              >
+              <ion-input
+                required
+                placeholder="$25.00"
+                type="number"
+                formControlName="deliveryCost"
+              ></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <h3>Mínimo de compra</h3>
+                <p>
+                  El cliente debe cumplir con un monto de compra para el
+                  servicio
+                </p>
+              </ion-label>
+              <ion-input
+                placeholder="$25.00"
+                type="number"
+                formControlName="minPurchaseAmount"
+              ></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <h3>Envío gratis</h3>
+                <p>
+                  A partir de esta cantidad(monto total de compra) el envío es
+                  gratis
+                </p>
+              </ion-label>
+              <ion-input
+                placeholder="$25.00"
+                type="number"
+                formControlName="freeShippingAmount"
+              ></ion-input>
+            </ion-item>
+            <button matStepperNext class="mt-2 ms-3">Siguiente</button>
+          </form>
+        </ng-template>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Paso 2: Cobertura de envíos</ng-template>
+        <ng-template matStepContent>
+          <div class="mt-2">
+            <agm-map
+              [zoom]="zoom"
+              [latitude]="latitude"
+              [longitude]="longitude"
+            >
+              <div *ngFor="let zone of zones; let i = index">
+                <agm-marker
+                  [latitude]="zone.latitude"
+                  [longitude]="zone.longitude"
+                  [label]="'$'+((step1.value.deliveryCost ? step1.value.deliveryCost : 0)+zone.extraFee)"
+                  (dragEnd)="markerDragEnd($event, i)"
+                  [markerDraggable]="true"
+                ></agm-marker>
+                <agm-circle
+                  [latitude]="zone.latitude"
+                  [longitude]="zone.longitude"
+                  [radius]="zone.radius"
+                  [fillColor]="zone.color"
+                  [fillOpacity]="0.35"
+                ></agm-circle>
+              </div>
+            </agm-map>
+          </div>
+          <ion-list>
+            <ion-list-header>
+              <ion-label class="mt-2">Áreas de cobertura</ion-label>
+              <ion-button (click)="addZone()">
+                <ion-icon slot="icon-only" name="add-circle"></ion-icon>
+              </ion-button>
+            </ion-list-header>
+            <ion-item
+              *ngFor="let zone of zones; let i = index"
+              button
+              (click)="editZone(zone, i)"
+            >
+              <ion-icon
+                slot="start"
+                name="ellipse"
+                [ngStyle]="{'color': zone.color}"
+              ></ion-icon>
+              <ion-label>
+                <h3>Zona {{ i + 1 }}</h3>
+                <p>radio: {{ zone.radius }} m</p></ion-label
+              >
+              <ion-note>{{ zone.extraFee | currency }}</ion-note>
+            </ion-item>
+            <div class="mt-3 p-3 text-center" *ngIf="!zones.length">
+              <h4>Sin Zonas</h4>
+              <p>Añade las zonas de envío disponible</p>
+              <ion-button class="mt-3" (click)="addZone(null)">
+                Añadir zona
+              </ion-button>
+            </div>
+            <div class="justify-content-between d-flex">
+              <button matStepperPrevious class="mt-2 ms-3">Atras</button>
+              <button matStepperNext class="mt-2 ms-3">Siguiente</button>
+            </div>
+          </ion-list>
+        </ng-template>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Paso 3: Confirmación</ng-template>
+        <div class="confirm-content mt-3" *ngIf="step1.valid && zones.length">
+          <div class="d-flex justify-content-center mb-3">
+            <ion-icon
+              slot="icon-only"
+              name="checkmark-circle"
+              color="primary"
+            ></ion-icon>
+          </div>
+          <p class="px-3">
+            Ahora podrás ofrecer servicio a domicilio en tu tienda, también
+            podrás encender o apagar esta opción en cualquier momento.
+          </p>
+          <div class="d-flex justify-content-between mt-3">
+            <button mat-button matStepperPrevious>Atrás</button>
+            <ion-button (click)="setDelivery()"> Publicar cambios </ion-button>
+          </div>
+        </div>
+        <div class="confirm-content mt-3" *ngIf="!step1.valid || !zones.length">
+          <div class="d-flex justify-content-center mb-3">
+            <ion-icon slot="icon-only" name="warning" color="danger"></ion-icon>
+          </div>
+          <p>
+            Debes de completar la información requerida para publicar los
+            cambios
+          </p>
+          <div class="alert-msg" *ngIf="step1.invalid">
+            Debes de llenar el costo de envío en el paso 1
+          </div>
+
+          <div class="alert-msg mt-2" *ngIf="!zones.length">
+            Debes de tener al menos una zona de entrega en el paso 2
+          </div>
+          <div class="d-flex justify-content-between mt-3">
+            <button mat-button matStepperPrevious>Atrás</button>
+          </div>
+        </div>
+      </mat-step>
+    </mat-stepper>
+  </div>
+  <br />
+  <br />
 </ion-content>
+
+<ion-footer
+  *ngIf="delivery && newChanges"
+  class="position-absolute slide-in-bottom"
+  mode="ios"
+>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-button (click)="revertChanges()" color="light">
+        <ion-icon slot="start" name="arrow-undo"></ion-icon>
+        Revertir
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="setDelivery()" color="secondary">
+        <ion-icon slot="start" name="save"></ion-icon>
+        Publicar cambios
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

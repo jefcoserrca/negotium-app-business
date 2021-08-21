@@ -16,15 +16,17 @@
   }
 }
 
-.tab-modal {
-  padding-top: 22%;
-
-  .modal-wrapper {
-      border-radius: 18px 18px 0 0;
-  }
-}
-
 .big {
   --width: 100%;
   --height: 100vh;
+}
+
+@media (max-width: 767px) {
+  .tab-modal {
+    padding-top: 22%;
+
+    .modal-wrapper {
+      border-radius: 18px 18px 0 0;
+    }
+  }
 }

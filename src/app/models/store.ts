@@ -4,6 +4,7 @@ import {
   StructureRecommendations,
   StructureProducts,
 } from '../interfaces/format-structure';
+import { DeliveryZone } from '../interfaces/delivery-zone';
 export class Store {
   id: string;
   name: string;
@@ -17,6 +18,7 @@ export class Store {
   styles?: StoreStyles;
   contactData?: Array<ContactData>;
   categoryIcon?: string;
+  delivery?: Delivery;
 }
 
 export class Tools {
@@ -47,4 +49,21 @@ export class StoreStyles {
   structureProducts: StructureProducts;
   structureProductsByCategory: StructureProducts;
   linearGradient: string;
+}
+
+export class Delivery {
+  deliveryCost: number;
+  minPurchaseAmount: number;
+  freeShippingAmount: number;
+  zones: Array<DeliveryZone>;
+  isActive: boolean;
+
+  toObj(): any {
+    return {
+      deliveryCost: this.deliveryCost,
+      minPurchaseAmount: this.minPurchaseAmount,
+      zones: this.zones,
+      isActive: this.isActive,
+    };
+  }
 }

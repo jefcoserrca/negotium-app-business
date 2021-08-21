@@ -1,0 +1,84 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" color="light" (click)="close()">
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title
+      >{{ user ? "Editar" : "Nuevo" }}
+      {{ type === "client" ? "Cliente" : "Repartidor" }}
+    </ion-title>
+    <ion-buttons slot="end" *ngIf="user">
+      <ion-button fill="clear" (click)="openAlertDelete()">
+        <ion-icon slot="start" name="trash"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container container-fluid">
+    <div class="my-4 d-flex justify-content-center">
+      <div
+        class="user-icon"
+        [ngStyle]="{
+          background: this.style.bgColor,
+          color: this.style.txtColor
+        }"
+      >
+        <span> {{ label }} </span>
+        <div class="btn-circle" (click)="openModalPicker()">
+          <ion-icon name="color-palette"></ion-icon>
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="form">
+      <ion-label position="floating">Nombre*</ion-label>
+      <ion-input
+        type="text"
+        placeholder="Nombre"
+        formControlName="name"
+        class="mb-2"
+        (ionChange)="getLabel()"
+      ></ion-input>
+      <ion-label position="floating">Correo*</ion-label>
+      <ion-input
+        type="text"
+        placeholder="Correo"
+        formControlName="email"
+        class="mb-2"
+      ></ion-input>
+      <ion-label position="floating" class="pt-3"
+        >Télefono de Whatsapp*</ion-label
+      >
+      <div class="d-flex justify-content-between align-items-center">
+        <select formControlName="lada">
+          <option value="52">+52</option>
+        </select>
+        <div class="d-flex align-items-center w-100 ms-3">
+          <div class="icon">
+            <ion-icon src="../../../assets/icons/mexico.svg"></ion-icon>
+          </div>
+          <ion-input
+            type="text"
+            placeholder="Whatsapp"
+            formControlName="phone"
+            class="w-50 whatsapp-input"
+          ></ion-input>
+        </div>
+      </div>
+      <ion-button
+        expand="block"
+        color="secondary"
+        class="mt-4 px-3"
+        mode="ios"
+        (click)="saveUser()"
+        [disabled]="form.invalid"
+      >
+        Guardar
+      </ion-button>
+      <br />
+    </form>
+  </div>
+</ion-content>
