@@ -20,9 +20,9 @@ export class Coupon {
     return {
       availableDays: this.availableDays,
       availableEndHour: this.availableEndHour,
-      availableHours: this.availableStartHour,
-      availableStartHour: this.availableHours,
-      created: new Date().toISOString(),  
+      availableHours: this.availableHours,
+      availableStartHour: this.availableStartHour,
+      created: new Date().toISOString(),
       id: this.id,
       isActive: this.isActive,
       products: this.products,

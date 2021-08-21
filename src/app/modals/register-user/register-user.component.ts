@@ -26,7 +26,7 @@ export class RegisterUserComponent implements OnInit {
   style: FormatColor = { bgColor: '#e2e2e2', txtColor: '#000000' };
   label: string = 'NA';
   constructor(
-    private alerCtrl: AlertController,
+    private alertCtrl: AlertController,
     private deliverySrv: DeliveryService,
     private fb: FormBuilder,
     private modalCtrl: ModalController,
@@ -158,8 +158,8 @@ export class RegisterUserComponent implements OnInit {
   }
 
   async openAlertDelete(): Promise<void> {
-    const alert = await this.alerCtrl.create({
-      header: 'AVISO',
+    const alert = await this.alertCtrl.create({
+      header: 'Aviso',
       message: 'Esta acción es irrevocable. ¿Estás seguro de continuar?',
       buttons: [
         { text: 'Cancelar', role: 'cancel' },

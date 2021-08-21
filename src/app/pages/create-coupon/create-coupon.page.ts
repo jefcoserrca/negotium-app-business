@@ -20,6 +20,7 @@ import { Coupon, CouponStyle } from 'src/app/models/coupon';
 import { Builder } from 'builder-pattern';
 import { CouponsService } from '../../services/coupons.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 @Component({
   selector: 'app-create-coupon',
   templateUrl: './create-coupon.page.html',
@@ -53,6 +54,7 @@ export class CreateCouponPage implements OnInit {
   @ViewChild('productInput') productInput: ElementRef<HTMLInputElement>;
   constructor(
     private activatedRoute: ActivatedRoute,
+    private alertCtrl: AlertController,
     private couponsSrv: CouponsService,
     private fb: FormBuilder,
     private modalsSrv: ModalsService,
@@ -128,6 +130,8 @@ export class CreateCouponPage implements OnInit {
       this.products = coupon.products.map((productId) =>
         this.allProducts.find((product) => product.id === productId)
       );
+
+      console.log(coupon);
       this.form.setValue({
         title: coupon.title,
         type: coupon.type,
@@ -140,6 +144,7 @@ export class CreateCouponPage implements OnInit {
         availableEndHour: coupon.availableEndHour,
         availableHours: coupon.availableHours,
       });
+      console.log(coupon.availableStartHour);
       this.couponLabel = coupon.text ? coupon.text : null;
     } catch (error) {
       await this.toastSrv.showErrorNotify('No se pudo obtener la oferta');
@@ -285,11 +290,13 @@ export class CreateCouponPage implements OnInit {
           .type(data.type)
           .value(data.value)
           .build();
-        console.log(coupon);
         await this.couponsSrv.createNewCoupon(coupon);
         await this.router.navigate(['/dashboard/discount-coupons']);
         await this.modalsSrv.dismissLoadingModal();
-        await this.toastSrv.showDefaultNotify('Producto guardado!', 'success');
+        await this.toastSrv.showDefaultNotify(
+          'Oferta publicada con éxito!',
+          'success'
+        );
       } catch (e) {
         console.log(e);
         await this.modalsSrv.dismissLoadingModal();
@@ -299,7 +306,30 @@ export class CreateCouponPage implements OnInit {
       }
     }
   }
+  async openAlertDelete(): Promise<void> {
+    const alert = await this.alertCtrl.create({
+      header: 'Aviso',
+      message: 'Esta acción es irrevocable. ¿Estás seguro de continuar?',
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        { text: 'Eliminar', handler: async () => await this.deleteCoupon() },
+      ],
+    });
+    await alert.present();
+  }
   async deleteCoupon(): Promise<void> {
+    try {
+      await this.modalsSrv.openLoadingModal();
+      await this.couponsSrv.deleteCoupon(this.couponId);
+      await this.router.navigate(['/dashboard/discount-coupons']);
+      await this.modalsSrv.dismissLoadingModal();
+      await this.toastSrv.showDefaultNotify('Oferta eliminada!', 'success');
+    } catch (error) {
+      await this.modalsSrv.dismissLoadingModal();
+      await this.toastSrv.showErrorNotify(
+        'Ops! ocurrio un error. Intentalo de nuevo'
+      );
+    }
     return;
   }
 }
