@@ -72,7 +72,7 @@ export class DashboardPage implements OnInit {
         label: 'Mi tienda',
         path: '/dashboard/store',
       });
-    if (this.tools.deliverySystem)
+    if (true)
       this.menuItems.push({
         icon: 'clipboard',
         label: 'Ordenes',

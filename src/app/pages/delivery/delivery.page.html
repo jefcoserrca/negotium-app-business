@@ -139,7 +139,7 @@
             ></ion-toggle>
           </ion-item>
           <form [formGroup]="step1">
-            <ion-item>
+            <ion-item [disabled]="!isActive">
               <ion-label
                 >Costo de envío <ion-text color="danger">*</ion-text></ion-label
               >
@@ -151,7 +151,7 @@
                 (ionChange)="setNewChanges()"
               ></ion-input>
             </ion-item>
-            <ion-item>
+            <ion-item [disabled]="!isActive">
               <ion-label>
                 <h3>Mínimo de compra</h3>
                 <p>
@@ -166,7 +166,7 @@
                 (ionChange)="setNewChanges()"
               ></ion-input>
             </ion-item>
-            <ion-item>
+            <ion-item [disabled]="!isActive">
               <ion-label>
                 <h3>Envío gratis</h3>
                 <p>

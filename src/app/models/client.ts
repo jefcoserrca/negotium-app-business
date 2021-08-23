@@ -3,13 +3,13 @@ export class Client {
   email: string;
   id: string;
   label: string;
-  lada: number;
+  lada: string;
   name: string;
-  phone: number;
+  phone: string;
   style: FormatColor;
   positiveBalance: number;
 
-  toObj(): any {
+  toObj?(): any {
     return {
       email: this.email,
       label: this.label,
@@ -18,6 +18,20 @@ export class Client {
       phone: this.phone,
       style: this.style,
       positiveBalance: this.positiveBalance,
+    };
+  }
+}
+
+export class ClientsSettings {
+  autoSave: boolean;
+  eWallet: boolean;
+  percentage: number;
+
+  toObj?(): any {
+    return {
+      autoSave: this.autoSave,
+      eWallet: this.eWallet,
+      percentage: this.percentage,
     };
   }
 }

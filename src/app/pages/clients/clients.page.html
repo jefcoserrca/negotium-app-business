@@ -1,0 +1,109 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-menu-button menu="main"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Mis Clientes</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <mat-tab-group>
+    <mat-tab label="Clientes">
+      <div class="d-flex align-items-center justify-content-around mt-2">
+        <ion-searchbar
+          placeholder="Buscar"
+          [debounce]="250"
+          mode="ios"
+          [(ngModel)]="searchTerm"
+          (ionChange)="searchByTerm()"
+        ></ion-searchbar>
+        <ion-button
+          fill="clear"
+          color="secondary"
+          (click)="openCreatNewClient()"
+        >
+          <ion-icon slot="icon-only" name="add-circle"></ion-icon>
+        </ion-button>
+      </div>
+      <ion-list>
+        <ion-item
+          *ngFor="let client of clients; let i = index"
+          button
+          (click)="openPreview(client, i)"
+        >
+          <ion-avatar
+            class="d-flex justify-content-center align-items-center me-3"
+            [ngStyle]="{'background': client.style.bgColor, 'color': client.style.txtColor}"
+          >
+            <span> {{ client.label }} </span>
+          </ion-avatar>
+          <ion-label>
+            <h3>{{ client.name }}</h3>
+            <p>{{ client.phone }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+      <div
+        class="mt-5 p-5 text-center"
+        *ngIf="!showLoading && !clients?.length"
+      >
+        <h4>Sin Clientes</h4>
+        <p>
+          Añade clientes a tu base de datos, los clientes tambíen se pueden
+          generar automáticamente al registrarse.
+        </p>
+        <ion-button class="mt-3" (click)="openCreatNewClient()">
+          Crear cliente
+        </ion-button>
+      </div>
+    </mat-tab>
+    <mat-tab label="Ajustes">
+      <ion-list class="settings-list">
+        <ion-list-header>
+          <ion-label>Ajustes</ion-label>
+        </ion-list-header>
+        <form [formGroup]="form">
+          <ion-item>
+            <ion-label>
+              <h3>Guardar autmaticamente</h3>
+              <p>
+                Cada vez que un usuario se registre se guardará automaticamente
+              </p>
+            </ion-label>
+            <ion-toggle formControlName="autoSave" slot="end"></ion-toggle>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <h3>Monedero electrónico</h3>
+              <p>
+                Cada vez que un usuario realice una compra, se acumulará un
+                porcentaje de la misma a su cuenta
+              </p>
+            </ion-label>
+            <ion-toggle formControlName="eWallet" slot="end"></ion-toggle>
+          </ion-item>
+          <ion-item [disabled]="!form.value.eWallet">
+            <ion-label>
+              <h3>Bonificación de compra</h3>
+              <p>Porcentaje (%) de la compra que se acumulará en el monedero</p>
+            </ion-label>
+            <ion-input
+              formControlName="percentage"
+              type="number"
+              placeholder="1%"
+            ></ion-input>
+          </ion-item>
+          <ion-button
+            expand="block"
+            color="secondary"
+            class="mt-5 px-3"
+            mode="ios"
+            (click)="saveSettings()"
+          >
+            Publicar cambios
+          </ion-button>
+        </form>
+      </ion-list>
+    </mat-tab>
+  </mat-tab-group>
+</ion-content>

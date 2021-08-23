@@ -153,10 +153,12 @@ export class DeliveryPage implements OnInit {
       const delivery = Builder(Delivery)
         .deliveryCost(this.step1.value.deliveryCost)
         .freeShippingAmount(this.step1.value.freeShippingAmount)
-        .isActive(this.delivery ? this.delivery.isActive : true)
+        .isActive(this.delivery ? this.isActive : true)
         .minPurchaseAmount(this.step1.value.minPurchaseAmount)
         .zones(this.zones)
         .build();
+
+      console.log(delivery);
       await this.deliverySrv.updateDelivery(delivery);
       await this.modalsSrv.dismissLoadingModal();
       this.delivery = delivery;
@@ -197,6 +199,7 @@ export class DeliveryPage implements OnInit {
   }
 
   async revertChanges() {
+    console.log('me ejecute');
     const store = await this.storeSrv.store.pipe(first()).toPromise();
     this.delivery = store.delivery;
     this.isActive = store.delivery.isActive;

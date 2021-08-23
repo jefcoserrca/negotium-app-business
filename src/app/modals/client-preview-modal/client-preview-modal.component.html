@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" color="light" (click)="close()">
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ client.name }} </ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="openAlertDelete()">
+        <ion-icon slot="start" name="trash"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" (click)="editUser()">
+        <ion-icon slot="start" name="create"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-item>
+    <ion-avatar
+      class="d-flex justify-content-center align-items-center me-3"
+      [ngStyle]="{
+        background: client.style.bgColor,
+        color: client.style.txtColor
+      }"
+    >
+      <span> {{ client.label }} </span>
+    </ion-avatar>
+    <ion-label
+      ><h3>
+        {{ client.name }}
+      </h3>
+      <p>correo: {{ client.email }}</p>
+      <p>whatsapp: {{ client.phone }}</p>
+      <p *ngIf="settings ? settings.eWallet : true">
+        saldo: {{ client.positiveBalance }}
+      </p>
+    </ion-label>
+  </ion-item>
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Órdenes</ion-label>
+    </ion-list-header>
+    <ion-item *ngFor="let order of orders">
+      <ion-label>Awesome Label</ion-label>
+    </ion-item>
+  </ion-list>
+  <div class="mt-5">
+    <app-message-embedded [title]="'Sin órdenes'" [message]="'Este usuario no ha hecho ninguna órden'"></app-message-embedded>
+  </div>
+</ion-content>

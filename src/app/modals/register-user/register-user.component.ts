@@ -13,6 +13,7 @@ import {
 import { Client } from 'src/app/models/client';
 import { DeliveryService } from '../../services/delivery.service';
 import { ToastService } from '../../services/toast.service';
+import { ClientsService } from '../../services/clients.service';
 
 @Component({
   selector: 'app-register-user',
@@ -27,6 +28,7 @@ export class RegisterUserComponent implements OnInit {
   label: string = 'NA';
   constructor(
     private alertCtrl: AlertController,
+    private clientsSrv: ClientsService,
     private deliverySrv: DeliveryService,
     private fb: FormBuilder,
     private modalCtrl: ModalController,
@@ -130,8 +132,18 @@ export class RegisterUserComponent implements OnInit {
           .name(data.name)
           .phone(data.phone)
           .style(this.style)
-          .positiveBalance(0)
+          .positiveBalance(
+            this.user?.positiveBalance ? this.user.positiveBalance : 0
+          )
           .build();
+
+        if (this.user) {
+          newClient.id = this.user.id;
+          await this.clientsSrv.updateClient(newClient);
+          this.user = newClient;
+        } else {
+          await this.clientsSrv.createClient(newClient);
+        }
       }
 
       await this.modalsSrv.dismissLoadingModal();
@@ -139,8 +151,11 @@ export class RegisterUserComponent implements OnInit {
         'Se ha añadido con éxito',
         'success'
       );
-      await this.modalCtrl.dismiss(true);
+      await this.modalCtrl.dismiss(
+        this.type === 'client' && this.user ? this.user : true
+      );
     } catch (error) {
+      console.log(error);
       await this.modalsSrv.dismissLoadingModal();
       await this.toastSrv.showErrorNotify(
         'Algo ha salido mal, intentalo más tarde'
@@ -172,7 +187,11 @@ export class RegisterUserComponent implements OnInit {
   async deleteUser(): Promise<void> {
     try {
       await this.modalsSrv.openLoadingModal();
-      await this.deliverySrv.deleteDeliverier(this.user.id);
+      if (this.type === 'client') {
+        await this.clientsSrv.deleteClient(this.user.id);
+      } else {
+        await this.deliverySrv.deleteDeliverier(this.user.id);
+      }
       await this.modalsSrv.dismissLoadingModal();
       await this.toastSrv.showDefaultNotify(
         'Se ha eliminado con éxito',

@@ -36,6 +36,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { AgmCoreModule } from '@agm/core';
 import { DeliveryZonesModalComponent } from '../../modals/delivery-zones-modal/delivery-zones-modal.component';
 import { RegisterUserComponent } from '../../modals/register-user/register-user.component';
+import { ClientPreviewModalComponent } from '../../modals/client-preview-modal/client-preview-modal.component';
 @NgModule({
   declarations: [
     CreateAccountModalComponent,
@@ -59,6 +60,7 @@ import { RegisterUserComponent } from '../../modals/register-user/register-user.
     ResetPasswordComponent,
     DeliveryZonesModalComponent,
     RegisterUserComponent,
+    ClientPreviewModalComponent,
   ],
   imports: [
     CommonModule,
@@ -116,6 +118,7 @@ import { RegisterUserComponent } from '../../modals/register-user/register-user.
     AgmCoreModule,
     DeliveryZonesModalComponent,
     RegisterUserComponent,
+    ClientPreviewModalComponent,
   ],
 })
 export class CommonsModule {}

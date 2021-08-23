@@ -20,6 +20,8 @@ import { ResetPasswordComponent } from '../modals/reset-password/reset-password.
 import { DeliveryZonesModalComponent } from '../modals/delivery-zones-modal/delivery-zones-modal.component';
 import { DeliveryZone } from '../interfaces/delivery-zone';
 import { RegisterUserComponent } from '../modals/register-user/register-user.component';
+import { ClientPreviewModalComponent } from '../modals/client-preview-modal/client-preview-modal.component';
+import { Client, ClientsSettings } from '../models/client';
 
 @Injectable({
   providedIn: 'root',
@@ -305,6 +307,26 @@ export class ModalsService {
       componentProps: {
         type,
         user,
+      },
+    });
+
+    await modal.present();
+    const data = (await modal.onWillDismiss()).data;
+
+    return data;
+  }
+
+  async openClientPreviewModal(
+    client: Client,
+    settings: ClientsSettings
+  ): Promise<any> {
+    const modal = await this.modalCtrl.create({
+      component: ClientPreviewModalComponent,
+      backdropDismiss: true,
+      cssClass: 'tab-modal',
+      componentProps: {
+        client,
+        settings,
       },
     });
 
