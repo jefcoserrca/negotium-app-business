@@ -38,6 +38,8 @@ import { DeliveryZonesModalComponent } from '../../modals/delivery-zones-modal/d
 import { RegisterUserComponent } from '../../modals/register-user/register-user.component';
 import { ClientPreviewModalComponent } from '../../modals/client-preview-modal/client-preview-modal.component';
 import { CreateShippingComponent } from '../../modals/create-shipping/create-shipping.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 @NgModule({
   declarations: [
     CreateAccountModalComponent,
@@ -82,6 +84,8 @@ import { CreateShippingComponent } from '../../modals/create-shipping/create-shi
     MatAutocompleteModule,
     ZXingScannerModule,
     MatStepperModule,
+    MatDatepickerModule,
+    MatNativeDateModule ,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCjUgRLk7Nh2dvRo7NEEx_idocUIyyKztU',
       libraries: ['places'],
@@ -113,6 +117,8 @@ import { CreateShippingComponent } from '../../modals/create-shipping/create-shi
     MatFormFieldModule,
     MatChipsModule,
     MatAutocompleteModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     ReactiveFormsModule,
     ZXingScannerModule,
     ResetPasswordComponent,

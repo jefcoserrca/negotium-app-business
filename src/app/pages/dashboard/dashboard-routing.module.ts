@@ -88,6 +88,10 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'sales',
+        loadChildren: () => import('../payments/payments.module').then( m => m.PaymentsPageModule)
+      },
+      {
         path: '**',
         redirectTo: 'home',
         pathMatch: 'full',

@@ -1,9 +1,55 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>payments</ion-title>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-menu-button menu="main"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Mis ventas</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <mat-tab-group>
+    <mat-tab label="Ventas">
+      <div class="btn-bar">
+        <div>
+          <mat-date-range-input
+            [formGroup]="range"
+            [rangePicker]="picker"
+            [max]="maxDate"
+            class="d-none"
+          >
+            <input
+              matStartDate
+              formControlName="start"
+              placeholder="Start date"
+            />
+            <input
+              matEndDate
+              formControlName="end"
+              placeholder="End date"
+            />
+          </mat-date-range-input>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+          <ion-label *ngIf="range.value.start && range.value.end" (click)="picker.open()">
+            del {{ range.value.start | date:'d/M/YY' }} al {{ range.value.end |
+            date:'d/M/YY'}}
+          </ion-label>
+        </div>
+        <ion-button fill="clear">
+          <ion-icon slot="icon-only" name="add-circle"></ion-icon>
+        </ion-button>
+      </div>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-subtitle>Balance</ion-card-subtitle>
+          <ion-card-title> {{ 0 | currency }} </ion-card-title>
+        </ion-card-header>
+      </ion-card>
+    </mat-tab>
+    <mat-tab label="Ajustes"></mat-tab>
+  </mat-tab-group>
 </ion-content>

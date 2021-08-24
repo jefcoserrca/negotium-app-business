@@ -7,10 +7,12 @@ import { IonicModule } from '@ionic/angular';
 import { PaymentsPageRoutingModule } from './payments-routing.module';
 
 import { PaymentsPage } from './payments.page';
+import { CommonsModule } from '../../modules/commons/commons.module';
 
 @NgModule({
   imports: [
     CommonModule,
+    CommonsModule,
     FormsModule,
     IonicModule,
     PaymentsPageRoutingModule

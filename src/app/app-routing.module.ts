@@ -16,10 +16,6 @@ const routes: Routes = [
     path: 'dashboard',
     loadChildren: () => import('./pages/dashboard/dashboard.module').then( m => m.DashboardPageModule)
   },
-  {
-    path: 'payments',
-    loadChildren: () => import('./pages/payments/payments.module').then( m => m.PaymentsPageModule)
-  },
 ];
 
 @NgModule({
