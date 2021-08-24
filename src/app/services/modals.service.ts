@@ -22,6 +22,8 @@ import { DeliveryZone } from '../interfaces/delivery-zone';
 import { RegisterUserComponent } from '../modals/register-user/register-user.component';
 import { ClientPreviewModalComponent } from '../modals/client-preview-modal/client-preview-modal.component';
 import { Client, ClientsSettings } from '../models/client';
+import { CreateShippingComponent } from '../modals/create-shipping/create-shipping.component';
+import { ShippingData } from '../interfaces/store-shipping';
 
 @Injectable({
   providedIn: 'root',
@@ -327,6 +329,22 @@ export class ModalsService {
       componentProps: {
         client,
         settings,
+      },
+    });
+
+    await modal.present();
+    const data = (await modal.onWillDismiss()).data;
+
+    return data;
+  }
+
+  async openCreateShippingModal(shipping: ShippingData = null): Promise<any> {
+    const modal = await this.modalCtrl.create({
+      component: CreateShippingComponent,
+      backdropDismiss: true,
+      cssClass: 'tab-modal',
+      componentProps: {
+        shipping,
       },
     });
 

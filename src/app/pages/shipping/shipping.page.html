@@ -8,10 +8,58 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
+  <ion-list class="settings-list">
     <ion-list-header>
       <ion-label>Ajustes</ion-label>
     </ion-list-header>
+    <ion-item>
+      <ion-label>
+        <h3>Envíos nacionales</h3>
+        <p>Permites envíos a cualquier parte del país</p>
+      </ion-label>
+      <ion-toggle
+        slot="end"
+        (ionChange)="toggleChange()"
+        [(ngModel)]="shipping.isActive"
+      ></ion-toggle>
+    </ion-item>
+    <ion-list-header *ngIf="shipping.shippings.length">
+      <ion-label>Opciones de envío</ion-label>
+      <ion-button (click)="createNewShipping()">
+        <ion-icon slot="icon-only" name="add-circle"></ion-icon>
+      </ion-button>
+    </ion-list-header>
+    <ion-item
+      *ngFor="let item of shipping.shippings; let i = index"
+      button
+      [disabled]="!shipping.isActive"
+      (click)="editShipping(item, i)"
+    >
+      <ion-label>
+        <h3>{{ item.name }}</h3>
+        <p>{{ item.availableDays }}</p>
+      </ion-label>
+      <ion-note> {{ item.cost | currency }} </ion-note>
+    </ion-item>
   </ion-list>
-
 </ion-content>
+<ion-footer
+  *ngIf="newChanges"
+  class="position-absolute slide-in-bottom"
+  mode="ios"
+>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-button (click)="revertChanges()" color="light">
+        <ion-icon slot="start" name="arrow-undo"></ion-icon>
+        Revertir
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="saveChanges()" color="secondary">
+        <ion-icon slot="start" name="save"></ion-icon>
+        Publicar cambios
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

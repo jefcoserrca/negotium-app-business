@@ -5,6 +5,7 @@ import {
   StructureProducts,
 } from '../interfaces/format-structure';
 import { DeliveryZone } from '../interfaces/delivery-zone';
+import { ShippingData } from '../interfaces/store-shipping';
 export class Store {
   id: string;
   name: string;
@@ -19,6 +20,7 @@ export class Store {
   contactData?: Array<ContactData>;
   categoryIcon?: string;
   delivery?: Delivery;
+  shipping?: Shipping;
 }
 
 export class Tools {
@@ -64,6 +66,18 @@ export class Delivery {
       minPurchaseAmount: this.minPurchaseAmount,
       zones: this.zones,
       isActive: this.isActive,
+    };
+  }
+}
+
+export class Shipping {
+  isActive: boolean;
+  shippings: Array<ShippingData>;
+
+  toObj?(): any {
+    return {
+      isActive: this.isActive,
+      shippings: this.shippings,
     };
   }
 }

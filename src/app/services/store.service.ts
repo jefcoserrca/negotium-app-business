@@ -3,7 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import firebase from 'firebase';
 import { first } from 'rxjs/operators';
 import { Builder } from 'builder-pattern';
-import { Store, Tools, StoreStyles, Delivery } from '../models/store';
+import { Store, Tools, StoreStyles, Delivery, Shipping } from '../models/store';
 import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
@@ -167,6 +167,14 @@ export class StoreService {
               .isActive(data.delivery?.isActive)
               .minPurchaseAmount(data.delivery?.minPurchaseAmount)
               .zones(data.delivery?.zones)
+              .build()
+      )
+      .shipping(
+        !data.shipping
+          ? null
+          : Builder(Shipping)
+              .isActive(data.shipping.isActive)
+              .shippings(data.shipping.shippings)
               .build()
       )
       .build();

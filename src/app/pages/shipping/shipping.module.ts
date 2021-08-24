@@ -7,14 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { ShippingPageRoutingModule } from './shipping-routing.module';
 
 import { ShippingPage } from './shipping.page';
+import { CommonsModule } from '../../modules/commons/commons.module';
 
 @NgModule({
   imports: [
     CommonModule,
+    CommonsModule,
     FormsModule,
     IonicModule,
-    ShippingPageRoutingModule
+    ShippingPageRoutingModule,
   ],
-  declarations: [ShippingPage]
+  declarations: [ShippingPage],
 })
 export class ShippingPageModule {}

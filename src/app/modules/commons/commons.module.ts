@@ -37,6 +37,7 @@ import { AgmCoreModule } from '@agm/core';
 import { DeliveryZonesModalComponent } from '../../modals/delivery-zones-modal/delivery-zones-modal.component';
 import { RegisterUserComponent } from '../../modals/register-user/register-user.component';
 import { ClientPreviewModalComponent } from '../../modals/client-preview-modal/client-preview-modal.component';
+import { CreateShippingComponent } from '../../modals/create-shipping/create-shipping.component';
 @NgModule({
   declarations: [
     CreateAccountModalComponent,
@@ -61,6 +62,7 @@ import { ClientPreviewModalComponent } from '../../modals/client-preview-modal/c
     DeliveryZonesModalComponent,
     RegisterUserComponent,
     ClientPreviewModalComponent,
+    CreateShippingComponent,
   ],
   imports: [
     CommonModule,
@@ -119,6 +121,7 @@ import { ClientPreviewModalComponent } from '../../modals/client-preview-modal/c
     DeliveryZonesModalComponent,
     RegisterUserComponent,
     ClientPreviewModalComponent,
+    CreateShippingComponent,
   ],
 })
 export class CommonsModule {}
