@@ -29,6 +29,7 @@ export class Product {
   stock: ProductStock;
   storeId?: string;
   userId?: string;
+  units?: number;
   toObject() {
     return {
       pictures: this.pictures,

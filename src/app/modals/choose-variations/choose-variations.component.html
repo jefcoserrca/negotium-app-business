@@ -1,0 +1,103 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" color="light" (click)="close()">
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Información adicional</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div *ngFor="let item of variants; let i = index">
+    <ion-card *ngIf="item.type === 'radio'" mode="ios">
+      <ion-card-header>
+        <ion-card-subtitle> {{ item.title }} </ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <p>
+          Selecciona una opción
+          <small *ngIf="item.required">(Obligatoria)</small>
+        </p>
+        <ion-list>
+          <ion-radio-group mode="md" [(ngModel)]="item.optionSelected">
+            <ion-item *ngFor="let option of item.options">
+              <ion-label>
+                {{ option.label }}
+                {{ option.price ? (option.price | currency) : "" }}
+              </ion-label>
+              <ion-radio [value]="option"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+    <ion-card *ngIf="item.type === 'color'" mode="ios">
+      <ion-card-header>
+        <ion-card-subtitle> {{ item.title }} </ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <p>
+          Selecciona un color
+          <small *ngIf="item.required">(Obligatoria)</small>
+        </p>
+        <ion-list>
+          <ion-radio-group [(ngModel)]="item.optionSelected">
+            <ion-item *ngFor="let option of item.options">
+              <div
+                slot="start"
+                class="color-circle"
+                [ngStyle]="{ background: option.color }"
+              ></div>
+              <ion-label>
+                {{ option.label }}
+                {{ option.price ? (option.price | currency) : "" }}
+              </ion-label>
+              <ion-radio [value]="option"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+    <ion-card *ngIf="item.type === 'checkbox'" mode="ios">
+      <ion-card-header>
+        <ion-card-subtitle> {{ item.title }} </ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <p>
+          Puedes seleccionar multiples opciones
+          <small *ngIf="item.required">(Obligatoria)</small>
+        </p>
+        <ion-list>
+          <ion-item *ngFor="let option of item.options; let i = index">
+            <ion-checkbox
+              [value]="option.label"
+              [(ngModel)]="item.optionSelected[i].checked"
+            ></ion-checkbox>
+            <ion-label>
+              {{ option.label }}
+              {{ option.price ? (option.price | currency) : "" }}
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+    <ion-card *ngIf="item.type === 'text'" mode="ios">
+      <ion-card-header>
+        <ion-card-subtitle> {{ item.title }} </ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <p>
+          Escribe en el siguiente campo
+          <small *ngIf="item.required">(Obligatoria)</small>
+        </p>
+        <ion-textarea [(ngModel)]="item.optionSelected"></ion-textarea>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <div class="mt-3 mx-3">
+    <ion-button expand="block" color="secondary" (click)="accept()">
+      Aceptar
+    </ion-button>
+  </div>
+</ion-content>

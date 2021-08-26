@@ -11,12 +11,16 @@
   <mat-tab-group>
     <mat-tab label="Ventas">
       <div class="btn-bar">
-        <div>
+        <div class="date-picker">
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
           <mat-date-range-input
             [formGroup]="range"
             [rangePicker]="picker"
             [max]="maxDate"
-            class="d-none"
           >
             <input
               matStartDate
@@ -27,28 +31,70 @@
               matEndDate
               formControlName="end"
               placeholder="End date"
+              (dateChange)="dateChanged($event)"
             />
           </mat-date-range-input>
-          <mat-datepicker-toggle
-            matSuffix
-            [for]="picker"
-          ></mat-datepicker-toggle>
-          <mat-date-range-picker #picker></mat-date-range-picker>
-          <ion-label *ngIf="range.value.start && range.value.end" (click)="picker.open()">
-            del {{ range.value.start | date:'d/M/YY' }} al {{ range.value.end |
-            date:'d/M/YY'}}
-          </ion-label>
         </div>
-        <ion-button fill="clear">
+        <ion-button fill="clear" (click)="createNewSale()">
           <ion-icon slot="icon-only" name="add-circle"></ion-icon>
         </ion-button>
       </div>
       <ion-card>
         <ion-card-header>
           <ion-card-subtitle>Balance</ion-card-subtitle>
-          <ion-card-title> {{ 0 | currency }} </ion-card-title>
+          <ion-card-title> {{ balance | currency }} </ion-card-title>
         </ion-card-header>
       </ion-card>
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Ventas</ion-label>
+        </ion-list-header>
+        <ion-item
+          *ngFor="let sale of sales"
+          button
+          (click)="openPreviewSaleModal(sale)"
+        >
+          <ion-label>
+            <h3>{{ sale.amount | currency }}</h3>
+            <p>{{ sale.date | date:'dd/MM/YYYY' }}</p>
+          </ion-label>
+          <div [ngSwitch]="sale.type">
+            <ion-chip
+              outline="true"
+              mode="ios"
+              color="success"
+              *ngSwitchCase="'cash'"
+            >
+              <ion-icon name="cash"></ion-icon>
+              <ion-label>Efectivo</ion-label>
+            </ion-chip>
+            <ion-chip
+              outline="true"
+              mode="ios"
+              color="success"
+              *ngSwitchCase="'debit'"
+            >
+              <ion-icon name="card"></ion-icon>
+              <ion-label>Débito</ion-label>
+            </ion-chip>
+            <ion-chip
+              outline="true"
+              mode="ios"
+              color="success"
+              *ngSwitchCase="'credit'"
+            >
+              <ion-icon name="card"></ion-icon>
+              <ion-label>Crédito</ion-label>
+            </ion-chip>
+          </div>
+        </ion-item>
+      </ion-list>
+      <div class="mt-5 p-3" *ngIf="!sales?.length">
+        <app-message-embedded
+          [title]="'Sin ventas'"
+          [message]="'Aún no se registran ventas en este rango de fechas'"
+        ></app-message-embedded>
+      </div>
     </mat-tab>
     <mat-tab label="Ajustes"></mat-tab>
   </mat-tab-group>

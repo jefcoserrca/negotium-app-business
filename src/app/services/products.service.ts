@@ -60,6 +60,8 @@ export class ProductsService {
         .stock(product.stock)
         .styles(product.styles)
         .suggest(product.suggest)
+        .storeId(product.storeId)
+        .userId(product.userId)
         .variations(product.variations)
         .build();
     });

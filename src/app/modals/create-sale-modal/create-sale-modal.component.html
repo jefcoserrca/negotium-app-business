@@ -1,0 +1,124 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" color="light" (click)="close()">
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      {{ !sale ? "Crear venta" : "Editar venta" }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="showLoading" class="mt-5">
+    <app-loading></app-loading>
+  </div>
+  <div *ngIf="!showLoading">
+    <form [formGroup]="form">
+      <ion-list>
+        <ion-item>
+          <ion-label>Fecha<ion-text color="danger">* </ion-text></ion-label>
+          <input [matDatepicker]="picker" formControlName="date" />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </ion-item>
+        <ion-item>
+          <ion-label
+            >Método de pago<ion-text color="danger">* </ion-text></ion-label
+          >
+          <ion-select placeholder="Selecciona" formControlName="type">
+            <ion-select-option value="cash">Efectivo</ion-select-option>
+            <ion-select-option value="debit"
+              >Tarjeta de débito</ion-select-option
+            >
+            <ion-select-option value="credit"
+              >Tarjeta de crédito</ion-select-option
+            >
+          </ion-select>
+        </ion-item>
+        <br />
+        <ion-label class="ps-3">Productos(opcional)</ion-label>
+        <mat-form-field
+          class="example-chip-list"
+          appearance="fill"
+          class="w-100"
+        >
+          <mat-chip-list #chipList>
+            <mat-chip
+              *ngFor="let product of selectedProducts"
+              [selectable]="true"
+              [removable]="true"
+              (removed)="remove(product)"
+            >
+              {{ product.name }}
+              <ion-icon
+                matChipRemove
+                *ngIf="true"
+                name="close-circle"
+                color="light"
+              ></ion-icon>
+            </mat-chip>
+            <input
+              placeholder="Escribe el nombre..."
+              #productInput
+              [formControl]="productCtrl"
+              [matAutocomplete]="auto"
+              [matChipInputFor]="chipList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              (matChipInputTokenEnd)="add($event)"
+            />
+          </mat-chip-list>
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="selected($event)"
+          >
+            <mat-option
+              *ngFor="let product of filteredProducts | async"
+              [value]="product"
+            >
+              <ion-item>
+                <ion-thumbnail slot="start">
+                  <img [src]="product.pictures[0]" />
+                </ion-thumbnail>
+                <ion-label>{{ product.name }}</ion-label>
+                <ion-note>{{ product.price | currency }} </ion-note>
+              </ion-item>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <ion-item button (click)="openClientPicker()">
+          <ion-label>Cliente</ion-label>
+          <ion-note mode="ios">
+            {{ client ? client.name : "Ninguno" }}
+          </ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label
+            >Monto de venta <ion-text color="danger">* </ion-text></ion-label
+          >
+          <ion-input
+            type="number"
+            placeholder="$50"
+            formControlName="amount"
+          ></ion-input>
+        </ion-item>
+      </ion-list>
+      <ion-button
+        expand="block"
+        color="secondary"
+        class="mt-3 px-3"
+        mode="ios"
+        [disabled]="form.invalid"
+        (click)="saveSale()"
+      >
+        Guardar
+      </ion-button>
+      <br />
+    </form>
+  </div>
+</ion-content>

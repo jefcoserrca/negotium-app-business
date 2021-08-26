@@ -99,7 +99,8 @@
         </ion-item>
         <ion-item [disabled]="account === 'free'">
           <ion-label>
-            Vender por
+            <h3>Vender por</h3>
+            <p>Costo del producto es por {{ form.value.measurementUnits }} </p>
           </ion-label>
           <ion-select [interfaceOptions]="alertOpts" interface="popover" formControlName="measurementUnits" placeholder="Selecciona" (ionChange)="verifyMeasurementUnits()">
             <ion-select-option value="unidad">Unidad</ion-select-option>

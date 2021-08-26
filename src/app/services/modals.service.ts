@@ -24,6 +24,11 @@ import { ClientPreviewModalComponent } from '../modals/client-preview-modal/clie
 import { Client, ClientsSettings } from '../models/client';
 import { CreateShippingComponent } from '../modals/create-shipping/create-shipping.component';
 import { ShippingData } from '../interfaces/store-shipping';
+import { Sale } from '../models/sale';
+import { CreateSaleModalComponent } from '../modals/create-sale-modal/create-sale-modal.component';
+import { ChooseVariationsComponent } from '../modals/choose-variations/choose-variations.component';
+import { ClientsPickerModalComponent } from '../modals/clients-picker-modal/clients-picker-modal.component';
+import { SalePreviewModalComponent } from '../modals/sale-preview-modal/sale-preview-modal.component';
 
 @Injectable({
   providedIn: 'root',
@@ -349,6 +354,72 @@ export class ModalsService {
     });
 
     await modal.present();
+    const data = (await modal.onWillDismiss()).data;
+
+    return data;
+  }
+
+  async openCreateSaleModal(sale: Sale = null): Promise<any> {
+    const modal = await this.modalCtrl.create({
+      component: CreateSaleModalComponent,
+      backdropDismiss: true,
+      cssClass: 'tab-modal',
+      componentProps: {
+        sale,
+      },
+    });
+
+    await modal.present();
+    const data = (await modal.onWillDismiss()).data;
+
+    return data;
+  }
+
+  async openChooseProductVariations(
+    variants: Array<ProductVariant>
+  ): Promise<any> {
+    const modal = await this.modalCtrl.create({
+      component: ChooseVariationsComponent,
+      backdropDismiss: true,
+      componentProps: {
+        variants,
+      },
+      cssClass: 'tab-modal',
+    });
+
+    await modal.present();
+
+    const data = (await modal.onWillDismiss()).data;
+
+    return data;
+  }
+
+  async openClientsPicker(): Promise<any> {
+    const modal = await this.modalCtrl.create({
+      component: ClientsPickerModalComponent,
+      backdropDismiss: true,
+      cssClass: 'tab-modal',
+    });
+
+    await modal.present();
+
+    const data = (await modal.onWillDismiss()).data;
+
+    return data;
+  }
+
+  async openSalePreviewModal(sale: Sale): Promise<any> {
+    const modal = await this.modalCtrl.create({
+      component: SalePreviewModalComponent,
+      backdropDismiss: true,
+      cssClass: 'tab-modal',
+      componentProps: {
+        sale,
+      },
+    });
+
+    await modal.present();
+
     const data = (await modal.onWillDismiss()).data;
 
     return data;
