@@ -23,7 +23,7 @@ export const createCustomer = functions.https.onRequest((req, res) => {
         const ref = admin.firestore().doc(`users/${userId}/stores/${storeId}`);
 
         await ref.update({
-          stripeAccount: customer.id,
+          stripeCustomer: customer.id,
         });
 
         return res.send(customer).status(200);

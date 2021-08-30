@@ -17,3 +17,49 @@ ion-item {
   border-radius: 12px;
   width: 65%;
 }
+
+.card-payments-online {
+  background: linear-gradient(160deg, #6060f1, #30348c);
+  ion-card-header,
+  ion-card-subtitle {
+    color: white;
+  }
+}
+
+.footer-payment-online {
+  --background: transparent;
+  background: linear-gradient(160deg, #6060f1, #30348c);
+  ion-title {
+    left: -60px;
+    text-align: left;
+    color: white;
+  }
+}
+
+.payments-online-list {
+  ion-item {
+    ion-label {
+      h3 {
+        font-size: 16px;
+      }
+      white-space: normal !important;
+    }
+  }
+}
+
+.alert-message {
+  padding: 1rem;
+  background: #fe385f;
+  margin: 1rem;
+  border-radius: 18px;
+
+  h5 {
+    font-size: 1rem;
+    color: white;
+  }
+
+  p {
+    font-size: 14px;
+    color: white;
+  }
+}

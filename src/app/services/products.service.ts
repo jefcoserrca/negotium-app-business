@@ -39,7 +39,6 @@ export class ProductsService {
   }
 
   public async getProducts(): Promise<Array<Product>> {
-    console.log(this.store);
     const doc = await this.af
       .collection(`users/${this.user.id}/stores/${this.store.id}/products`)
       .get()

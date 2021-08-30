@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  api: '',
+  api: 'https://us-central1-digitaliza-tu-empresa.cloudfunctions.net',
   firebaseConfig: {
     apiKey: 'AIzaSyBSr-xkNXfJzB1dJJuWXBDwmN2hYFXtsBA',
     authDomain: 'digitaliza-tu-empresa.firebaseapp.com',

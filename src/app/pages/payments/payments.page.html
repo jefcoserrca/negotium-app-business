@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-  <mat-tab-group>
+  <mat-tab-group (selectedTabChange)="matTabChange($event)">
     <mat-tab label="Ventas">
       <div class="btn-bar">
         <div class="date-picker">
@@ -86,8 +86,18 @@
               <ion-icon name="card"></ion-icon>
               <ion-label>Crédito</ion-label>
             </ion-chip>
+            <ion-chip
+              outline="true"
+              mode="ios"
+              color="success"
+              *ngSwitchCase="'online'"
+            >
+              <ion-icon name="cart"></ion-icon>
+              <ion-label>Online</ion-label>
+            </ion-chip>
           </div>
         </ion-item>
+        <br />
       </ion-list>
       <div class="mt-5 p-3" *ngIf="!sales?.length">
         <app-message-embedded
@@ -96,6 +106,122 @@
         ></app-message-embedded>
       </div>
     </mat-tab>
-    <mat-tab label="Ajustes"></mat-tab>
+    <mat-tab label="Pagos online">
+      <ion-list class="payments-online-list" mode="ios">
+        <ion-list-header>
+          <ion-label>Pagos Online</ion-label>
+        </ion-list-header>
+        <ion-card
+          *ngIf="!store?.stripeAccount"
+          mode="ios"
+          class="card-payments-online"
+        >
+          <ion-card-header>
+            <ion-card-subtitle>Recibir pagos online</ion-card-subtitle>
+            <p>
+              Cominza a recibir pagos desde tu tienda online sólo configura tu
+              cuenta
+            </p>
+          </ion-card-header>
+          <div class="d-flex justify-content-end me-4 mb-3">
+            <ion-button
+              expand="block"
+              fill="outline"
+              mode="ios"
+              color="light"
+              (click)="initPaymentsOnline()"
+            >
+              Iniciar
+            </ion-button>
+          </div>
+        </ion-card>
+        <div class="alert-message" *ngIf="stripeAccountData?.disabled_reason">
+          <h5>Completa la información</h5>
+          <p>
+            {{ errMsg ? errMsg : 'Debes completar algunos datos para que
+            empieces a generar dinero con tu tienda online' }}
+          </p>
+          <div class="d-flex justify-content-start">
+            <ion-button
+              fill="outline"
+              color="light"
+              size="small"
+              (click)="createAccountLink()"
+            >
+              Completar
+            </ion-button>
+          </div>
+        </div>
+        <ion-item *ngIf="store?.stripeData?.chargesEnabled">
+          <ion-label>
+            <h3>Aceptar pagos online</h3>
+            <p>Activa o desactiva la pasarela de pagos de tu tienda online</p>
+          </ion-label>
+          <ion-toggle
+            (ionChange)="saveStripeAccount()"
+            slot="end"
+            [(ngModel)]="store.stripeData.isActive"
+          ></ion-toggle>
+        </ion-item>
+        <ion-item *ngIf="store?.stripeAccount">
+          <ion-label>
+            <h3>Recibir pagos</h3>
+            <p>
+              Te permite añadir un pasarela de pagos online, dónde recibiras
+              pagos.
+            </p>
+          </ion-label>
+          <ion-note slot="end">
+            <ion-text
+              [color]="store.stripeData.chargesEnabled ? 'success':'danger'"
+            >
+              {{ store.stripeData.chargesEnabled ? 'Activo' : 'No activo' }}
+            </ion-text>
+          </ion-note>
+        </ion-item>
+        <ion-item *ngIf="store?.stripeAccount">
+          <ion-label>
+            <h3>Transferir ganancias</h3>
+            <p>
+              Víncula una cuenta banacaría dónde se transfieren tus ganancias de
+              ventas online
+            </p>
+          </ion-label>
+          <ion-note slot="end">
+            <ion-text
+              [color]="store.stripeData.payoutsEnabled ? 'success':'danger'"
+            >
+              {{ store.stripeData.payoutsEnabled ? 'Activo' : 'No activo' }}
+            </ion-text>
+          </ion-note>
+        </ion-item>
+        <ion-item
+          button
+          (click)="createDashboardLink()"
+          *ngIf="store?.stripeAccount"
+        >
+          <ion-label>
+            <h3>Gestionar Pagos</h3>
+            <p>
+              Si quieres tener más detalles sobre tus pagos, transacciones o
+              actualizar información, ingresa en Stripe
+            </p>
+          </ion-label>
+          <ion-note slot="end">
+            <ion-text [color]="'primary'"> Ir ahora </ion-text>
+          </ion-note>
+        </ion-item>
+      </ion-list>
+    </mat-tab>
   </mat-tab-group>
 </ion-content>
+<ion-footer *ngIf="tabPosition === 0 && !store?.stripeAccount">
+  <ion-toolbar class="footer-payment-online">
+    <ion-title slot="start">Recibe pagos online!</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="outline" color="light" (click)="initPaymentsOnline()">
+        Comenzar
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

@@ -108,7 +108,8 @@ export class CreateSaleModalComponent implements OnInit {
           .measurementUnits(event.option.value.measurementUnits)
           .name(event.option.value.name)
           .pictures(event.option.value.pictures)
-          .price(+event.option.value.price * quantity)
+          .total(+event.option.value.price * quantity)
+          .price(+event.option.value.price)
           .showOn(event.option.value.showOn)
           .stock(event.option.value.stock)
           .styles(event.option.value.styles)
@@ -136,7 +137,8 @@ export class CreateSaleModalComponent implements OnInit {
         .measurementUnits(event.option.value.measurementUnits)
         .name(event.option.value.name)
         .pictures(event.option.value.pictures)
-        .price(+event.option.value.price * quantity)
+        .total(+event.option.value.price * quantity)
+        .price(+event.option.value.price)
         .showOn(event.option.value.showOn)
         .stock(event.option.value.stock)
         .styles(event.option.value.styles)
@@ -179,7 +181,7 @@ export class CreateSaleModalComponent implements OnInit {
   getTotal(): void {
     let total = 0;
     this.selectedProducts.map((product: Product) => {
-      total = total + product.price;
+      total = total + product.total;
       if (product.variations?.length) {
         product.variations.map((variant) => {
           if (variant.type === 'checkbox') {
@@ -188,7 +190,7 @@ export class CreateSaleModalComponent implements OnInit {
                 total = total + option.price;
               }
             });
-          } else {
+          } else if(variant.type !== 'text') {
             total = total + +variant.optionSelected.price;
           }
         });

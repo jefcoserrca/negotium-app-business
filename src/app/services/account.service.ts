@@ -6,6 +6,7 @@ import { StoreService } from './store.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
+import { StripeData } from '../models/store';
 @Injectable({
   providedIn: 'root',
 })
@@ -68,5 +69,48 @@ export class AccountService {
     return this.http
       .post(`${environment.api}/stripe-createCustomer`, data)
       .pipe();
+  }
+
+  public createAccountStripe(data: {
+    userId: string;
+    storeId: string;
+    email: string;
+  }): Observable<any> {
+    return this.http
+      .post(`${environment.api}/stripeConnect-createAccount`, data)
+      .pipe();
+  }
+
+  public createLinkAccount(data: {
+    accountId: string;
+    refreshUrl: string;
+    returnUrl: string;
+  }): Observable<any> {
+    return this.http
+      .post(`${environment.api}/stripeConnect-accountLink`, data)
+      .pipe();
+  }
+
+  public getStripeAccount(data: { accountId: string }): Observable<any> {
+    return this.http
+      .post(`${environment.api}/stripeConnect-getAccount`, data)
+      .pipe();
+  }
+
+  public getDashboardLink(data: { accountId: string }): Observable<any> {
+    return this.http
+      .post(`${environment.api}/stripeConnect-dashboardLink`, data)
+      .pipe();
+  }
+
+  public async updateStripeData(
+    userId: string,
+    storeId: string,
+    stripeData: StripeData
+  ): Promise<void> {
+    const data = stripeData.toObj();
+    await this.af
+      .doc(`users/${userId}/stores/${storeId}`)
+      .update({ stripeData: data });
   }
 }

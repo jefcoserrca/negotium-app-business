@@ -74,6 +74,19 @@ export class ClientsService {
       .delete();
   }
 
+  async getClientById(id: string): Promise<Client> {
+    await this.getSetupData();
+    const doc = await this.af
+      .doc(`users/${this.user.id}/stores/${this.store.id}/clients/${id}`)
+      .get()
+      .toPromise();
+    if (doc.exists) {
+      return doc.data() as Client;
+    } else {
+      return null;
+    }
+  }
+
   async updateSettings(settings: ClientsSettings): Promise<void> {
     const newSettings = settings.toObj();
     await this.af

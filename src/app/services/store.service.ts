@@ -3,7 +3,14 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import firebase from 'firebase';
 import { first } from 'rxjs/operators';
 import { Builder } from 'builder-pattern';
-import { Store, Tools, StoreStyles, Delivery, Shipping } from '../models/store';
+import {
+  Store,
+  Tools,
+  StoreStyles,
+  Delivery,
+  Shipping,
+  StripeData,
+} from '../models/store';
 import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
@@ -25,6 +32,7 @@ export class StoreService {
       category: storeData.category,
       phone: storeData.phone,
       stripeAccount: null,
+      stripeCustomer: null,
       typeAccount: 'free',
       activeTools: { digitalMenu: true, couponSystem: true, qrCode: true },
       created_at: new Date().toISOString(),
@@ -130,7 +138,8 @@ export class StoreService {
       .name(data.name)
       .phone(data.phone)
       .picture(data.picture)
-      .stripeAccount(data.stripeAccount)
+      .stripeCustomer(data.stripeCustomer)
+      .stripeAccount(data.stripeAccount ? data.stripeAccount : null)
       .typeAccount(data.typeAccount)
       .activeTools(
         Builder(Tools)
@@ -176,6 +185,13 @@ export class StoreService {
               .isActive(data.shipping.isActive)
               .shippings(data.shipping.shippings)
               .build()
+      )
+      .stripeData(
+        Builder(StripeData)
+          .chargesEnabled(data.stripeData?.chargesEnabled)
+          .payoutsEnabled(data.stripeData?.payoutsEnabled)
+          .isActive(data.stripeData?.isActive)
+          .build()
       )
       .build();
   }

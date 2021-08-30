@@ -1,0 +1,159 @@
+.sale-data {
+  h3 small {
+    font-size: 16px;
+  }
+  p {
+    margin-bottom: 0.25rem;
+    color: grey;
+  }
+}
+
+.blog {
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+svg,
+img {
+  display: block;
+}
+/* container */
+.receipt {
+  width: 320px;
+  height: auto;
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+/* receipt_box */
+.receipt_box > * {
+  padding: 16px 32px;
+}
+
+/* head */
+.head {
+  display: flex;
+  align-items: center;
+}
+.head .logo {
+  flex: 1 0 30%;
+}
+.head .number {
+  flex: 1 0 70%;
+  color: slategray;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* body */
+.body .info {
+  margin-bottom: 24px;
+  position: relative;
+}
+.body .info:before {
+  content: "";
+  display: block;
+  width: 5px;
+  height: 100%;
+  background-color: #e0e0e0;
+  position: absolute;
+  top: 0;
+  left: -32px;
+}
+.body .info .welcome {
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+.body .info .welcome .username {
+  color: mediumpurple;
+}
+.body .info p {
+  color: #9e9e9e;
+  font-size: 14px;
+}
+.cart .title {
+  margin-bottom: 16px;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  text-transform: capitalize;
+}
+.cart .title:after {
+  content: ":";
+  display: inline-block;
+  margin-left: 4px;
+  margin-right: 4px;
+}
+.cart .content {
+  font-size: 14px;
+}
+
+.cart_list {
+  color: dimgray;
+}
+.cart_list .cart_item {
+  display: flex;
+  padding: 12px 0;
+}
+.cart_list .cart_item + .cart_item {
+  border-top: 2px dashed #ccc;
+}
+.cart_list .cart_item .index {
+  margin-right: 8px;
+  width: auto;
+  overflow: hidden;
+}
+.cart_list .cart_item .name {
+  flex-grow: 1;
+}
+.cart_list .cart_item .price {
+  color: #181818;
+  font-weight: bold;
+}
+.cart .total {
+  padding: 12px 0;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-top: 2px solid #b0b3c9;
+}
+.cart .total_price {
+  float: right;
+  color: #181818;
+}
+
+/* foot */
+.foot {
+  border-top: 2px dotted #aaaaaa;
+  position: relative;
+}
+.foot:before,
+.foot:after {
+  border: 4px solid transparent;
+  position: absolute;
+  top: -5px;
+}
+.foot:before {
+  content: "";
+  display: block;
+  border-left: 7px solid #aaaaaa;
+  left: -1px;
+}
+.foot:after {
+  content: "";
+  display: block;
+  border-right: 7px solid #aaaaaa;
+  right: -1px;
+}
+.foot img {
+  width: 100%;
+}
+
+ul {
+  padding-left: 0 !important;
+}

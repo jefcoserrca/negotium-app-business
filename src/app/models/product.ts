@@ -30,6 +30,7 @@ export class Product {
   storeId?: string;
   userId?: string;
   units?: number;
+  total?: number;
   toObject() {
     return {
       pictures: this.pictures,
@@ -44,6 +45,28 @@ export class Product {
       stock: { ...this.stock },
       userId: this.userId,
       storeId: this.storeId,
+      variations: this.variations.map((variation) => {
+        return { ...variation };
+      }),
+    };
+  }
+
+  toObjectForSale() {
+    return {
+      pictures: this.pictures,
+      styles: this.styles,
+      name: this.name,
+      price: this.price,
+      description: this.description,
+      category: this.category,
+      showOn: this.showOn,
+      suggest: this.suggest,
+      measurementUnits: this.measurementUnits,
+      stock: { ...this.stock },
+      userId: this.userId,
+      storeId: this.storeId,
+      units: this.units,
+      total: this.total,
       variations: this.variations.map((variation) => {
         return { ...variation };
       }),

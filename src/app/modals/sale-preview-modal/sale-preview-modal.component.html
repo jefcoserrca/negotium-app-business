@@ -1,3 +1,156 @@
-<p>
-  sale-preview-modal works!
-</p>
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" color="light" (click)="close()">
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ sale.id }} </ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="openAlertDelete()">
+        <ion-icon slot="start" name="trash"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <mat-tab-group>
+    <mat-tab label="Detalles">
+      <div class="container container-fluid sale-data">
+        <h3 class="mt-3 d-flex align-items-center">
+          <small class="me-2">TOTAL:</small> {{ sale.amount | currency }}
+          <ion-chip class="ms-2" color="success" mode="ios" outline="true">
+            <ion-label [ngSwitch]="sale.type">
+              <span *ngSwitchCase="'credit'"> Crédito </span>
+              <span *ngSwitchCase="'debit'"> Débito </span>
+              <span *ngSwitchCase="'cash'"> Efectivo </span>
+              <span *ngSwitchCase="'online'"> Online </span>
+            </ion-label>
+          </ion-chip>
+        </h3>
+        <p>Fecha: {{ sale.date | date: "dd/MM/YYYY" }}</p>
+        <p>Hora: {{ sale.date | date: "hh:mm a" }}</p>
+        <div *ngIf="client">
+          <h5>Datos del cliente</h5>
+          <p>Nombre: {{ client.name }}</p>
+          <p>Telefóno: {{ client.phone }}</p>
+        </div>
+        <h5 class="mt-3">Productos</h5>
+      </div>
+      <ion-list>
+        <ion-item *ngFor="let product of sale.products">
+          <ion-thumbnail slot="start">
+            <img [src]="product.pictures[0]" />
+          </ion-thumbnail>
+          <ion-label>
+            <h3>
+              {{ product.name }} x {{ product.units }}
+              {{ product.measurementUnits }}
+            </h3>
+            <p>costo: {{ product.price | currency }}</p>
+            <p *ngFor="let variant of product.variations">
+              <span
+                *ngIf="variant.type !== 'checkbox' && variant.type !== 'text'"
+              >
+                {{ variant.optionSelected.label | titlecase }} +
+                {{ variant.optionSelected.price | currency }}
+              </span>
+
+              <span *ngIf="variant.type === 'text'">
+                {{ variant.optionSelected }}
+              </span>
+              <span *ngIf="variant.type === 'checkbox'">
+                <span *ngFor="let item of variant.optionSelected">
+                  <p *ngIf="item.checked">
+                    {{ item.label | titlecase }} + {{ item.price | currency }}
+                  </p>
+                </span>
+              </span>
+            </p>
+          </ion-label>
+          <ion-note slot="end"> {{ product.total | currency }} </ion-note>
+        </ion-item>
+      </ion-list>
+      <div class="mt-5" *ngIf="!sale.products.length">
+        <br />
+        <app-message-embedded
+          [title]="'Sin productos'"
+          [message]="'No se añadieron productos a esta venta'"
+        ></app-message-embedded>
+      </div>
+    </mat-tab>
+    <mat-tab label="Recibo">
+      <div class="container d-flex justify-content-center">
+        <div class="receipt m-3">
+          <div class="receipt_box">
+            <div class="head">
+              <div class="logo">
+                <img [src]="store?.picture" width="42" height="42" alt="logo" />
+              </div>
+              <div class="number">
+                <div class="date">
+                  <strong> {{ store?.name }} </strong>
+                </div>
+                <div class="ref">
+                  {{ sale.date | date: "dd/MM/YYYY | hh:mm a" }}
+                </div>
+              </div>
+            </div>
+            <div class="body">
+              <div class="info">
+                <div class="welcome">
+                  Cliente:
+                  <span
+                    class="username"
+                    [ngStyle]="{ color: client?.style.bgColor }"
+                  >
+                    {{ client ? client.name : "Sin datos" }}
+                  </span>
+                </div>
+                <p *ngIf="sale.products.length">
+                  Se han comprado un total de
+                  {{ sale.products.length }} productos
+                </p>
+              </div>
+              <div class="cart">
+                <div class="title">Productos</div>
+                <div class="content">
+                  <ul class="cart_list">
+                    <li class="cart_item" *ngFor="let item of sale.products">
+                      <span class="index">
+                        {{ item.units }}
+                        <span *ngIf="item.measurementUnits !== 'unidad'">
+                          {{ item.measurementUnits }}
+                        </span>
+                      </span>
+                      <span class="name"> {{ item.name }} </span>
+                      <span class="price"> {{ item.total | currency }} </span>
+                    </li>
+                    <li class="cart_item" *ngIf="!sale.products.length">
+                      <span class="index"> </span>
+                      <span class="name"> No hay productos </span>
+                      <span class="price"> {{ sale.amount | currency }} </span>
+                    </li>
+                  </ul>
+                  <div class="total">
+                    <span>total</span>
+                    <span class="total_price">
+                      {{ sale.amount | currency }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="foot">
+              <img
+                src="https://i.ibb.co/c8CQvBq/barcode.png"
+                alt="barcode"
+                class="barcode"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</ion-content>

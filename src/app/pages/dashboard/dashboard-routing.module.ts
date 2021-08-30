@@ -92,6 +92,10 @@ const routes: Routes = [
         loadChildren: () => import('../payments/payments.module').then( m => m.PaymentsPageModule)
       },
       {
+        path: 'sales/:path',
+        loadChildren: () => import('../payments/payments.module').then( m => m.PaymentsPageModule)
+      },
+      {
         path: '**',
         redirectTo: 'home',
         pathMatch: 'full',

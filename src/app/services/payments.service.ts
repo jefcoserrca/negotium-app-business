@@ -32,11 +32,17 @@ export class PaymentsService {
   async createSale(sale: Sale): Promise<void> {
     await this.getSetupData();
     const newSale = sale.toObj();
-    console.log(newSale);
     const id = this.af.createId();
     await this.af
       .doc(`users/${this.user.id}/stores/${this.store.id}/sales/${id}`)
       .set(newSale);
+  }
+
+  async deleteSale(saleId: string): Promise<void> {
+    await this.getSetupData();
+    await this.af
+      .doc(`users/${this.user.id}/stores/${this.store.id}/sales/${saleId}`)
+      .delete();
   }
 
   async getSales(start: string, end: string): Promise<Observable<Array<any>>> {

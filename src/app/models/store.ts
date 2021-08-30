@@ -7,20 +7,22 @@ import {
 import { DeliveryZone } from '../interfaces/delivery-zone';
 import { ShippingData } from '../interfaces/store-shipping';
 export class Store {
+  activeTools: Tools;
+  banner: string;
+  category: string;
+  categoryIcon?: string;
+  contactData?: Array<ContactData>;
+  delivery?: Delivery;
   id: string;
   name: string;
-  banner: string;
-  picture: string;
-  category: string;
   phone: string;
-  stripeAccount: string;
-  typeAccount: 'free' | 'pro' | 'gold';
-  activeTools: Tools;
-  styles?: StoreStyles;
-  contactData?: Array<ContactData>;
-  categoryIcon?: string;
-  delivery?: Delivery;
+  picture: string;
   shipping?: Shipping;
+  stripeAccount?: string;
+  stripeCustomer: string;
+  stripeData?: StripeData;
+  styles?: StoreStyles;
+  typeAccount: 'free' | 'pro' | 'gold';
 }
 
 export class Tools {
@@ -78,6 +80,20 @@ export class Shipping {
     return {
       isActive: this.isActive,
       shippings: this.shippings,
+    };
+  }
+}
+
+export class StripeData {
+  payoutsEnabled: boolean;
+  chargesEnabled: boolean;
+  isActive: boolean;
+
+  toObj?(): any {
+    return {
+      payoutsEnabled: this.payoutsEnabled,
+      chargesEnabled: this.chargesEnabled,
+      isActive: this.isActive,
     };
   }
 }
