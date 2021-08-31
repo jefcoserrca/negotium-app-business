@@ -1,0 +1,83 @@
+ion-header{
+  ion-toolbar {
+    --background: linear-gradient( 180deg , #6060f1, #5555cc);
+  }
+}
+
+.logo-icon {
+  display: flex;
+  align-items: center;
+  img {
+    margin-right: 0.5rem;
+    width: 40px;
+    height: 40px;
+  }
+
+  .title {
+    font-size: 22px;
+    color: white;
+  }
+}
+
+.only-desktop {
+  display: flex;
+  align-items: center;
+
+  .links {
+    display: flex;
+    align-items: center;
+    margin-right: 1.5rem;
+
+    a {
+      margin-right: 1rem;
+      padding: 0.5rem;
+      background: #5353d1;
+      border-radius: 8px;
+      min-width: 95px;
+      text-align: center;
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all ease-in-out 0.3s;
+      p {
+        margin-bottom: 0rem;
+      }
+      &:hover {
+        transform: scale(1.1);
+      }
+
+      &.active {
+        background: white;
+        color: #5353d1;
+        transform: scale(1.1);
+        font-weight: 500;
+      }
+    }
+  }
+
+  .account {
+    display: flex;
+    a {
+      color: #ffffff;
+      padding: 0.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.125);
+      transition: all ease-in-out 0.3s;
+      p {
+        margin-bottom: 0rem;
+      }
+
+      &:hover {
+        background-color: #ffffff;
+        color: #5353d1;
+      }
+    }
+  }
+}
+
+@media (max-width: 820px) {
+  .only-desktop {
+    display: none;
+  }
+}

@@ -1,6 +1,12 @@
 export const environment = {
   production: true,
   api: 'https://us-central1-digitaliza-tu-empresa.cloudfunctions.net',
+  stripe:
+    'pk_live_51JI0n1LMlXGlXB7UTC09mVym6Y11vyIFbY5vpPb5GcMUGFXEgFbEw62FfbRL2apeWYtpcJ9KWiNoL0ntr1Fq9DZW00inPvHQ8R',
+  stripeProducts: {
+    pro: '',
+    vip: '',
+  },
   firebaseConfig: {
     apiKey: 'AIzaSyBSr-xkNXfJzB1dJJuWXBDwmN2hYFXtsBA',
     authDomain: 'digitaliza-tu-empresa.firebaseapp.com',

@@ -35,7 +35,7 @@
           [src]="
             newProfileImage
               ? newProfileImage
-              : 'https://iammadein.com/sites/default/files/default_images/default-logo.png'
+              : 'https://firebasestorage.googleapis.com/v0/b/digitaliza-tu-empresa.appspot.com/o/asstes%2Fdefault-logo.png?alt=media&token=de67cebf-27c1-4152-aa92-2fda42549fd6'
           "
           alt=""
         />
@@ -70,6 +70,7 @@
         <div class="w-100 mb-3">
           <select formControlName="category">
             <option value="abarrotes">Abarrotes</option>
+            <option value="ecommerce">Ecommerce</option>
             <option value="comida">Comida y Restaurantes</option>
             <option value="farmcia">Farmacia</option>
             <option value="licoreria">Vinos y Licores</option>
@@ -108,7 +109,9 @@
           </span>
           <span
             *ngIf="
-              (form.controls['phone'].errors.maxlength || form.controls['phone'].errors.minlength ) && !form.controls['phone'].errors.pattern
+              (form.controls['phone'].errors.maxlength ||
+                form.controls['phone'].errors.minlength) &&
+              !form.controls['phone'].errors.pattern
             "
           >
             {{ 10 - form.value.phone.length }}
@@ -128,7 +131,7 @@
         <ion-label position="floating">Correo*</ion-label>
         <ion-input
           type="text"
-          placeholder="Nombre del Negocio"
+          placeholder="Correo electrónico"
           formControlName="email"
           class="mb-3"
         ></ion-input>

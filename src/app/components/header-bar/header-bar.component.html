@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <div class="d-flex justify-content-between align-items-center p-3">
+      <div class="logo-icon">
+        <img src="../../../assets/logo.png" alt="logo" />
+        <div class="title">Negotium App</div>
+      </div>
+      <div class="only-desktop">
+        <div class="links">
+          <a routerLinkActive="active" [routerLink]="['/home']">
+            <p>Inicio</p>
+          </a>
+          <a routerLinkActive="active" [routerLink]="['/pricing-plans']">
+            <p>Tarifas</p>
+          </a>
+          <a routerLinkActive="active" [routerLink]="['/help']">
+            <p>Ayuda</p>
+          </a>
+          <a routerLinkActive="active" [routerLink]="['/contact']">
+            <p>Contacto</p>
+          </a>
+        </div>
+        <div class="account">
+          <ion-button color="light" fill="outline" mode="ios" *ngIf="!user" [routerLink]="['/login']">
+            <ion-text color="light"> Iniciar sesión </ion-text>
+          </ion-button>
+          <a [routerLink]="['/dashboard']" *ngIf="user">
+            <p>Mi Dashboard</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>

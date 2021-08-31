@@ -80,7 +80,7 @@ export class ProductsService {
   async setCategories(categories: Array<string>): Promise<void> {
     return await this.af
       .doc(`users/${this.user.id}/stores/${this.store.id}/setup/categories`)
-      .update({ all: categories });
+      .set({ all: categories });
   }
 
   async createNewProduct(product: Product, id: string = null): Promise<string> {

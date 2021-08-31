@@ -25,7 +25,8 @@ export class CategoryListComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.showLoading = true;
-    this.categories = (await this.productsSrv.getCategories()).all;
+    const getCategories = await this.productsSrv.getCategories();
+    this.categories = getCategories ? getCategories.all : [];
     this.showLoading = false;
   }
 
@@ -53,7 +54,8 @@ export class CategoryListComponent implements OnInit {
       });
     } else {
       this.showLoading = true;
-      this.categories = (await this.productsSrv.getCategories()).all;
+      const getCategories = await this.productsSrv.getCategories();
+      this.categories = getCategories ? getCategories.all : [];
       this.showLoading = false;
     }
   }

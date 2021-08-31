@@ -28,7 +28,7 @@ export class StoreService {
       id: storeId,
       name: storeData.name,
       banner: null,
-      picture: null,
+      picture: 'https://firebasestorage.googleapis.com/v0/b/digitaliza-tu-empresa.appspot.com/o/asstes%2Fdefault-logo.png?alt=media&token=de67cebf-27c1-4152-aa92-2fda42549fd6',
       category: storeData.category,
       phone: storeData.phone,
       stripeAccount: null,
@@ -154,16 +154,20 @@ export class StoreService {
           .build()
       )
       .styles(
-        Builder(StoreStyles)
-          .content(data.styles.content)
-          .navbar(data.styles.navbar)
-          .storeCard(data.styles.storeCard)
-          .structureHighlights(data.styles.structureHighlights)
-          .structureProducts(data.styles.structureProducts)
-          .structureProductsByCategory(data.styles.structureProductsByCategory)
-          .topbar(data.styles.topbar)
-          .linearGradient(data.styles.linearGradient)
-          .build()
+        data.styles
+          ? Builder(StoreStyles)
+              .content(data.styles.content)
+              .navbar(data.styles.navbar)
+              .storeCard(data.styles.storeCard)
+              .structureHighlights(data.styles.structureHighlights)
+              .structureProducts(data.styles.structureProducts)
+              .structureProductsByCategory(
+                data.styles.structureProductsByCategory
+              )
+              .topbar(data.styles.topbar)
+              .linearGradient(data.styles.linearGradient)
+              .build()
+          : null
       )
       .contactData(data.contactData)
       .categoryIcon(data.categoryIcon)

@@ -6,6 +6,7 @@ import firebase from 'firebase';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { LoadingController } from '@ionic/angular';
 import { Builder } from 'builder-pattern';
+import { AngularFirestore } from '@angular/fire/firestore';
 @Injectable({
   providedIn: 'root',
 })
@@ -17,6 +18,7 @@ export class AuthenticationService {
 
   constructor(
     private afAuth: AngularFireAuth,
+    private af: AngularFirestore,
     private loadingCtrl: LoadingController
   ) {
     this.listenUserSession();
@@ -44,7 +46,7 @@ export class AuthenticationService {
       data.password
     );
     await credential.user.updateProfile({ displayName: data.name });
-    this.setUserSession(credential.user);
+    //this.setUserSession(credential.user);
     return credential.user;
   }
 
@@ -110,7 +112,10 @@ export class AuthenticationService {
       const { firstName, lastName } = AuthenticationService.getFirstAndLastName(
         user.displayName
       );
-
+      const getUser: any = await this.af
+        .doc(`users/${user.uid}`)
+        .get()
+        .toPromise();
       this.user$.next(
         Builder(User)
           .id(user.uid)
@@ -121,6 +126,12 @@ export class AuthenticationService {
           .picture(user.photoURL)
           .email(user.email)
           .emailVerified(user.emailVerified)
+          .subscriptionId(getUser.exists ? getUser.data().subscriptionId : null)
+          .subscriptionStatus(
+            getUser.exists ? getUser.data().subscriptionStatus : null
+          )
+          .subscription(getUser.exists ? getUser.data().subscription : 'free')
+          .stripeCustomer(getUser.exists ? getUser.data().stripeCustomer : null)
           .provider(user.providerData.map((provider) => provider.providerId))
           .build()
       );

@@ -81,7 +81,7 @@ export class CreateCouponPage implements OnInit {
     this.store = await this.storeSrv.store.pipe(first()).toPromise();
     this.allProducts = await this.productsSrv.getProducts();
     this.account = this.store.typeAccount;
-    this.getCouponId();
+    await this.getCouponId();
     this.showLoading = false;
   }
 
@@ -200,9 +200,12 @@ export class CreateCouponPage implements OnInit {
     );
   }
 
-  verifyMeasurementUnits(): void {
-    if (this.store.typeAccount === 'free') {
-      return this.form.patchValue({ measurementUnits: 'unidad' });
+  async verifyAvailableDays(): Promise<void> {
+    if (this.store.typeAccount === 'free' && this.showLoading === false) {
+      await this.modalsSrv.openActivateProModal(
+        'Para utilizar esta opción es necesario que actualices tu plan a PRO'
+      );
+      return this.form.patchValue({ availableDays: '' });
     } else {
       return;
     }
@@ -253,19 +256,28 @@ export class CreateCouponPage implements OnInit {
   }
 
   verifyToogle(): void {
-    if (this.store.typeAccount === 'free') {
-      this.form.value.redeemableInStore = true;
-      this.form.value.redeemableInWeb = true;
-      this.form.value.availableHour = false;
+    if (this.store.typeAccount === 'free' && this.showLoading === false) {
+      this.form.patchValue({ redeemableInStore: true });
+      this.form.patchValue({ redeemableInWeb: true });
+      this.form.patchValue({ availableHours: false });
+      this.modalsSrv
+        .openActivateProModal(
+          'Para usar esta herramienta es necesario que actualices tu plan a PRO o superior'
+        )
+        .then();
     }
-    console.log(this.form.value);
   }
 
   verifyToogleDays(): void {
-    if (this.store.typeAccount === 'free') {
-      this.form.value.availableHour = false;
-      this.form.value.availableStartHour = null;
-      this.form.value.availableEndHour = null;
+    if (this.store.typeAccount === 'free' && this.showLoading === false) {
+      this.form.patchValue({ availableHours: false });
+      this.form.patchValue({ availableStartHour: null });
+      this.form.patchValue({ availableEndHour: null });
+      this.modalsSrv
+        .openActivateProModal(
+          'Para usar esta herramienta es necesario que actualices tu plan a PRO o superior'
+        )
+        .then();
     }
   }
 

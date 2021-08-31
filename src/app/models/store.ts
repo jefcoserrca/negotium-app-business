@@ -22,7 +22,7 @@ export class Store {
   stripeCustomer: string;
   stripeData?: StripeData;
   styles?: StoreStyles;
-  typeAccount: 'free' | 'pro' | 'gold';
+  typeAccount: 'free' | 'pro' | 'vip';
 }
 
 export class Tools {

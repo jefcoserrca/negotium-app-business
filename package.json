@@ -26,6 +26,7 @@
     "@angular/router": "~12.0.1",
     "@ionic/angular": "^5.5.2",
     "@ionic/storage-angular": "^3.0.6",
+    "@stripe/stripe-js": "^1.17.1",
     "@techiediaries/ngx-qrcode": "^9.1.0",
     "@yzfe/dom-to-image": "^2.6.2",
     "@zxing/browser": "0.0.9",
@@ -38,6 +39,7 @@
     "ngx-color": "^7.2.0",
     "ngx-image-compress": "^11.0.3",
     "ngx-image-cropper": "^4.0.1",
+    "ngx-stripe": "^12.4.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.4"

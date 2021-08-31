@@ -42,6 +42,14 @@
       <ion-label> {{ item }} </ion-label>
     </ion-item>
   </ion-list>
+  <div class="mt-4 p-3" *ngIf="!showLoading && !categories.length">
+    <app-message-embedded
+      [title]="'Sin categorías'"
+      [message]="
+        'No has añadido categorías a tu tienda. Pulsa en el boton + para añadir categorías'
+      "
+    ></app-message-embedded>
+  </div>
   <div class="my-4" *ngIf="showLoading">
     <app-loading></app-loading>
   </div>

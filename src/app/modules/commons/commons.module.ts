@@ -45,6 +45,11 @@ import { ChooseVariationsComponent } from '../../modals/choose-variations/choose
 import { MatSelectModule } from '@angular/material/select';
 import { ClientsPickerModalComponent } from '../../modals/clients-picker-modal/clients-picker-modal.component';
 import { SalePreviewModalComponent } from '../../modals/sale-preview-modal/sale-preview-modal.component';
+import { HeaderBarComponent } from 'src/app/components/header-bar/header-bar.component';
+import { FooterbarComponent } from '../../components/footerbar/footerbar.component';
+import { PaymentSubscriptionComponent } from '../../modals/payment-subscription/payment-subscription.component';
+import { NgxStripeModule } from 'ngx-stripe';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -62,12 +67,15 @@ import { SalePreviewModalComponent } from '../../modals/sale-preview-modal/sale-
     CropperImageModalComponentComponent,
     DeliveryZonesModalComponent,
     EditCategoryModalComponent,
+    FooterbarComponent,
+    HeaderBarComponent,
     InputAlertComponent,
     LoadingComponent,
     LoadingComponent,
     LoadingComponentModal,
     MessageEmbeddedComponent,
     MultipleImagesUploaderModalComponent,
+    PaymentSubscriptionComponent,
     ProductCardComponent,
     ProductVariationsComponent,
     RegisterUserComponent,
@@ -98,6 +106,7 @@ import { SalePreviewModalComponent } from '../../modals/sale-preview-modal/sale-
     MatStepperModule,
     MatTabsModule,
     NgxQRCodeModule,
+    NgxStripeModule.forRoot(environment.stripe), 
     ReactiveFormsModule,
     RouterModule,
     ZXingScannerModule,
@@ -118,6 +127,8 @@ import { SalePreviewModalComponent } from '../../modals/sale-preview-modal/sale-
     CropperImageModalComponentComponent,
     DeliveryZonesModalComponent,
     EditCategoryModalComponent,
+    FooterbarComponent,
+    HeaderBarComponent,
     InputAlertComponent,
     LoadingComponent,
     LoadingComponent,
@@ -135,6 +146,7 @@ import { SalePreviewModalComponent } from '../../modals/sale-preview-modal/sale-
     MessageEmbeddedComponent,
     MultipleImagesUploaderModalComponent,
     NgxQRCodeModule,
+    PaymentSubscriptionComponent,
     ProductCardComponent,
     ProductVariationsComponent,
     ReactiveFormsModule,

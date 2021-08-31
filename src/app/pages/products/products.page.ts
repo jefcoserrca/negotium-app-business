@@ -51,7 +51,7 @@ export class ProductsPage implements OnInit {
     this.stockProducts = this.allProducts.filter(
       (product) => product.stock.stockController === true
     );
-    this.categories = (await this.productsSrv.getCategories()).all;
+    this.categories = (await this.productsSrv.getCategories())?.all ? (await this.productsSrv.getCategories()).all : [];
     this.allCategories = [...this.categories];
     this.showLoading = false;
   }

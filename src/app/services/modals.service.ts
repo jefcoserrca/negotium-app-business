@@ -29,6 +29,7 @@ import { CreateSaleModalComponent } from '../modals/create-sale-modal/create-sal
 import { ChooseVariationsComponent } from '../modals/choose-variations/choose-variations.component';
 import { ClientsPickerModalComponent } from '../modals/clients-picker-modal/clients-picker-modal.component';
 import { SalePreviewModalComponent } from '../modals/sale-preview-modal/sale-preview-modal.component';
+import { PaymentSubscriptionComponent } from '../modals/payment-subscription/payment-subscription.component';
 
 @Injectable({
   providedIn: 'root',
@@ -423,6 +424,23 @@ export class ModalsService {
     const data = (await modal.onWillDismiss()).data;
 
     return data;
+  }
+
+  async openPaymentSubscriptionModal(
+    stripeCustomer: string,
+    type: 'pro' | 'vip'
+  ): Promise<any> {
+    const modal = await this.modalCtrl.create({
+      component: PaymentSubscriptionComponent,
+      backdropDismiss: true,
+      cssClass: 'tab-modal',
+      componentProps: {
+        stripeCustomer,
+        type,
+      },
+    });
+
+    return await modal.present();
   }
 
   async dismissLoadingModal(): Promise<boolean> {

@@ -1,0 +1,85 @@
+h3 {
+  font-weight: 600;
+  color: var(--ion-color-primary);
+}
+
+p {
+  color: #444444;
+}
+
+.cards-container {
+  display: flex;
+}
+.plan-card {
+  max-width: 350px;
+  min-width: 30% !important;
+  ion-card-header {
+    background: #dfdfdf;
+  }
+
+  ion-card-title {
+    small {
+      font-size: 16px;
+    }
+  }
+
+  &.pro {
+    ion-card-header {
+      background: #9b9bff;
+      ion-card-subtitle {
+        color: white;
+      }
+    }
+  }
+
+  &.vip {
+    ion-card-header {
+      background: #111111;
+      ion-card-subtitle {
+        color: gold;
+      }
+    }
+  }
+
+  ion-button {
+    min-width: 50% !important;
+  }
+
+  .terms-notice {
+      margin-top: 1rem !important;
+      margin-bottom: 0 !important;
+    a {
+      color: #666d7a;
+    }
+  }
+}
+
+.label-with-icon {
+  display: flex;
+  align-items: center;
+  ion-icon {
+    margin-right: 0.5rem;
+  }
+}
+@media (max-width: 767px) {
+  .cards-container {
+    flex-direction: column !important;
+  }
+  .plan-card {
+    min-width: 100% !important;
+    max-width: 100%;
+    margin: 0.5rem 0 1rem 0;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .cards-container {
+    flex-direction: column !important;
+    align-items: center;
+  }
+  .plan-card {
+    min-width: 50% !important;
+    max-width: 50%;
+    margin: 0.5rem 0 1rem 0;
+  }
+}

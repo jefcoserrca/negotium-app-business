@@ -5,6 +5,12 @@
 export const environment = {
   production: false,
   api: 'http://localhost:5001/digitaliza-tu-empresa/us-central1',
+  stripe:
+    'pk_test_51JI0n1LMlXGlXB7UjYPZ9RpcQyhjBdya0lv9NOZXshOiMQwek8ce5rGEqMy1VAghKZOQxxB9066q3ihLcAlGDKHJ005ybdTtaG',
+  stripeProducts: {
+    pro: 'price_1JUK8oLMlXGlXB7UsvqSjRsH',
+    vip: 'price_1JUKAcLMlXGlXB7U2Va2HPU6',
+  },
   firebaseConfig: {
     apiKey: 'AIzaSyBSr-xkNXfJzB1dJJuWXBDwmN2hYFXtsBA',
     authDomain: 'digitaliza-tu-empresa.firebaseapp.com',

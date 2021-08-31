@@ -1,0 +1,30 @@
+.title {
+  margin-top: 1rem;
+  p {
+    color: #444444;
+  }
+}
+
+ion-input {
+  --color: #31325f;
+  background: #f4f4f4;
+  --padding-start: 5px;
+  font-weight: 500;
+  font-size: 18px;
+  border-radius: 8px;
+}
+
+.stripe-content {
+  background: #f4f4f4;
+  padding: 12px 5px 12px;
+  border-radius: 8px;
+}
+
+.terms-notice {
+  margin-top: 1rem !important;
+  margin-bottom: 0 !important;
+  color: #666d7a;
+  a {
+    color: #666d7a;
+  }
+}

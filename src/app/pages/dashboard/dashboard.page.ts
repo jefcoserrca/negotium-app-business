@@ -35,13 +35,16 @@ export class DashboardPage implements OnInit {
 
   private async initStoreSetup(): Promise<void> {
     const user = await this.authSrv.user.pipe(first()).toPromise();
+    console.log(user);
     this.stores = await this.storeSrv.getStores(user.id);
     const storeId = await this.storageSrv.getStoreId();
     if (storeId) {
       const getStore = await this.storeSrv.getStore(user.id, storeId);
+      getStore.typeAccount = user.subscription;
       this.storeSrv.setStore(getStore);
     } else {
       const storeDefault = this.stores[0];
+      storeDefault.typeAccount = user.subscription;
       await this.storageSrv.saveStoreId(storeDefault.id);
       this.storeSrv.setStore(storeDefault);
     }
@@ -85,6 +88,5 @@ export class DashboardPage implements OnInit {
         label: 'Servicio a domicilio',
         path: '/dashboard/delivery',
       });
-
   }
 }

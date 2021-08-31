@@ -26,11 +26,11 @@ export class ShippingPage implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.store = await this.storeSrv.store.pipe(first()).toPromise();
-    this.shipping.isActive = this.shipping
+    this.shipping.isActive = this.store.shipping?.isActive
       ? this.store.shipping.isActive
       : false;
-    this.shipping.shippings = this.shipping
-      ? this.store.shipping.shippings.map((shipping) => {
+    this.shipping.shippings = this.store.shipping?.shippings.length
+      ? this.store.shipping?.shippings.map((shipping) => {
           return { ...shipping };
         })
       : [];

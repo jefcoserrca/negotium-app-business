@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { StripeData } from '../models/store';
+import { createSubscription } from '../../../functions/src/stripe/stripe';
 @Injectable({
   providedIn: 'root',
 })
@@ -47,6 +48,11 @@ export class AccountService {
         storeId,
         email: user.email,
       }).toPromise();
+
+      await this.authSrv.signInWithEmailAndPassword({
+        email: data.account.email,
+        password: data.account.password,
+      });
       return true;
     } catch {
       return false;
@@ -57,6 +63,7 @@ export class AccountService {
     await this.af.doc(`users/${user.uid}`).set({
       id: user.uid,
       email: user.email,
+      subscription: 'free',
       created_at: new Date().toISOString(),
     });
   }
@@ -68,6 +75,31 @@ export class AccountService {
   }): Observable<any> {
     return this.http
       .post(`${environment.api}/stripe-createCustomer`, data)
+      .pipe();
+  }
+
+  public attachPaymentMethod(data: {
+    customerId: string;
+    paymentMethodId: string;
+  }): Observable<any> {
+    return this.http
+      .post(`${environment.api}/stripe-attachPaymentMethod`, data)
+      .pipe();
+  }
+
+  public createSubscription(data: {
+    customerId: string;
+    paymentMethodId: string;
+    priceId: string;
+    type: 'pro' | 'vip';
+    userId: string;
+  }): Observable<any> {
+    data.priceId =
+      data.type === 'pro'
+        ? environment.stripeProducts.pro
+        : environment.stripeProducts.vip;
+    return this.http
+      .post(`${environment.api}/stripe-createSubscription`, data)
       .pipe();
   }
 

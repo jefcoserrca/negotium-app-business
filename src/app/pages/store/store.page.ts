@@ -422,6 +422,9 @@ export class StorePage implements OnInit {
       case 'farmacia':
         this.iconCategory = 'medkit';
         break;
+      case 'ecommerce':
+        this.iconCategory = 'cart'
+        break;  
       case 'licoreria':
         this.iconCategory = 'beer';
         break;
@@ -491,7 +494,7 @@ export class StorePage implements OnInit {
         );
       }
 
-      if (this.storeData.banner.split(':')[0] !== 'https') {
+      if (this.storeData.banner && this.storeData.banner.split(':')[0] !== 'https') {
         await this.storeSrv.updateBannerStore(
           this.storeData.banner,
           this.store.id,
@@ -505,6 +508,7 @@ export class StorePage implements OnInit {
         'success'
       );
     } catch (error) {
+      console.log(error);
       await this.modalsSrv.dismissLoadingModal();
       await this.toastSrv.showErrorNotify(
         'Ha ocurrido un error, intentalo más tarde'

@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button>
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Suscripción {{ type | uppercase }} </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="container">
+    <div class="title">
+      <ion-text color="primary">
+        <h3>Ingresa tus datos</h3>
+      </ion-text>
+      <h3>Tu susbcripción empieza ahora</h3>
+      <p>14 días de prueba gratis.</p>
+      <p>
+        Total a pagar
+        {{ type === "pro" ? (199 | currency) : (5699 | currency) }}
+      </p>
+    </div>
+    <div class="mb-3">
+      <form [formGroup]="stripeForm">
+        <ion-input
+          type="text"
+          placeholder="Nombre del titular"
+          formControlName="name"
+        ></ion-input>
+        <div class="mt-2 stripe-content">
+          <ngx-stripe-card
+            [options]="cardOptions"
+            [elementsOptions]="elementsOptions"
+          ></ngx-stripe-card>
+        </div>
+      </form>
+    </div>
+    <div class="d-flex justify-content-center align-items-center w-100">
+      <ion-button
+        color="primary"
+        class="w-75"
+        mode="ios"
+        (click)="createToken()"
+      >
+        Suscribirme ahora!
+      </ion-button>
+    </div>
+    <p class="terms-notice">
+      <small>
+        Al suscribirte estás aceptando
+        <a [routerLink]="['/terms']">los Términos y Condiciones</a>
+        en el servicio.
+      </small>
+    </p>
+  </div>
+</ion-content>
