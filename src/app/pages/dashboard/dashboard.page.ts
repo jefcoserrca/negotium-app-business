@@ -4,6 +4,9 @@ import { StoreService } from '../../services/store.service';
 import { first } from 'rxjs/operators';
 import { Store, Tools } from '../../models/store';
 import { StorageService } from '../../services/storage.service';
+import { AccountService } from '../../services/account.service';
+import { ToastService } from '../../services/toast.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,13 +18,18 @@ export class DashboardPage implements OnInit {
   stores: Array<Store> = [];
   menuItems: any = [];
   private tools: Tools;
+  storeId: string;
+  listener: Subscription;
   constructor(
+    private accountSrv: AccountService,
     private authSrv: AuthenticationService,
+    private storageSrv: StorageService,
     private storeSrv: StoreService,
-    private storageSrv: StorageService
+    private toastSrv: ToastService
   ) {
     this.storeSrv.store.subscribe((data) => {
       if (data) {
+        console.log('mierda', data);
         this.tools = data.activeTools;
         this.getTools();
         this.store = data;
@@ -33,21 +41,23 @@ export class DashboardPage implements OnInit {
     this.initStoreSetup();
   }
 
+  ionViewWillLeave() {
+    this.listener.unsubscribe();
+  }
+
   private async initStoreSetup(): Promise<void> {
     const user = await this.authSrv.user.pipe(first()).toPromise();
-    console.log(user);
-    this.stores = await this.storeSrv.getStores(user.id);
-    const storeId = await this.storageSrv.getStoreId();
-    if (storeId) {
-      const getStore = await this.storeSrv.getStore(user.id, storeId);
-      getStore.typeAccount = user.subscription;
-      this.storeSrv.setStore(getStore);
-    } else {
-      const storeDefault = this.stores[0];
-      storeDefault.typeAccount = user.subscription;
-      await this.storageSrv.saveStoreId(storeDefault.id);
-      this.storeSrv.setStore(storeDefault);
+    this.storeId = await this.storageSrv.getStoreId();
+    if (!this.storeId) {
+      this.stores = await this.storeSrv.getStores(user.id);
+      this.storeId = this.stores[0].id;
+      await this.storageSrv.saveStoreId(this.storeId);
     }
+    this.listener = this.storeSrv.getCurrentStore(
+      user.id,
+      this.storeId,
+      user.subscription
+    );
   }
 
   private getTools(): void {

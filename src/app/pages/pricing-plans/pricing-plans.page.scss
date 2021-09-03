@@ -41,13 +41,18 @@ p {
     }
   }
 
+  &.active {
+    border: solid 2px #8878f0;
+    box-shadow: #7657ac9c 0px 4px 16px;
+  }
+
   ion-button {
     min-width: 50% !important;
   }
 
   .terms-notice {
-      margin-top: 1rem !important;
-      margin-bottom: 0 !important;
+    margin-top: 1rem !important;
+    margin-bottom: 0 !important;
     a {
       color: #666d7a;
     }

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { DashboardPage } from './dashboard.page';
+import { AuthGuardService } from '../../guards/auth-guard.service';
 
 const routes: Routes = [
   {
@@ -10,11 +11,13 @@ const routes: Routes = [
     children: [
       {
         path: 'home',
+        canActivate: [AuthGuardService],
         loadChildren: () =>
           import('../home/home.module').then((m) => m.HomePageModule),
       },
       {
         path: 'create-product',
+        canActivate: [AuthGuardService],
         loadChildren: () =>
           import('../create-product/create-product.module').then(
             (m) => m.CreateProductPageModule
@@ -22,6 +25,7 @@ const routes: Routes = [
       },
       {
         path: 'edit-product/:id',
+        canActivate: [AuthGuardService],
         loadChildren: () =>
           import('../create-product/create-product.module').then(
             (m) => m.CreateProductPageModule
@@ -29,6 +33,7 @@ const routes: Routes = [
       },
       {
         path: 'products',
+        canActivate: [AuthGuardService],
         loadChildren: () =>
           import('../products/products.module').then(
             (m) => m.ProductsPageModule
@@ -36,11 +41,13 @@ const routes: Routes = [
       },
       {
         path: 'store',
+        canActivate: [AuthGuardService],
         loadChildren: () =>
           import('../store/store.module').then((m) => m.StorePageModule),
       },
       {
         path: 'my-qr-code',
+        canActivate: [AuthGuardService],
         loadChildren: () =>
           import('../my-qr-code/my-qr-code.module').then(
             (m) => m.MyQrCodePageModule
@@ -49,6 +56,7 @@ const routes: Routes = [
 
       {
         path: 'discount-coupons',
+        canActivate: [AuthGuardService],
         loadChildren: () =>
           import('../discount-coupons/discount-coupons.module').then(
             (m) => m.DiscountCouponsPageModule
@@ -56,6 +64,7 @@ const routes: Routes = [
       },
       {
         path: 'create-coupon',
+        canActivate: [AuthGuardService],
         loadChildren: () =>
           import('../create-coupon/create-coupon.module').then(
             (m) => m.CreateCouponPageModule
@@ -63,6 +72,7 @@ const routes: Routes = [
       },
       {
         path: 'edit-coupon/:id',
+        canActivate: [AuthGuardService],
         loadChildren: () =>
           import('../create-coupon/create-coupon.module').then(
             (m) => m.CreateCouponPageModule
@@ -70,6 +80,7 @@ const routes: Routes = [
       },
       {
         path: 'delivery',
+        canActivate: [AuthGuardService],
         loadChildren: () =>
           import('../delivery/delivery.module').then(
             (m) => m.DeliveryPageModule
@@ -77,11 +88,13 @@ const routes: Routes = [
       },
       {
         path: 'clients',
+        canActivate: [AuthGuardService],
         loadChildren: () =>
           import('../clients/clients.module').then((m) => m.ClientsPageModule),
       },
       {
         path: 'shipping',
+        canActivate: [AuthGuardService],
         loadChildren: () =>
           import('../shipping/shipping.module').then(
             (m) => m.ShippingPageModule
@@ -89,11 +102,19 @@ const routes: Routes = [
       },
       {
         path: 'sales',
-        loadChildren: () => import('../payments/payments.module').then( m => m.PaymentsPageModule)
+        canActivate: [AuthGuardService],
+        loadChildren: () =>
+          import('../payments/payments.module').then(
+            (m) => m.PaymentsPageModule
+          ),
       },
       {
         path: 'sales/:path',
-        loadChildren: () => import('../payments/payments.module').then( m => m.PaymentsPageModule)
+        canActivate: [AuthGuardService],
+        loadChildren: () =>
+          import('../payments/payments.module').then(
+            (m) => m.PaymentsPageModule
+          ),
       },
       {
         path: '**',

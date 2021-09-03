@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuardService } from './guards/auth-guard.service';
 
 const routes: Routes = [
   {
     path: 'login',
+    canActivate: [AuthGuardService],
     loadChildren: () =>
       import('./pages/login/login.module').then((m) => m.LoginPageModule),
   },
@@ -19,6 +21,10 @@ const routes: Routes = [
   {
     path: 'pricing-plans',
     loadChildren: () => import('./pages/pricing-plans/pricing-plans.module').then( m => m.PricingPlansPageModule)
+  },
+  {
+    path: 'settings',
+    loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule)
   },
 ];
 

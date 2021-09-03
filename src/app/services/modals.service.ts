@@ -30,6 +30,7 @@ import { ChooseVariationsComponent } from '../modals/choose-variations/choose-va
 import { ClientsPickerModalComponent } from '../modals/clients-picker-modal/clients-picker-modal.component';
 import { SalePreviewModalComponent } from '../modals/sale-preview-modal/sale-preview-modal.component';
 import { PaymentSubscriptionComponent } from '../modals/payment-subscription/payment-subscription.component';
+import { AlertModalComponent } from '../modals/alert-modal/alert-modal.component';
 
 @Injectable({
   providedIn: 'root',
@@ -437,6 +438,19 @@ export class ModalsService {
       componentProps: {
         stripeCustomer,
         type,
+      },
+    });
+
+    return await modal.present();
+  }
+
+  async openAlertModal(data: { role: 'cancel' | 'update', newSubscription: 'pro' |'vip' }): Promise<void> {
+    const modal = await this.modalCtrl.create({
+      component: AlertModalComponent,
+      backdropDismiss: true,
+      cssClass: 'sq-modal',
+      componentProps: {
+        data,
       },
     });
 

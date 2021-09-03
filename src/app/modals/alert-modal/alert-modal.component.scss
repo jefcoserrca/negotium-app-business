@@ -1,0 +1,15 @@
+.plan-card {
+  height: 60px;
+  border-radius: 10px;
+  background: #111111;
+  color: gold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: #0000004d 0px 4px 16px;
+
+  &.pro {
+    color: white !important;
+    background: #9b9bff !important;
+  }
+}

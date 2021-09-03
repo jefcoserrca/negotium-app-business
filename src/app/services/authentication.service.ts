@@ -7,6 +7,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { LoadingController } from '@ionic/angular';
 import { Builder } from 'builder-pattern';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { StorageService } from './storage.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -19,9 +20,24 @@ export class AuthenticationService {
   constructor(
     private afAuth: AngularFireAuth,
     private af: AngularFirestore,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private storageSrv: StorageService
   ) {
     this.listenUserSession();
+  }
+
+  private currentUserChanges(userId: string): void {
+    this.af
+      .doc(`users/${userId}`)
+      .valueChanges()
+      .subscribe((data: User) => {
+        if (data) {
+          this.updateSubscriptionData(
+            data.subscriptionStatus,
+            data.subscription
+          );
+        }
+      });
   }
 
   public async signInWithEmailAndPassword(data: {
@@ -33,7 +49,7 @@ export class AuthenticationService {
       data.password
     );
 
-    this.setUserSession(user.user);
+    await this.setUserSession(user.user);
   }
 
   public async signUpWithEmail(data: {
@@ -116,6 +132,7 @@ export class AuthenticationService {
         .doc(`users/${user.uid}`)
         .get()
         .toPromise();
+      this.currentUserChanges(user.uid);
       this.user$.next(
         Builder(User)
           .id(user.uid)
@@ -141,7 +158,19 @@ export class AuthenticationService {
   };
 
   public async logout(): Promise<void> {
+    await this.storageSrv.removeStoreId();
     await this.afAuth.signOut();
+  }
+
+  private updateSubscriptionData(
+    status: string,
+    type: 'free' | 'pro' | 'vip'
+  ): void {
+    this.user$.next({
+      ...this.user$.value,
+      subscriptionStatus: status ? status : null,
+      subscription: type ? type : null,
+    });
   }
 
   public async resetPassword(email: string): Promise<void> {

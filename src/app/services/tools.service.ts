@@ -10,4 +10,8 @@ export class ToolsService {
   async goToDashboard(): Promise<void> {
     await this.router.navigate(['/dashboard']);
   }
+
+  async goToLogin(): Promise<void> {
+    await this.router.navigate(['/login']);
+  }
 }

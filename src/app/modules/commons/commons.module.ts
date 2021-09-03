@@ -50,10 +50,12 @@ import { FooterbarComponent } from '../../components/footerbar/footerbar.compone
 import { PaymentSubscriptionComponent } from '../../modals/payment-subscription/payment-subscription.component';
 import { NgxStripeModule } from 'ngx-stripe';
 import { environment } from 'src/environments/environment';
+import { AlertModalComponent } from '../../modals/alert-modal/alert-modal.component';
 
 @NgModule({
   declarations: [
     ActivateProComponent,
+    AlertModalComponent,
     CategoryListComponent,
     ChooseVariationsComponent,
     ClientPreviewModalComponent,
@@ -113,6 +115,7 @@ import { environment } from 'src/environments/environment';
   ],
   exports: [
     ActivateProComponent,
+    AlertModalComponent,
     AgmCoreModule,
     CategoryListComponent,
     ChooseVariationsComponent,

@@ -11,6 +11,8 @@ import { AccountService } from '../../services/account.service';
 import { AuthenticationService } from '../../services/authentication.service';
 import { User } from '../../models/user';
 import { ToastService } from '../../services/toast.service';
+import { ModalController } from '@ionic/angular';
+import { ToolsService } from '../../services/tools.service';
 
 @Component({
   selector: 'app-payment-subscription',
@@ -21,7 +23,7 @@ export class PaymentSubscriptionComponent implements OnInit {
   @ViewChild(StripeCardComponent) card: StripeCardComponent;
   @Input() stripeCustomer: string;
   @Input() type: 'pro' | 'vip';
-
+  user: User;
   cardOptions: StripeCardElementOptions = {
     style: {
       base: {
@@ -45,13 +47,17 @@ export class PaymentSubscriptionComponent implements OnInit {
     private accountSrv: AccountService,
     private authSrv: AuthenticationService,
     private fb: FormBuilder,
+    private modalCtrl: ModalController,
     private modalsSrv: ModalsService,
     private stripeService: StripeService,
-    private toastSrv: ToastService
+    private toastSrv: ToastService,
+    private toolsSrv: ToolsService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit(): Promise<void> {
     this.initForm();
+    this.user = await this.authSrv.user.pipe(first()).toPromise();
+    console.log(this.user);
   }
 
   initForm(): void {
@@ -72,24 +78,23 @@ export class PaymentSubscriptionComponent implements OnInit {
           .createPaymentMethod({ type: 'card', card: this.card.element })
           .toPromise();
         if (result.paymentMethod) {
-          const user: User = await this.authSrv.user.pipe(first()).toPromise();
           const attachPayment = await this.accountSrv
             .attachPaymentMethod({
-              customerId: user.stripeCustomer,
+              customerId: this.user.stripeCustomer,
               paymentMethodId: result.paymentMethod.id,
             })
             .toPromise();
           const subscription = await this.accountSrv
             .createSubscription({
-              userId: user.id,
+              userId: this.user.id,
               paymentMethodId: result.paymentMethod.id,
-              customerId: user.stripeCustomer,
+              customerId: this.user.stripeCustomer,
               type: this.type,
               priceId: '',
             })
             .toPromise();
-          console.log(subscription, attachPayment);
           await this.modalsSrv.dismissLoadingModal();
+          await this.toolsSrv.goToDashboard();
           await this.toastSrv.showDefaultNotify('Bienvenido a tu nuevo plan!');
         } else {
           await this.modalsSrv.dismissLoadingModal();
@@ -103,6 +108,11 @@ export class PaymentSubscriptionComponent implements OnInit {
         );
       }
     } else {
+      await this.toastSrv.showErrorNotify('Rellena los campos');
     }
+  }
+
+  async close(): Promise<void> {
+    await this.modalCtrl.dismiss();
   }
 }

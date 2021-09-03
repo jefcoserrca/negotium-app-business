@@ -83,6 +83,7 @@ export class DeliveryPage implements OnInit {
   }
 
   updateForm(): void {
+    console.log(this.delivery);
     this.step1.setValue({
       deliveryCost: this.delivery.deliveryCost,
       minPurchaseAmount: this.delivery.minPurchaseAmount

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import firebase from 'firebase';
-import { first } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { Builder } from 'builder-pattern';
 import {
   Store,
@@ -11,7 +11,12 @@ import {
   Shipping,
   StripeData,
 } from '../models/store';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { User } from '../models/user';
+import { ToastService } from './toast.service';
+import { AuthenticationService } from './authentication.service';
+import { ToolsService } from './tools.service';
+import { StorageService } from './storage.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -20,7 +25,26 @@ export class StoreService {
   get store(): Observable<Store> {
     return this.store$.asObservable();
   }
-  constructor(private af: AngularFirestore) {}
+  listener: Subscription;
+  constructor(
+    private af: AngularFirestore,
+    private authSrv: AuthenticationService,
+    private toastSrv: ToastService,
+    private toolsSrv: ToolsService
+  ) {
+    this.authSrv.user.subscribe(async (user) => {
+      if (user && this.store$.value) {
+        this.updateAccount(user.subscription);
+      }
+    });
+  }
+
+  public currentUserChanges(userId: string): void {
+    this.af
+      .doc(`users/${userId}`)
+      .valueChanges()
+      .subscribe((data: User) => this.updateAccount(data.subscription));
+  }
 
   async createStore(storeData: any, userId: string): Promise<string> {
     const storeId = this.af.createId();
@@ -28,7 +52,8 @@ export class StoreService {
       id: storeId,
       name: storeData.name,
       banner: null,
-      picture: 'https://firebasestorage.googleapis.com/v0/b/digitaliza-tu-empresa.appspot.com/o/asstes%2Fdefault-logo.png?alt=media&token=de67cebf-27c1-4152-aa92-2fda42549fd6',
+      picture:
+        'https://firebasestorage.googleapis.com/v0/b/digitaliza-tu-empresa.appspot.com/o/asstes%2Fdefault-logo.png?alt=media&token=de67cebf-27c1-4152-aa92-2fda42549fd6',
       category: storeData.category,
       phone: storeData.phone,
       stripeAccount: null,
@@ -76,6 +101,38 @@ export class StoreService {
 
   setStore(store: Store) {
     this.store$.next(store);
+  }
+
+  private updateAccount(type: 'free' | 'pro' | 'vip') {
+    this.store$.next({ ...this.store$.value, typeAccount: type });
+  }
+
+  getCurrentStore(
+    userId: string,
+    storeId: string,
+    status: 'free' | 'pro' | 'vip'
+  ): Subscription {
+    return this.af
+      .doc(`users/${userId}/stores/${storeId}`)
+      .valueChanges()
+      .subscribe(
+        async (data: Store) => {
+          if (data) {
+            data.typeAccount = status;
+            const store = this.buildStoreModel(data);
+            this.setStore(store);
+          } else {
+            await this.authSrv.logout();
+            setTimeout(async () => {
+              await this.toolsSrv.goToLogin();
+            }, 100);
+            await this.toastSrv.showErrorNotify('No se pudo obtener la tienda');
+          }
+        },
+        async (err) => {
+          await this.toastSrv.showErrorNotify('Ops! Ha ocurrido un error');
+        }
+      );
   }
 
   async updatePictureStore(

@@ -57,17 +57,18 @@ export class StoreStyles {
 
 export class Delivery {
   deliveryCost: number;
-  minPurchaseAmount: number;
   freeShippingAmount: number;
-  zones: Array<DeliveryZone>;
   isActive: boolean;
+  minPurchaseAmount: number;
+  zones: Array<DeliveryZone>;
 
   toObj(): any {
     return {
       deliveryCost: this.deliveryCost,
+      freeShippingAmount: this.freeShippingAmount,
+      isActive: this.isActive,
       minPurchaseAmount: this.minPurchaseAmount,
       zones: this.zones,
-      isActive: this.isActive,
     };
   }
 }

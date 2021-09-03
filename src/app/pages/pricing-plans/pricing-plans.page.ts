@@ -4,6 +4,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 import { User } from '../../models/user';
 import { Router } from '@angular/router';
 import { ModalsService } from '../../services/modals.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-pricing-plans',
@@ -13,6 +14,7 @@ import { ModalsService } from '../../services/modals.service';
 export class PricingPlansPage implements OnInit {
   user: User;
   constructor(
+    private alertCtrl: AlertController,
     private authSrv: AuthenticationService,
     private modalsSrv: ModalsService,
     private router: Router
@@ -25,12 +27,28 @@ export class PricingPlansPage implements OnInit {
 
   async selectPlan(typeAccount: 'pro' | 'vip'): Promise<void> {
     if (this.user) {
-      await this.modalsSrv.openPaymentSubscriptionModal(
-        this.user.stripeCustomer,
-        typeAccount
-      );
+      if (
+        this.user.subscriptionStatus === 'canceled' ||
+        !this.user.subscriptionStatus ||
+        !this.user.subscriptionId ||
+        this.user.subscription === 'free'
+      ) {
+        await this.modalsSrv.openPaymentSubscriptionModal(
+          this.user.stripeCustomer,
+          typeAccount
+        );
+      } else {
+        this.alertChange(typeAccount);
+      }
     } else {
       await this.router.navigate(['/login']);
     }
+  }
+
+  private async alertChange(subscriptionPlan: 'vip' | 'pro'): Promise<void> {
+    await this.modalsSrv.openAlertModal({
+      role: 'update',
+      newSubscription: subscriptionPlan,
+    });
   }
 }

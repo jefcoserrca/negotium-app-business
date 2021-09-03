@@ -7,7 +7,6 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { StripeData } from '../models/store';
-import { createSubscription } from '../../../functions/src/stripe/stripe';
 @Injectable({
   providedIn: 'root',
 })
@@ -84,6 +83,21 @@ export class AccountService {
   }): Observable<any> {
     return this.http
       .post(`${environment.api}/stripe-attachPaymentMethod`, data)
+      .pipe();
+  }
+
+  public updateItem(data: {
+    itemId: string;
+    priceId: string;
+    quantity: number;
+  }): Observable<any> {
+    console.log(data.priceId)
+    return this.http.post(`${environment.api}/stripe-updateItem`, data).pipe();
+  }
+
+  public getItemsList(data: { subscriptionId: string }): Observable<any> {
+    return this.http
+      .post(`${environment.api}/stripe-getItems`, data)
       .pipe();
   }
 

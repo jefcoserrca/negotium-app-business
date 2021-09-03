@@ -1,0 +1,47 @@
+<ion-content>
+  <div class="d-flex justify-content-end align-items-center">
+    <ion-button shape="round" fill="clear" color="dark" (click)="close()">
+      <ion-icon slot="icon-only" name="close"></ion-icon>
+    </ion-button>
+  </div>
+  <div class="container" *ngIf="data.role !== 'cancel'">
+    <div class="container-fluid">
+      <h3>
+        <ion-text color="primary"> Cambiar de plan </ion-text>
+      </h3>
+      <h5><small>nuevo plan:</small></h5>
+      <div
+        class="plan-card m-3"
+        [ngClass]="{ pro: data.newSubscription === 'pro' }"
+      >
+        <h4>
+          VIP
+          <small>$5699.00 MXN</small>
+        </h4>
+      </div>
+      <p *ngIf="user?.subscription === 'pro' && data.newSubscription === 'vip'">
+        Los costos de facturación se aplicarán al siguiente corte. ¿Estás seguro
+        de cambiar tu plan a <strong>VIP</strong> ?
+      </p>
+      <p *ngIf="user?.subscription === 'vip' && data.newSubscription === 'pro'">
+        Algunas funciones pueden cambiar, las tiendas creadas tendrán un costo
+        de $99 MXN adicional y se aplicará al siguiente corte. ¿Estás seguro de
+        cambiar tu plan a uno <strong>inferior</strong>?
+      </p>
+      <div class="d-flex justify-content-end align-items-center mt-4">
+        <ion-button
+          fill="clear"
+          color="secondary"
+          mode="ios"
+          (click)="close()"
+          class="me-3"
+        >
+          Cancelar
+        </ion-button>
+        <ion-button color="primary" mode="ios" (click)="changeSubscription()">
+          Cambiar plan
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>
