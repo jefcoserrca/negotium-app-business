@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from '../../services/authentication.service';
+import { ToolsService } from '../../services/tools.service';
 
 @Component({
   selector: 'app-settings',
@@ -6,10 +8,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./settings.page.scss'],
 })
 export class SettingsPage implements OnInit {
+  constructor(
+    private authSrv: AuthenticationService,
+    private toolsSrv: ToolsService
+  ) {}
 
-  constructor() { }
+  ngOnInit() {}
 
-  ngOnInit() {
+  async logout(): Promise<void> {
+    await this.authSrv.logout();
+    setTimeout(async () => {
+      await this.toolsSrv.goToLogin();
+    }, 100);
   }
-
 }

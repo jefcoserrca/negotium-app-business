@@ -35,6 +35,8 @@ export class StoreService {
     this.authSrv.user.subscribe(async (user) => {
       if (user && this.store$.value) {
         this.updateAccount(user.subscription);
+      } else {
+        this.store$.next(null);
       }
     });
   }
