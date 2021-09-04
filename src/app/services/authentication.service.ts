@@ -31,7 +31,7 @@ export class AuthenticationService {
       .doc(`users/${userId}`)
       .valueChanges()
       .subscribe((data: User) => {
-        if (data) {
+        if (data && this.user$.value) {
           this.updateSubscriptionData(
             data.subscriptionStatus,
             data.subscription
