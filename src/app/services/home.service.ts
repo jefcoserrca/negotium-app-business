@@ -70,6 +70,9 @@ export class HomeService {
       .products(products?.length > 0 ? true : false)
       .qrCodes(qrCodes?.qrCodeFormat ? true : false)
       .store(this.store.styles ? true : false)
+      .payments(
+        this.store.stripeData && this.store.stripeAccount ? true : false
+      )
       .build();
     const doc = await this.af
       .doc(`users/${this.user.id}/stores/${this.store.id}/setup/progress`)
