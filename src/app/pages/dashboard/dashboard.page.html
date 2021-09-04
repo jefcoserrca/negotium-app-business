@@ -8,7 +8,13 @@
           </ion-avatar>
           <ion-label>{{ store.name }} </ion-label>
           <ion-badge> {{ store.typeAccount | uppercase }} </ion-badge>
-          <ion-button fill="clear" color="medium" class="ms-3">
+          <ion-button
+            fill="clear"
+            color="medium"
+            class="ms-3"
+            [routerLink]="'/dashboard/settings'"
+            routerDirection="root"
+          >
             <ion-icon slot="icon-only" name="settings-sharp"></ion-icon>
           </ion-button>
         </ion-item>

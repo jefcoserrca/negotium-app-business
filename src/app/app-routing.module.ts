@@ -22,10 +22,6 @@ const routes: Routes = [
     path: 'pricing-plans',
     loadChildren: () => import('./pages/pricing-plans/pricing-plans.module').then( m => m.PricingPlansPageModule)
   },
-  {
-    path: 'settings',
-    loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule)
-  },
 ];
 
 @NgModule({
