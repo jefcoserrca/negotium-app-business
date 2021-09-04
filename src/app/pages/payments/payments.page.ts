@@ -127,7 +127,7 @@ export class PaymentsPage implements OnInit {
     try {
       if (this.store.typeAccount === 'free') {
         await this.modalsSrv.openActivateProModal(
-          'Esta función solo esta disponible si tu negocio es PRO. Lleva tu empresa al siguiente nivel!'
+          'Las ventas aumentan 60% cuando aceptas pagos a través de tu tienda online. Es fácil, rápido y seguro!'
         );
       } else {
         await this.modalsSrv.openLoadingModal();
@@ -200,7 +200,7 @@ export class PaymentsPage implements OnInit {
         })
         .pipe(first())
         .toPromise();
-        console.log(dashboardLink);
+      console.log(dashboardLink);
       window.location.href = dashboardLink.url;
       await this.modalsSrv.dismissLoadingModal();
     } catch (error) {
