@@ -77,7 +77,7 @@
             <ion-icon slot="icon-only" name="add-circle"></ion-icon>
           </ion-button>
         </div>
-        <ion-list *ngIf="account === 'pro'">
+        <ion-list *ngIf="account !== 'free'">
           <ion-item
             *ngFor="let deliverier of deliveriers"
             button

@@ -18,7 +18,7 @@
   <div class="d-flex justify-content-center mt-1 mb-3">
     <div class="w-50 d-flex justify-content-between">
       <div
-        *ngIf="account === 'pro'"
+        *ngIf="account !== 'free'"
         class="circle-empty invert"
         [matMenuTriggerFor]="menuTxt"
         [ngStyle]="{ color: '#000' }"
@@ -26,7 +26,7 @@
         <ion-icon name="text"></ion-icon>
       </div>
       <div
-        *ngIf="account === 'pro'"
+        *ngIf="account !== 'free'"
         class="circle-empty"
         [ngStyle]="{ color: '#000' }"
         [matMenuTriggerFor]="menuBg"

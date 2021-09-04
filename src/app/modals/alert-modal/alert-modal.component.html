@@ -16,7 +16,7 @@
       >
         <h4>
           VIP
-          <small>$5699.00 MXN</small>
+          <small>${{ data.newSubscription === 'pro' ? '199' : '5699' }} .00 MXN</small>
         </h4>
       </div>
       <p *ngIf="user?.subscription === 'pro' && data.newSubscription === 'vip'">
