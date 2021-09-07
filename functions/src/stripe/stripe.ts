@@ -142,6 +142,26 @@ export const updateItem = functions.https.onRequest((req, res) => {
   });
 });
 
+export const deleteSubscription = functions.https.onRequest(
+  async (req, res: any) => {
+    return cors(req, res, async () => {
+      if (req.method === 'POST') {
+        try {
+          const subscriptionId = req.body.subscriptionId;
+          const removeSubscription = await stripe.subscriptions.del(
+            subscriptionId
+          );
+          return res.send(removeSubscription).status(200);
+        } catch (e) {
+          return res.status(500).send(e);
+        }
+      } else {
+        return res.status(403).send('Uknow error');
+      }
+    });
+  }
+);
+
 export const stripeWebhook = functions.https.onRequest(
   async (req, res: any) => {
     let event: any;
@@ -185,7 +205,7 @@ export const stripeWebhook = functions.https.onRequest(
             await userRef.update({
               subscriptionStatus: customerSubscription.status,
               subscription: typeSubscription,
-              test: true
+              test: true,
             });
 
             if (

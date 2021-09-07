@@ -91,14 +91,11 @@ export class AccountService {
     priceId: string;
     quantity: number;
   }): Observable<any> {
-    console.log(data.priceId)
     return this.http.post(`${environment.api}/stripe-updateItem`, data).pipe();
   }
 
   public getItemsList(data: { subscriptionId: string }): Observable<any> {
-    return this.http
-      .post(`${environment.api}/stripe-getItems`, data)
-      .pipe();
+    return this.http.post(`${environment.api}/stripe-getItems`, data).pipe();
   }
 
   public createSubscription(data: {
@@ -146,6 +143,12 @@ export class AccountService {
   public getDashboardLink(data: { accountId: string }): Observable<any> {
     return this.http
       .post(`${environment.api}/stripeConnect-dashboardLink`, data)
+      .pipe();
+  }
+
+  public removeSubscription(data: { subscriptionId: string }): Observable<any> {
+    return this.http
+      .post(`${environment.api}/stripeConnect-deleteSubscription`, data)
       .pipe();
   }
 
