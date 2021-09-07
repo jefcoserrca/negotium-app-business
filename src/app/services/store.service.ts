@@ -26,6 +26,7 @@ export class StoreService {
     return this.store$.asObservable();
   }
   listener: Subscription;
+  user: User;
   constructor(
     private af: AngularFirestore,
     private authSrv: AuthenticationService,
@@ -33,19 +34,11 @@ export class StoreService {
     private toolsSrv: ToolsService
   ) {
     this.authSrv.user.subscribe(async (user) => {
+      this.user = user;
       if (user && this.store$.value) {
         this.updateAccount(user.subscription);
-      } else {
-        this.store$.next(null);
       }
     });
-  }
-
-  public currentUserChanges(userId: string): void {
-    this.af
-      .doc(`users/${userId}`)
-      .valueChanges()
-      .subscribe((data: User) => this.updateAccount(data.subscription));
   }
 
   async createStore(storeData: any, userId: string): Promise<string> {
@@ -114,21 +107,27 @@ export class StoreService {
     storeId: string,
     status: 'free' | 'pro' | 'vip'
   ): Subscription {
+    console.log('me ejecute bro');
     return this.af
       .doc(`users/${userId}/stores/${storeId}`)
       .valueChanges()
       .subscribe(
         async (data: Store) => {
-          if (data) {
-            data.typeAccount = status;
-            const store = this.buildStoreModel(data);
-            this.setStore(store);
-          } else {
-            await this.authSrv.logout();
-            setTimeout(async () => {
-              await this.toolsSrv.goToLogin();
-            }, 100);
-            await this.toastSrv.showErrorNotify('No se pudo obtener la tienda');
+          if (this.user) {
+            if (data) {
+              data.typeAccount = status;
+              const store = this.buildStoreModel(data);
+              console.log('mande store');
+              this.setStore(store);
+            } else {
+              await this.authSrv.logout();
+              setTimeout(async () => {
+                await this.toolsSrv.goToLogin();
+              }, 100);
+              await this.toastSrv.showErrorNotify(
+                'No se pudo obtener la tienda'
+              );
+            }
           }
         },
         async (err) => {

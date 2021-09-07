@@ -4,8 +4,6 @@ import { StoreService } from '../../services/store.service';
 import { first } from 'rxjs/operators';
 import { Store, Tools } from '../../models/store';
 import { StorageService } from '../../services/storage.service';
-import { AccountService } from '../../services/account.service';
-import { ToastService } from '../../services/toast.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -20,16 +18,15 @@ export class DashboardPage implements OnInit {
   private tools: Tools;
   storeId: string;
   listener: Subscription;
+  storeListener: Subscription;
   constructor(
-    private accountSrv: AccountService,
-    private authSrv: AuthenticationService,
-    private storageSrv: StorageService,
-    private storeSrv: StoreService,
-    private toastSrv: ToastService
+    public authSrv: AuthenticationService,
+    public storageSrv: StorageService,
+    public storeSrv: StoreService
   ) {
-    this.storeSrv.store.subscribe((data) => {
+    this.storeListener = this.storeSrv.store.subscribe((data) => {
       if (data) {
-        console.log('mierda', data);
+        console.log(data);
         this.tools = data.activeTools;
         this.getTools();
         this.store = data;
@@ -38,11 +35,14 @@ export class DashboardPage implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    this.initStoreSetup();
+    await this.initStoreSetup();
   }
 
   ionViewWillLeave() {
+    this.storeListener.unsubscribe();
     this.listener.unsubscribe();
+    this.store = undefined;
+    this.storeId = null;
   }
 
   private async initStoreSetup(): Promise<void> {

@@ -141,7 +141,7 @@ export class CreateAccountModalComponent implements OnInit {
         };
 
         await this.accountSrv.createAccount(data);
-        await this.toolsSrv.goToDashboard();
+        await this.toolsSrv.goToDashboardRoot();
         await this.modalSrv.dismissLoadingModal();
         await this.closeModal();
       } catch (error) {

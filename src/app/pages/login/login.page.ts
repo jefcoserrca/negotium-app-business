@@ -31,7 +31,7 @@ export class LoginPage implements OnInit {
         email: this.email,
         password: this.password,
       });
-      await this.toolsSrv.goToDashboard();
+      await this.toolsSrv.goToDashboardRoot();
       await this.modalSrv.dismissLoadingModal();
     } catch (error) {
       await this.modalSrv.dismissLoadingModal();

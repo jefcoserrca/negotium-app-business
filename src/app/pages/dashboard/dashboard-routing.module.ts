@@ -8,6 +8,7 @@ const routes: Routes = [
   {
     path: '',
     component: DashboardPage,
+    runGuardsAndResolvers: 'always',
     children: [
       {
         path: 'home',

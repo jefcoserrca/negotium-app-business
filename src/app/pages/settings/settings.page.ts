@@ -17,8 +17,9 @@ export class SettingsPage implements OnInit {
 
   async logout(): Promise<void> {
     await this.authSrv.logout();
+    window.location.reload();
     setTimeout(async () => {
       await this.toolsSrv.goToLogin();
-    }, 100);
+    }, 50);
   }
 }
