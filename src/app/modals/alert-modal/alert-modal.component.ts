@@ -83,4 +83,10 @@ export class AlertModalComponent implements OnInit {
       );
     }
   }
+
+  async confirmDelete(): Promise<void> {
+    await this.modalsSrv.openFormCancelSuscriptionModal(
+      this.user.subscriptionId
+    );
+  }
 }

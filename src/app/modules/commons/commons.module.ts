@@ -51,6 +51,7 @@ import { PaymentSubscriptionComponent } from '../../modals/payment-subscription/
 import { NgxStripeModule } from 'ngx-stripe';
 import { environment } from 'src/environments/environment';
 import { AlertModalComponent } from '../../modals/alert-modal/alert-modal.component';
+import { FormCancelSuscriptionModalComponent } from '../../modals/form-cancel-suscription-modal/form-cancel-suscription-modal.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { AlertModalComponent } from '../../modals/alert-modal/alert-modal.compon
     DeliveryZonesModalComponent,
     EditCategoryModalComponent,
     FooterbarComponent,
+    FormCancelSuscriptionModalComponent,
     HeaderBarComponent,
     InputAlertComponent,
     LoadingComponent,
@@ -131,6 +133,7 @@ import { AlertModalComponent } from '../../modals/alert-modal/alert-modal.compon
     DeliveryZonesModalComponent,
     EditCategoryModalComponent,
     FooterbarComponent,
+    FormCancelSuscriptionModalComponent,
     HeaderBarComponent,
     InputAlertComponent,
     LoadingComponent,

@@ -16,7 +16,10 @@
       >
         <h4>
           VIP
-          <small>${{ data.newSubscription === 'pro' ? '199' : '5699' }} .00 MXN</small>
+          <small
+            >${{ data.newSubscription === "pro" ? "199" : "5699" }} .00
+            MXN</small
+          >
         </h4>
       </div>
       <p *ngIf="user?.subscription === 'pro' && data.newSubscription === 'vip'">
@@ -40,6 +43,35 @@
         </ion-button>
         <ion-button color="primary" mode="ios" (click)="changeSubscription()">
           Cambiar plan
+        </ion-button>
+      </div>
+    </div>
+  </div>
+  <div class="container" *ngIf="data.role === 'cancel'">
+    <div class="container-fluid">
+      <h3>Cancelar suscripción</h3>
+      <p>
+        Es posible que algunas funciones y herramientas cambien, de igual forma
+        si tienes más tiendas quedarán desactivadas, así como configuraciones
+        realizadas. ¿Estás seguro de continuar?
+      </p>
+      <div class="d-flex justify-content-end align-items-center mt-4">
+        <ion-button
+          fill="clear"
+          color="secondary"
+          mode="ios"
+          (click)="close()"
+          class="me-3"
+        >
+          Cancelar
+        </ion-button>
+        <ion-button
+          color="danger"
+          fill="outline"
+          mode="ios"
+          (click)="confirmDelete()"
+        >
+          Si, continuar
         </ion-button>
       </div>
     </div>

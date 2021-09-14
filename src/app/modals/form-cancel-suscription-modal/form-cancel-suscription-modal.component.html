@@ -1,0 +1,35 @@
+<ion-content>
+  <div class="d-flex justify-content-end align-items-center">
+    <ion-button shape="round" fill="clear" color="dark" (click)="close()">
+      <ion-icon slot="icon-only" name="close"></ion-icon>
+    </ion-button>
+  </div>
+  <div class="container">
+    <div class="container-fluid">
+      <h3>Oportunidad de mejora</h3>
+      <p>
+        Creemos que podemos seguir mejorando para que regreses en el futuro, por
+        ello tu opinión es muy importante en este proceso, seguiremos
+        trabajando.
+      </p>
+      <form [formGroup]="form">
+        <ion-label>Escribe tu opinón</ion-label>
+        <ion-textarea placeholder="Escribe aquí..." formControlName="opinion"></ion-textarea>
+      </form>
+      <div class="d-flex justify-content-end align-items-center mt-4">
+        <ion-button
+          fill="clear"
+          color="secondary"
+          mode="ios"
+          (click)="close()"
+          class="me-3"
+        >
+          Cancelar
+        </ion-button>
+        <ion-button [disabled]="!form.valid" color="primary" mode="ios">
+          Eliminar suscripción
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>

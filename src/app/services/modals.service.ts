@@ -31,6 +31,7 @@ import { ClientsPickerModalComponent } from '../modals/clients-picker-modal/clie
 import { SalePreviewModalComponent } from '../modals/sale-preview-modal/sale-preview-modal.component';
 import { PaymentSubscriptionComponent } from '../modals/payment-subscription/payment-subscription.component';
 import { AlertModalComponent } from '../modals/alert-modal/alert-modal.component';
+import { FormCancelSuscriptionModalComponent } from '../modals/form-cancel-suscription-modal/form-cancel-suscription-modal.component';
 
 @Injectable({
   providedIn: 'root',
@@ -444,13 +445,29 @@ export class ModalsService {
     return await modal.present();
   }
 
-  async openAlertModal(data: { role: 'cancel' | 'update', newSubscription: 'pro' |'vip' }): Promise<void> {
+  async openAlertModal(data: {
+    role: 'cancel' | 'update';
+    newSubscription: 'pro' | 'vip';
+  }): Promise<void> {
     const modal = await this.modalCtrl.create({
       component: AlertModalComponent,
       backdropDismiss: true,
       cssClass: 'sq-modal',
       componentProps: {
         data,
+      },
+    });
+
+    return await modal.present();
+  }
+
+  async openFormCancelSuscriptionModal(suscriptionId: string): Promise<void> {
+    const modal = await this.modalCtrl.create({
+      component: FormCancelSuscriptionModalComponent,
+      backdropDismiss: true,
+      cssClass: 'tab-modal',
+      componentProps: {
+        suscriptionId,
       },
     });
 
