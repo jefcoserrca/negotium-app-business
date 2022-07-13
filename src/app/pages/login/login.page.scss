@@ -2,9 +2,62 @@ ion-content {
   --background: transparent;
 }
 
+.float-pizza {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  filter: drop-shadow(11px 12px 25px rgba(0, 0, 0, 0.38));
+
+  &.pizza-one {
+    top: 10%;
+    left: calc(50% - 300px);
+    transform: translateX(-50%);
+    width: 185px;
+    height: 185px;
+  }
+  &.pizza-two {
+    top: 20%;
+    left: calc(50% + 300px);
+    transform: translateX(-50%);
+  }
+
+  &.pizza-three {
+    bottom: 10%;
+    left: calc(50% - 350px);
+    transform: translateX(-50%);
+    z-index: 1;
+
+    width: 200px;
+    height: 200px;
+  }
+
+  &.pizza-four {
+    bottom: 10%;
+    left: 65%;
+    width: 165px;
+    height: 165px;
+  }
+}
+
 ion-card {
   max-width: 600px;
   min-width: 600px;
+  background: rgb(0 0 0 / 35%) !important;
+  backdrop-filter: blur(10px);
+  color: white;
+}
+
+ion-card,
+ion-item,
+ion-input {
+  background: transparent;
+  --background: transparent;
+  --color: rgb(224, 224, 224);
+  color: white;
+}
+
+ion-card-title {
+  --color: rgb(224, 224, 224);
 }
 
 ion-button {
@@ -39,11 +92,35 @@ h2 {
     min-width: 100%;
     margin: 1rem;
   }
+
+  .float-pizza {
+    position: absolute;
+    width: 250px !important;
+    height: 250px !important;
+  }
 }
 
 .color-change {
   -webkit-animation: color-change-2x 5s linear infinite alternate both;
   animation: color-change-2x 5s linear infinite alternate both;
+}
+
+::ng-deep {
+  input:-internal-autofill-selected {
+    appearance: menulist-button;
+    background-image: none !important;
+    background-color: -internal-light-dark(
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0)
+    ) !important;
+    color: fieldtext !important;
+  }
+  input,
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 100px rgba(0, 0, 0, 0) inset !important;
+  }
 }
 
 @-webkit-keyframes color-change-2x {
