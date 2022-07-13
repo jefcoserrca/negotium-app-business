@@ -100,7 +100,7 @@ export class DashboardPage implements OnInit {
     if (this.tools.digitalMenu) {
       this.menuItems.push({
         icon: 'storefront',
-        label: 'Mi Pizzeria',
+        label: 'Mi e-Pizzeria',
         path: '/dashboard/store',
       });
     }

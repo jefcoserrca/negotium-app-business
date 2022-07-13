@@ -8,10 +8,12 @@
           </ion-avatar>
           <ion-label
             >{{ store.name }}
-            <p *ngIf="store?.typeAccount === 'free'">
-              <ion-text color="primary">
-                <small>Actualiza tu plan aquí</small>
-              </ion-text>
+            <p
+              *ngIf="store?.typeAccount === 'free'"
+              [routerLink]="['/pricing-plans']"
+              class="p-link"
+            >
+              <small>Actualiza tu plan aquí</small>
             </p>
           </ion-label>
           <ion-badge> {{ store.typeAccount | uppercase }} </ion-badge>

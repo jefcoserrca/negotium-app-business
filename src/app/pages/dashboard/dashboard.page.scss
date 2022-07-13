@@ -5,3 +5,12 @@
     color: var(--ion-color-primary);
   }
 }
+
+.p-link {
+  cursor: pointer;
+  transition: all ease-in-out 0.2s;
+  color: var(--ion-color-primary);
+  &:hover {
+    color: rgb(177, 145, 253);
+  }
+}
