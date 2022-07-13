@@ -21,12 +21,12 @@ import { StorageService } from './storage.service';
   providedIn: 'root',
 })
 export class StoreService {
-  private store$: BehaviorSubject<Store> = new BehaviorSubject<Store>(null);
   get store(): Observable<Store> {
     return this.store$.asObservable();
   }
   listener: Subscription;
   user: User;
+  private store$: BehaviorSubject<Store> = new BehaviorSubject<Store>(null);
   constructor(
     private af: AngularFirestore,
     private authSrv: AuthenticationService,
@@ -41,6 +41,13 @@ export class StoreService {
     });
   }
 
+  /**
+   * It creates a new store for a user
+   *
+   * @param {any} storeData - any: This is the data that we will use to create the store.
+   * @param {string} userId - The user ID of the user who created the store.
+   * @returns The storeId
+   */
   async createStore(storeData: any, userId: string): Promise<string> {
     const storeId = this.af.createId();
     await this.af.doc(`users/${userId}/stores/${storeId}`).set({
@@ -48,6 +55,7 @@ export class StoreService {
       name: storeData.name,
       banner: null,
       picture:
+        // eslint-disable-next-line max-len
         'https://firebasestorage.googleapis.com/v0/b/digitaliza-tu-empresa.appspot.com/o/asstes%2Fdefault-logo.png?alt=media&token=de67cebf-27c1-4152-aa92-2fda42549fd6',
       category: storeData.category,
       phone: storeData.phone,
@@ -55,12 +63,21 @@ export class StoreService {
       stripeCustomer: null,
       typeAccount: 'free',
       activeTools: { digitalMenu: true, couponSystem: true, qrCode: true },
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       created_at: new Date().toISOString(),
     });
 
     return storeId;
   }
 
+  /**
+   * This function updates the store data in the Firestore database
+   *
+   * @param {any} storeData - any - This is the data that you want to update.
+   * @param {string} userId - The userId of the user who owns the store.
+   * @param {string} storeId - The id of the store you want to update.
+   * @returns A boolean value.
+   */
   async updateStore(
     storeData: any,
     userId: string,
@@ -70,6 +87,13 @@ export class StoreService {
     return true;
   }
 
+  /**
+   * It gets a store from the database
+   *
+   * @param {string} userId - string - The user id of the user who owns the store
+   * @param {string} storeId - string - The id of the store you want to get.
+   * @returns A promise of a Store object.
+   */
   async getStore(userId: string, storeId: string): Promise<Store> {
     const doc = await this.af
       .doc(`users/${userId}/stores/${storeId}`)
@@ -80,6 +104,12 @@ export class StoreService {
     return this.buildStoreModel(data);
   }
 
+  /**
+   * It gets all the stores for a user
+   *
+   * @param {string} userId - string - The user id of the user you want to get the stores for.
+   * @returns An array of stores
+   */
   async getStores(userId: string): Promise<Array<Store>> {
     const collection = await this.af
       .collection(`users/${userId}/stores/`)
@@ -94,14 +124,24 @@ export class StoreService {
     return stores;
   }
 
+  /**
+   * It takes a store object as an argument and sets the store$ property to the value of the store
+   * object
+   *
+   * @param {Store} store - Store - The store object that you want to set.
+   */
   setStore(store: Store) {
     this.store$.next(store);
   }
 
-  private updateAccount(type: 'free' | 'pro' | 'vip') {
-    this.store$.next({ ...this.store$.value, typeAccount: type });
-  }
-
+  /**
+   * It gets the current store of the user and sets it in the store service
+   *
+   * @param {string} userId - string,
+   * @param {string} storeId - The id of the store you want to get.
+   * @param {'free' | 'pro' | 'vip'} status - 'free' | 'pro' | 'vip'
+   * @returns A subscription
+   */
   getCurrentStore(
     userId: string,
     storeId: string,
@@ -117,7 +157,6 @@ export class StoreService {
             if (data) {
               data.typeAccount = status;
               const store = this.buildStoreModel(data);
-              console.log('mande store');
               this.setStore(store);
             } else {
               await this.authSrv.logout();
@@ -136,6 +175,14 @@ export class StoreService {
       );
   }
 
+  /**
+   * It uploads the image to the cloud storage, then updates the store's picture field with the URL of
+   * the uploaded image
+   *
+   * @param {any} file - the file that was uploaded
+   * @param {string} storeId - The id of the store you want to update
+   * @param {string} userId - The userId of the user who owns the store.
+   */
   async updatePictureStore(
     file: any,
     storeId: string,
@@ -143,14 +190,21 @@ export class StoreService {
   ): Promise<void> {
     const picture = await this.uploadImage({
       id: storeId,
-      file: file,
+      file,
       type: 'picture',
     });
     await this.af.doc(`users/${userId}/stores/${storeId}`).update({
-      picture: picture,
+      picture,
     });
   }
 
+  /**
+   * It uploads an image to Firebase Storage, then updates the store document with the image URL
+   *
+   * @param {any} file - The file that was uploaded
+   * @param {string} storeId - The id of the store you want to update
+   * @param {string} userId - The user id of the user who owns the store
+   */
   async updateBannerStore(
     file: any,
     storeId: string,
@@ -158,20 +212,26 @@ export class StoreService {
   ): Promise<void> {
     const banner = await this.uploadImage({
       id: storeId,
-      file: file,
+      file,
       type: 'banner',
     });
     await this.af.doc(`users/${userId}/stores/${storeId}`).update({
-      banner: banner,
+      banner,
     });
   }
 
+  /**
+   * It takes a file, uploads it to firebase storage, and returns a promise that resolves to the
+   * download URL of the file
+   *
+   * @param {any} data - any
+   * @returns A promise that resolves to the download URL of the image.
+   */
   uploadImage(data: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      console.log(data);
-      let storeRef = firebase.storage().ref();
+      const storeRef = firebase.storage().ref();
       const path = `storesImg/${data.id}-${data.type}`;
-      let uploadTask: firebase.storage.UploadTask = storeRef
+      const uploadTask: firebase.storage.UploadTask = storeRef
         .child(path)
         .putString(data.file, 'data_url', { contentType: 'image/jpeg' });
 
@@ -188,6 +248,21 @@ export class StoreService {
     });
   }
 
+  /**
+   * It takes a string as an argument and updates the typeAccount property of the store
+   *
+   * @param {'free' | 'pro' | 'vip'} type - 'free' | 'pro' | 'vip'
+   */
+  private updateAccount(type: 'free' | 'pro' | 'vip') {
+    this.store$.next({ ...this.store$.value, typeAccount: type });
+  }
+
+  /**
+   * It takes a JSON object and returns a Store object
+   *
+   * @param {any} data - any - The data that will be used to build the model.
+   * @returns A Store object
+   */
   private buildStoreModel(data: any): Store {
     return Builder(Store)
       .banner(data.banner)
