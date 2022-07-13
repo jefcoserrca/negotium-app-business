@@ -6,7 +6,14 @@
           <ion-avatar slot="start">
             <img [src]="store.picture" />
           </ion-avatar>
-          <ion-label>{{ store.name }} </ion-label>
+          <ion-label
+            >{{ store.name }}
+            <p *ngIf="store?.typeAccount === 'free'">
+              <ion-text color="primary">
+                <small>Actualiza tu plan aquí</small>
+              </ion-text>
+            </p>
+          </ion-label>
           <ion-badge> {{ store.typeAccount | uppercase }} </ion-badge>
           <ion-menu-toggle auto-hide="false" menu="main">
             <ion-button
@@ -50,36 +57,13 @@
             routerLink="/dashboard/shipping"
             routerDirection="root"
             routerLinkActive="active-item"
+            *ngIf="false"
           >
             <ion-icon
               slot="start"
               src="../../../assets/icons/airplane.svg"
             ></ion-icon>
             <ion-label>Shipping (envíos)</ion-label>
-          </ion-item>
-          <ion-item
-            routerLink="/dashboard/sales"
-            routerDirection="root"
-            routerLinkActive="active-item"
-          >
-            <ion-icon slot="start" name="cash"></ion-icon>
-            <ion-label>Mis Ventas</ion-label>
-          </ion-item>
-          <ion-item
-            routerLink="/dashboard/clients"
-            routerDirection="root"
-            routerLinkActive="active-item"
-          >
-            <ion-icon slot="start" name="people"></ion-icon>
-            <ion-label>Mis clientes</ion-label>
-          </ion-item>
-          <ion-item
-            routerLink="/dashboard/notifications"
-            routerDirection="root"
-            routerLinkActive="active-item"
-          >
-            <ion-icon slot="start" name="notifications"></ion-icon>
-            <ion-label>Notificaciones</ion-label>
           </ion-item>
         </ion-menu-toggle>
       </ion-list>
