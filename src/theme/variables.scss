@@ -1,7 +1,6 @@
-
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
-@use '~@angular/material' as mat;
+@use "~@angular/material" as mat;
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -20,13 +19,15 @@ $app-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$app-theme: mat.define-light-theme((
-  color: (
-    primary: $app-primary,
-    accent: $app-accent,
-    warn: $app-warn,
+$app-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $app-primary,
+      accent: $app-accent,
+      warn: $app-warn,
+    ),
   )
-));
+);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
@@ -43,16 +44,16 @@ $app-theme: mat.define-light-theme((
   --ion-color-primary-rgb: 96, 96, 241;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #30348C;
-  --ion-color-primary-tint: #9498F2;
+  --ion-color-primary-shade: #30348c;
+  --ion-color-primary-tint: #9498f2;
 
   /** secondary **/
-  --ion-color-secondary: #9898FF;
+  --ion-color-secondary: #9898ff;
   --ion-color-secondary-rgb: 152, 152, 255;
   --ion-color-secondary-contrast: #ffffff;
   --ion-color-secondary-contrast-rgb: 255, 255, 255;
   --ion-color-secondary-shade: #333399;
-  --ion-color-secondary-tint: #AEAEF5;
+  --ion-color-secondary-tint: #aeaef5;
 
   /** tertiary **/
   --ion-color-tertiary: #5260ff;
@@ -111,6 +112,19 @@ $app-theme: mat.define-light-theme((
   --ion-color-light-tint: #f5f6f9;
 }
 
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+:root {
+  input,
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 100px rgba(0, 0, 0, 0) inset !important;
+  }
+}

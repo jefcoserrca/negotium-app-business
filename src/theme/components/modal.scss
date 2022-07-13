@@ -5,6 +5,10 @@
   }
 }
 
+ion-modal {
+  backdrop-filter: blur(5px);
+}
+
 .sq-modal {
   --width: 90%;
   --border-radius: 12px;
