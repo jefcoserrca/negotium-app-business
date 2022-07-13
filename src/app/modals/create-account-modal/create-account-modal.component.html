@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Crea tu negocio</ion-title>
+    <ion-title>Crea tu Pizzería</ion-title>
     <ion-button
       slot="end"
       (click)="closeModal()"
@@ -20,7 +20,7 @@
         background: bannerImage
           ? 'url(' + bannerImage + ')'
           : 'url(' +
-            'https://www.esan.edu.pe/apuntes-empresariales/2019/12/11/1500x844_restaurantes_offline.jpg' +
+            'https://firebasestorage.googleapis.com/v0/b/digitaliza-tu-empresa.appspot.com/o/asstes%2Fpizzeria-artisanales-pizzas-cuites-feu-de-bois-a-emporter-serignan-herault-sliderb-998x675.jpeg?alt=media&token=c28dfc0e-3294-443f-9626-a6ea9874aa8d' +
             ')'
       }"
     >
@@ -56,7 +56,7 @@
         <ion-label position="floating">Nombre*</ion-label>
         <ion-input
           type="text"
-          placeholder="Nombre del Negocio"
+          placeholder="Nombre de la Pizzería"
           formControlName="name"
           [ngClass]="{
             'mb-3': 60 - form.value.name.length >= 0,
@@ -67,7 +67,7 @@
           {{ 60 - form.value.name.length }}
         </div>
         <ion-label position="floating">Categoría*</ion-label>
-        <div class="w-100 mb-3">
+        <div class="w-100 mb-3" *ngIf="false">
           <select formControlName="category">
             <option value="abarrotes">Abarrotes</option>
             <option value="ecommerce">Ecommerce</option>
@@ -123,7 +123,7 @@
   <div *ngIf="stepper === 'step2'">
     <div class="m-3">
       <h1>Sólo un paso más!</h1>
-      <p>Estas por crear tu negocio digital, completa los datos...</p>
+      <p>Estas por digitalizar tu Pizzería, completa los datos...</p>
     </div>
 
     <div class="m-3">
@@ -208,7 +208,7 @@
         (click)="createAccount()"
       >
         <ion-icon slot="end" name="chevron-forward"></ion-icon>
-        Digitalizar mi empresa
+        Crear Pizzería
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
