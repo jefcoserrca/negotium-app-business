@@ -135,15 +135,18 @@ export class ModalsService {
   }
 
   async openCreateProductVariations(
-    productVaraint: ProductVariant = null
+    productVaraint: ProductVariant = null,
+    dynamicPrice: boolean = false,
+    cssClass?: string
   ): Promise<any> {
     const modal = await this.modalCtrl.create({
       component: CreateProductVariationsComponent,
       backdropDismiss: true,
       componentProps: {
         productVaraint,
+        dynamicPrice,
       },
-      cssClass: 'tab-modal',
+      cssClass: 'tab-modal' + (cssClass ? ' ' + cssClass : ''),
     });
     await modal.present();
 
