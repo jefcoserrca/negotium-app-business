@@ -31,14 +31,14 @@ export class CreateProductPage implements OnInit {
     .stockController(false)
     .build();
   formatColor: FormatColor = { bgColor: '#fff', txtColor: '#000' };
-  private file: string;
-  private store: Store;
-  private productId: string = null;
   account = 'free';
   alertOpts = {
     header: 'Unidad de venta',
     message: 'Selecciona como se venderá tu producto',
   };
+  private file: string;
+  private store: Store;
+  private productId: string = null;
   constructor(
     private alertCtrl: AlertController,
     private fb: FormBuilder,
@@ -195,17 +195,10 @@ export class CreateProductPage implements OnInit {
   }
 
   async openProductVariations(): Promise<void> {
-    if (this.store.typeAccount !== 'free') {
-      const newVariants = await this.modalsSrv.openProductVariations([
-        ...this.productVariants,
-      ]);
-      this.productVariants = newVariants ? newVariants : this.productVariants;
-    } else {
-      this.toastSrv.showDefaultNotify(
-        'Actualiza tu empresa a PRO para usar esta herramienta'
-      );
-      return;
-    }
+    const newVariants = await this.modalsSrv.openProductVariations([
+      ...this.productVariants,
+    ]);
+    this.productVariants = newVariants ? newVariants : this.productVariants;
   }
 
   async openProductStock(): Promise<void> {
