@@ -11,7 +11,6 @@ import { VariantOption } from '../../interfaces/option';
   styleUrls: ['./product-variations.component.scss'],
 })
 export class ProductVariationsComponent implements OnInit {
-  searchTerm: string;
   @Input() variants: Array<ProductVariant> = [];
   constructor(
     private alertCtrl: AlertController,
@@ -21,26 +20,52 @@ export class ProductVariationsComponent implements OnInit {
 
   ngOnInit() {}
 
+  /**
+   * The function is async, it returns a promise of type void, and it calls the dismiss() function on
+   * the modalCtrl object
+   */
   async close(): Promise<void> {
     await this.modalCtrl.dismiss();
   }
 
-  searchByTerm(): void {}
-
+  /**
+   * It opens a modal, and if the modal returns a value, it pushes that value to an array
+   */
   async openCreateVariant(): Promise<void> {
-    const newVariant = await this.modalSrv.openCreateProductVariations();
+    const newVariant = await this.modalSrv.openCreateProductVariations(
+      null,
+      false,
+      'no-blur'
+    );
     if (newVariant) {
       this.variants.push(newVariant);
     }
   }
 
+  /**
+   * It opens a modal, and if the modal returns a new variant, it replaces the old variant with the new
+   * one
+   *
+   * @param {ProductVariant} variant - ProductVariant - The variant object that is being edited
+   * @param {number} i - number - the index of the variant in the array
+   */
   async editVariant(variant: ProductVariant, i: number) {
-    const newVariant = await this.modalSrv.openCreateProductVariations({
-      ...variant,
-    });
+    const newVariant = await this.modalSrv.openCreateProductVariations(
+      {
+        ...variant,
+      },
+      false,
+      'no-blur'
+    );
     this.variants[i] = newVariant ? newVariant : variant;
   }
 
+  /**
+   * It creates an alert, and if the user clicks the "Yes, delete" button, it deletes the variant from
+   * the array
+   *
+   * @param {number} i - number
+   */
   async deleteVariant(i: number): Promise<void> {
     const alert = await this.alertCtrl.create({
       header: 'Aviso',
@@ -51,7 +76,7 @@ export class ProductVariationsComponent implements OnInit {
           text: 'Sí, borrar',
           handler: async () => {
             this.variants.splice(i, 1);
-            await this.saveVariants();
+            //await this.saveVariants();
           },
         },
       ],
@@ -59,6 +84,13 @@ export class ProductVariationsComponent implements OnInit {
     await alert.present();
   }
 
+  /**
+   * We're creating a new array, pushing a clone of each option into it, then pushing a clone of the
+   * variant into the variants array
+   *
+   * @param {ProductVariant} variant - ProductVariant - The variant to be cloned
+   * @returns The index of the new element in the array.
+   */
   cloneVariant(variant: ProductVariant) {
     const cloneOpts = [];
     variant.options.forEach((item) => cloneOpts.push({ ...item }));
@@ -68,44 +100,36 @@ export class ProductVariationsComponent implements OnInit {
     return this.variants.push(clone);
   }
 
-  createExample(type: string) {
+  /**
+   * It takes a string as an argument and returns a ProductVariant object
+   *
+   * @param {string} type - The type of variant. This can be either `checkbox` or `radio`.
+   */
+  pickDefaultVariant(type: string) {
     let exampleVariant: ProductVariant;
     switch (type) {
-      case 'colors':
-        exampleVariant = Builder(ProductVariant)
-          .options([
-            { label: 'Azul', color: '#19abf1', price: 0 },
-            { label: 'Verde', color: '#2fdc6c', price: 0 },
-            { label: 'Morado', color: '#8626d0', price: 15 },
-            { label: 'Negro', color: '#000000', price: 50 },
-          ])
-          .title('Selecciona un color')
-          .required(true)
-          .type('color')
-          .build();
-        break;
       case 'ingredients':
         exampleVariant = Builder(ProductVariant)
           .options([
             { label: 'Lechuga', color: '#19abf1', price: 0 },
             { label: 'Pepinillos', color: '#2fdc6c', price: 0 },
-            { label: 'Jamón Serrano', color: '#8626d0', price: 15 },
-            { label: 'Peperoni', color: '#000000', price: 15 },
+            { label: 'Queso Cheddar', color: '#8626d0', price: 15 },
+            { label: 'Queso Manchego', color: '#000000', price: 15 },
           ])
           .title('Añade los ingredientes!')
-          .required(true)
+          .required(false)
           .type('checkbox')
           .build();
         break;
-      case 'sizes':
+      case 'sauces':
         exampleVariant = Builder(ProductVariant)
           .options([
-            { label: 'Chica (S)', color: '#19abf1', price: 0 },
-            { label: 'Mediana (M)', color: '#2fdc6c', price: 0 },
-            { label: 'Grande (L)', color: '#8626d0', price: 0 },
-            { label: 'Extra grande (XL)', color: '#000000', price: 100 },
+            { label: 'BBQ', color: '', price: 0 },
+            { label: 'Mango Habanero', color: '', price: 0 },
+            { label: 'BBQ Hot', color: '', price: 0 },
+            { label: 'Honey Mustard', color: '', price: 0 },
           ])
-          .title('Selecciona tu talla')
+          .title('Selecciona un tamaño')
           .required(true)
           .type('radio')
           .build();
@@ -115,6 +139,10 @@ export class ProductVariationsComponent implements OnInit {
     this.variants.push(exampleVariant);
   }
 
+  /**
+   * The function is called when the user clicks the save button in the modal. It closes the modal and
+   * passes the variants array back to the page that opened the modal
+   */
   async saveVariants(): Promise<void> {
     await this.modalCtrl.dismiss(this.variants);
   }
