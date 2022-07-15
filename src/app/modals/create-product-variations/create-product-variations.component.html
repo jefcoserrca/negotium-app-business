@@ -8,10 +8,27 @@
     <ion-title>
       {{ !productVaraint ? "Crear variante" : "Editar variante" }}
     </ion-title>
+    <ion-buttons slot="end" *ngIf="productVariantsHistory?.length">
+      <ion-button fill="clear" [matMenuTriggerFor]="menuOpts">
+        <ion-icon slot="start" name="download"></ion-icon>
+        Historial
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <mat-menu #menuOpts>
+    <ion-list lines="none">
+      <ion-item
+        *ngFor="let item of productVariantsHistory"
+        (click)="pickVariantFromHistory(item)"
+        button
+      >
+        <ion-label> {{ item.title }} </ion-label>
+      </ion-item>
+    </ion-list>
+  </mat-menu>
   <div class="container container-fluid">
     <ion-text color="medium">
       <p class="mt-3" *ngIf="dynamicPrice">

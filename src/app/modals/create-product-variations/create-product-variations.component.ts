@@ -5,6 +5,8 @@ import { VariantOption } from '../../interfaces/option';
 import { Builder } from 'builder-pattern';
 import { ProductVariant } from 'src/app/models/product';
 import { ToastService } from '../../services/toast.service';
+import { StorageService } from '../../services/storage.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-create-product-variations',
@@ -20,18 +22,17 @@ export class CreateProductVariationsComponent implements OnInit {
   };
   form: FormGroup;
   options: Array<VariantOption> = [{ label: '', price: 150, color: '#19abf1' }];
+  productVariantsHistory: Array<ProductVariant> = [];
   constructor(
     private alertCtrl: AlertController,
     private modalCtrl: ModalController,
+    private storageSrv: StorageService,
     private toastSrv: ToastService,
     private fb: FormBuilder
   ) {}
 
-  ngOnInit() {
-    this.initForm();
-    if (this.productVaraint) {
-      this.updateForm();
-    }
+  async ngOnInit(): Promise<void> {
+    await this.initComponent();
   }
 
   /**
@@ -39,6 +40,17 @@ export class CreateProductVariationsComponent implements OnInit {
    */
   close(): void {
     this.modalCtrl.dismiss().then();
+  }
+
+  /**
+   * It takes a variant as an argument, sets the productVariant to that variant, and then updates the
+   * form
+   *
+   * @param {ProductVariant} variant - ProductVariant - The variant that was selected from the history
+   */
+  pickVariantFromHistory(variant: ProductVariant) {
+    this.productVaraint = variant;
+    this.updateForm();
   }
 
   /**
@@ -148,10 +160,24 @@ export class CreateProductVariationsComponent implements OnInit {
     }
     if (this.form.valid) {
       const variant: ProductVariant = this.buildVariant();
+      this.saveNewVariationOnStorage(variant);
       await this.modalCtrl.dismiss(variant);
     } else {
       return;
     }
+  }
+
+  /**
+   * It initializes the form and updates the form if the product variant exists.
+   */
+  private async initComponent(): Promise<void> {
+    this.initForm();
+    if (this.productVaraint) {
+      this.updateForm();
+    }
+    this.productVariantsHistory = await this.storageSrv.getVariants(
+      this.dynamicPrice
+    );
   }
 
   /**
@@ -212,5 +238,11 @@ export class CreateProductVariationsComponent implements OnInit {
       .options(this.form.value.type === 'text' ? [] : this.options)
       .required(this.form.value.required)
       .build();
+  }
+
+  private async saveNewVariationOnStorage(
+    variation: ProductVariant
+  ): Promise<void> {
+    await this.storageSrv.saveNewVariant(variation, this.dynamicPrice);
   }
 }
