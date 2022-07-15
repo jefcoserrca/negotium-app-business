@@ -19,6 +19,8 @@ export class Product {
   pictures: Array<string>;
   styles: FormatColor;
   name: string;
+  dynamicPrice?: boolean;
+  productVaraint: ProductVariant;
   price: number;
   description: string;
   category: string;
@@ -37,6 +39,8 @@ export class Product {
       styles: this.styles,
       name: this.name,
       price: this.price,
+      dynamicPrice: this.dynamicPrice,
+      productVaraint: this.productVaraint ?  { ...this.productVaraint } : null,
       description: this.description,
       category: this.category,
       showOn: this.showOn,
@@ -45,9 +49,7 @@ export class Product {
       stock: { ...this.stock },
       userId: this.userId,
       storeId: this.storeId,
-      variations: this.variations.map((variation) => {
-        return { ...variation };
-      }),
+      variations: this.variations ?  this.variations.map((variation) => ({ ...variation })) : null,
     };
   }
 
@@ -67,9 +69,7 @@ export class Product {
       storeId: this.storeId,
       units: this.units,
       total: this.total,
-      variations: this.variations.map((variation) => {
-        return { ...variation };
-      }),
+      variations: this.variations.map((variation) => ({ ...variation })),
     };
   }
 }

@@ -1,32 +1,43 @@
 ion-input {
-    --padding-start: 10px;
-  }
-  
-  .btn-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 1rem;
-  }
-  
-  ion-item {
-      ion-button {
-          --padding-end: 0;
-          --padding-start: 0;
-          margin: 0 !important;
-      }
-  }
+  --padding-start: 10px;
+  background: rgb(243, 243, 243);
+}
 
-  .color-circle{
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background-color: aquamarine;
-  }
+.btn-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
 
-  ::ng-deep {
-    .mat-menu-content:not(:empty) {
-      padding-top: 0px !important;
-      padding-bottom: 0px !important;
-    }
+ion-item {
+  ion-button {
+    --padding-end: 0;
+    --padding-start: 0;
+    margin: 0 !important;
   }
+  .price {
+    margin-left: 0.5rem;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background: #f3f3f3;
+    height: 44px;
+    width: 95px;
+    padding: 0px 5px 0px 5px;
+    border: none;
+  }
+}
+
+.color-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: aquamarine;
+}
+
+::ng-deep {
+  .mat-menu-content:not(:empty) {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+  }
+}

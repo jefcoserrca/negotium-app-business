@@ -1,7 +1,10 @@
 <ion-header *ngIf="!showLoading">
   <ion-toolbar color="dark">
     <ion-buttons slot="start">
-      <ion-back-button [defaultHref]="'dashboard/products'" text=""></ion-back-button>
+      <ion-back-button
+        [defaultHref]="'dashboard/products'"
+        text=""
+      ></ion-back-button>
     </ion-buttons>
     <ion-title>{{!editMode ? 'Crear producto': 'Editar producto'}}</ion-title>
   </ion-toolbar>
@@ -16,18 +19,43 @@
           class="sq-setter-w"
           (click)="editImage()"
         />
-        <div *ngIf="productImage" class="sq-content d-flex justify-content-end p-1">
+        <div
+          *ngIf="productImage"
+          class="sq-content d-flex justify-content-end p-1"
+        >
           <ion-icon (click)="removeImage()" name="close-circle"></ion-icon>
         </div>
       </div>
-      <ion-card-header [ngStyle]="{'background': formatColor?.bgColor ?  formatColor.bgColor : '#ffffff' }">
+      <ion-card-header
+        [ngStyle]="{'background': formatColor?.bgColor ?  formatColor.bgColor : '#ffffff' }"
+      >
         <ion-card-title
-        [ngStyle]="{'color': formatColor?.txtColor ?  formatColor.txtColor : '#000' }"
-          >{{ form.value.name ? form.value.name : 'Nombre del producto'}}</ion-card-title
+          [ngStyle]="{'color': formatColor?.txtColor ?  formatColor.txtColor : '#000' }"
+          >{{ form.value.name ? form.value.name : 'Nombre del producto' }}
+        </ion-card-title>
+        <ion-card-subtitle
+          *ngIf="!form.value.dynamicPrice"
+          [ngStyle]="{'color': formatColor?.txtColor ?  formatColor.txtColor : '#000' }"
         >
-        <ion-card-subtitle [ngStyle]="{'color': formatColor?.txtColor ?  formatColor.txtColor : '#000' }"> {{ (form.value.price ? form.value.price : 0 ) | currency }} </ion-card-subtitle>
-        <div class="d-flex align-items-baseline recomendation" *ngIf="form.value.suggest">
-          <ion-icon name="star" color="warning"></ion-icon> <span [ngStyle]="{'color': formatColor?.txtColor ?  formatColor.txtColor : '#000' }">Recomendado</span>
+          {{ (form.value.price ? form.value.price : 0 ) | currency }}
+        </ion-card-subtitle>
+
+        <ion-card-subtitle
+          *ngIf="form.value.dynamicPrice"
+          [ngStyle]="{'color': formatColor?.txtColor ?  formatColor.txtColor : '#000' }"
+        >
+          Desde: {{ (priceByVariant ? priceByVariant.options[0].price : 0 ) |
+          currency }}
+        </ion-card-subtitle>
+        <div
+          class="d-flex align-items-baseline recomendation"
+          *ngIf="form.value.suggest"
+        >
+          <ion-icon name="star" color="warning"></ion-icon>
+          <span
+            [ngStyle]="{'color': formatColor?.txtColor ?  formatColor.txtColor : '#000' }"
+            >Recomendado</span
+          >
         </div>
       </ion-card-header>
     </ion-card>
@@ -49,35 +77,72 @@
       placeholder="Nombre del producto"
       formControlName="name"
     ></ion-input>
-    <ion-label position="floating">Precio*</ion-label>
-    <ion-input
-      type="number"
-      placeholder="$0.00"
-      formControlName="price"
-    ></ion-input>
     <ion-label position="floating">Descripción(opcional)</ion-label>
     <ion-textarea
       type="text"
       placeholder="Breve reseña del producto"
       formControlName="description"
     ></ion-textarea>
+    <ion-item lines="none">
+      <ion-label
+        >Precio Dinámico
+        <p>El precio cambia según la selección del cliente</p>
+      </ion-label>
+      <ion-toggle
+        formControlName="dynamicPrice"
+        slot="end"
+        mode="md"
+        (ionChange)="setPriceToZero()"
+      ></ion-toggle>
+    </ion-item>
+    <ion-label *ngIf="!form.value.dynamicPrice" position="floating"
+      >Precio*</ion-label
+    >
+    <ion-input
+      *ngIf="!form.value.dynamicPrice"
+      type="number"
+      placeholder="$0.00"
+      formControlName="price"
+    ></ion-input>
     <ion-item
+      *ngIf="form.value.dynamicPrice"
       button
-      class="mt-2"
-      (click)="openCategories()"
+      (click)="setPriceByVariants()"
     >
       <ion-label>
+        <h3>Precio generado por</h3>
+        <p *ngIf="priceByVariant">
+          {{ priceByVariant ? priceByVariant.title : 'No añadidas' }}
+        </p>
+        <ion-text *ngIf="!priceByVariant" color="danger">
+          <p>Crea las variantes</p>
+        </ion-text>
+      </ion-label>
+    </ion-item>
+    <ion-item button class="mt-2" (click)="openCategories()">
+      <ion-label>
         <h3>Categoría</h3>
-        <p>{{ form.value.category }}</p>
+        <p>
+          {{ form.value.category ? form.value.category : 'Seleccionar Categoría'
+          }}
+        </p>
+      </ion-label>
+    </ion-item>
+    <ion-item button (click)="openExtrasProductVariations()">
+      <ion-label>
+        <h3>Extras (ingredientes, sabores...)</h3>
+        <p>
+          {{ productVariants.length? ('+' + productVariants.length) : 'Sin
+          extras' }}
+        </p>
       </ion-label>
     </ion-item>
     <ion-item lines="none">
-      <ion-label>Mostrar en el catálogo</ion-label>
-      <ion-toggle 
-      formControlName="showOn" slot="end" mode="md"></ion-toggle>
+      <ion-label>Mostrar en el menú</ion-label>
+      <ion-toggle formControlName="showOn" slot="end" mode="md"></ion-toggle>
     </ion-item>
     <ion-item lines="none" class="mb-3">
-      <ion-label>Recomendar producto</ion-label>
+      <ion-label>Mostrar en "recomendaciones"</ion-label>
       <ion-toggle formControlName="suggest" slot="end" mode="md"></ion-toggle>
     </ion-item>
     <mat-accordion>
@@ -85,42 +150,59 @@
         <mat-expansion-panel-header>
           <mat-panel-title>
             Más opciones
-            <ion-badge *ngIf="account === 'free'" color="primary" mode="ios" class="ms-1"
+            <ion-badge
+              *ngIf="account === 'free'"
+              color="primary"
+              mode="ios"
+              class="ms-1"
               >PRO</ion-badge
             ></mat-panel-title
           >
         </mat-expansion-panel-header>
-        <ion-item [disabled]="account === 'free'" (click)="openMultipleImages()" button>
+        <ion-item
+          [disabled]="account === 'free'"
+          (click)="openMultipleImages()"
+          button
+        >
           <ion-label>
             <h3>Añadir más images</h3>
             <p *ngIf="account === 'free'">No disponible</p>
-            <p *ngIf="account !== 'free'">  {{ productImages.length? ('+' + productImages.length) : 'No añadidas' }} </p>
+            <p *ngIf="account !== 'free'">
+              {{ productImages.length? ('+' + productImages.length) : 'No
+              añadidas' }}
+            </p>
           </ion-label>
         </ion-item>
         <ion-item [disabled]="account === 'free'">
           <ion-label>
             <h3>Vender por</h3>
-            <p>Costo del producto es por {{ form.value.measurementUnits }} </p>
+            <p>Costo del producto es por {{ form.value.measurementUnits }}</p>
           </ion-label>
-          <ion-select [interfaceOptions]="alertOpts" interface="popover" formControlName="measurementUnits" placeholder="Selecciona" (ionChange)="verifyMeasurementUnits()">
+          <ion-select
+            [interfaceOptions]="alertOpts"
+            interface="popover"
+            formControlName="measurementUnits"
+            placeholder="Selecciona"
+            (ionChange)="verifyMeasurementUnits()"
+          >
             <ion-select-option value="unidad">Unidad</ion-select-option>
             <ion-select-option value="kg">Kg (Kilogramo)</ion-select-option>
             <ion-select-option value="lt">Lt (Litro) </ion-select-option>
             <ion-select-option value="mt">Mt (Metro)</ion-select-option>
           </ion-select>
         </ion-item>
-        <ion-item [disabled]="account === 'free'" button (click)="openProductVariations()">
-          <ion-label>
-            <h3>Añadir variaciones</h3>
-            <p *ngIf="account === 'free'">No disponible</p>
-            <p *ngIf="account !== 'free'">  {{ productVariants.length? ('+' + productVariants.length) : 'No añadidas' }} </p>
-          </ion-label>
-        </ion-item>
-        <ion-item [disabled]="account === 'free'" button (click)="openProductStock()">
+        <ion-item
+          [disabled]="account === 'free'"
+          button
+          (click)="openProductStock()"
+        >
           <ion-label>
             <h3>Control de Stock</h3>
             <p *ngIf="account === 'free'">No disponible</p>
-            <p *ngIf="account !== 'free'">  {{ productStock.stockController ?  ('Productos en stock: ' + productStock.availableStock) : 'No'}} </p>
+            <p *ngIf="account !== 'free'">
+              {{ productStock.stockController ? ('Productos en stock: ' +
+              productStock.availableStock) : 'No'}}
+            </p>
           </ion-label>
         </ion-item>
       </mat-expansion-panel>
@@ -135,15 +217,20 @@
 <ion-footer>
   <ion-toolbar color="dark">
     <ion-buttons slot="start" *ngIf="editMode">
-      <ion-button fill="clear" (click)="deleteProduct()" color="danger">
+      <ion-button fill="clear" (click)="deleteProductAlert()" color="danger">
         <ion-icon slot="start" name="trash"></ion-icon>
         Borrar
       </ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button fill="clear" (click)="saveProduct()" color="secondary" [disabled]="this.form.invalid">
+      <ion-button
+        fill="clear"
+        (click)="saveProduct()"
+        color="secondary"
+        [disabled]="this.form.invalid"
+      >
         <ion-icon slot="start" name="save"></ion-icon>
-        Guardar
+        {{ editMode ? 'Publicar cambios' : 'Crear producto' }}
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
