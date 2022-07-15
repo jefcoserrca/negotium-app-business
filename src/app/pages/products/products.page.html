@@ -40,7 +40,13 @@
             <h3>{{ product.name }}</h3>
             <p>{{ product.category }}</p>
           </ion-label>
-          <ion-note slot="end"> {{ product.price | currency }} </ion-note>
+          <ion-note *ngIf="!product.dynamicPrice" slot="end">
+            {{ product.price | currency }}
+          </ion-note>
+          <ion-note *ngIf="product.dynamicPrice" slot="end">
+            {{ (product.productVaraint.options[0].label) + ' '+
+            (product.productVaraint.options[0].price | currency) }}
+          </ion-note>
         </ion-item>
       </ion-list>
       <div class="mt-5" *ngIf="showLoading">
