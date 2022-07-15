@@ -4,6 +4,7 @@ import { ModalsService } from '../../services/modals.service';
 import { ProductVariant } from '../../models/product';
 import { Builder } from 'builder-pattern';
 import { VariantOption } from '../../interfaces/option';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
   selector: 'app-product-variations',
@@ -12,13 +13,17 @@ import { VariantOption } from '../../interfaces/option';
 })
 export class ProductVariationsComponent implements OnInit {
   @Input() variants: Array<ProductVariant> = [];
+  productVariantsHistory: Array<ProductVariant> = [];
   constructor(
     private alertCtrl: AlertController,
     private modalCtrl: ModalController,
-    private modalSrv: ModalsService
+    private modalSrv: ModalsService,
+    private storageSrv: StorageService
   ) {}
 
-  ngOnInit() {}
+  async ngOnInit() {
+    this.productVariantsHistory = await this.storageSrv.getVariants(false);
+  }
 
   /**
    * The function is async, it returns a promise of type void, and it calls the dismiss() function on
@@ -39,6 +44,7 @@ export class ProductVariationsComponent implements OnInit {
     );
     if (newVariant) {
       this.variants.push(newVariant);
+      this.productVariantsHistory = await this.storageSrv.getVariants(false);
     }
   }
 
@@ -58,6 +64,7 @@ export class ProductVariationsComponent implements OnInit {
       'no-blur'
     );
     this.variants[i] = newVariant ? newVariant : variant;
+    this.productVariantsHistory = await this.storageSrv.getVariants(false);
   }
 
   /**
@@ -137,6 +144,15 @@ export class ProductVariationsComponent implements OnInit {
     }
 
     this.variants.push(exampleVariant);
+  }
+
+  /**
+   * It takes a variant as an argument and pushes it into the variants array
+   *
+   * @param {ProductVariant} variant - ProductVariant - The variant that was selected by the user.
+   */
+  pickVariantFromHistory(variant: ProductVariant) {
+    this.variants.push(variant);
   }
 
   /**
