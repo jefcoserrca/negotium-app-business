@@ -103,7 +103,11 @@
       placeholder="$0.00"
       formControlName="price"
     ></ion-input>
-    <ion-item *ngIf="form.value.dynamicPrice" button (click)="setPriceByVariants()">
+    <ion-item
+      *ngIf="form.value.dynamicPrice"
+      button
+      (click)="setPriceByVariants()"
+    >
       <ion-label>
         <h3>Precio generado por</h3>
         <p *ngIf="priceByVariant">
@@ -127,7 +131,8 @@
       <ion-label>
         <h3>Extras (ingredientes, sabores...)</h3>
         <p>
-          {{ productVariants.length? ('+' + productVariants.length) : 'Sin extras' }}
+          {{ productVariants.length? ('+' + productVariants.length) : 'Sin
+          extras' }}
         </p>
       </ion-label>
     </ion-item>
@@ -224,7 +229,7 @@
         [disabled]="this.form.invalid"
       >
         <ion-icon slot="start" name="save"></ion-icon>
-        Guardar
+        {{ editMode ? 'Publicar cambios' : 'Crear producto' }}
       </ion-button>
     </ion-buttons>
   </ion-toolbar>

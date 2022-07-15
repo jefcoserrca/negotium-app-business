@@ -205,10 +205,7 @@ export class CreateProductPage implements OnInit {
       await this.toastSrv.showErrorNotify('Verifica todos los campos');
       return;
     }
-    if (
-      this.form.valid ||
-      (this.form.value.dynamicPrice && this.priceByVariant)
-    ) {
+    if (this.form.valid) {
       try {
         await this.modalsSrv.openLoadingModal('Guardando producto');
         const product: Product = this.createClassProduct();
@@ -270,7 +267,7 @@ export class CreateProductPage implements OnInit {
       .name(formData.name)
       .pictures(picturesFiltered)
       .dynamicPrice(formData.dynamicPrice)
-      .productVaraint(formData.dynamicPrice ? this.priceByVariant : null)
+      .productVaraint(this.priceByVariant ?? null)
       .price(formData.dynamicPrice ? 0 : formData.price)
       .showOn(formData.showOn)
       .stock(this.productStock)
