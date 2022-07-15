@@ -159,7 +159,7 @@ export class CreateProductPage implements OnInit {
       true
     );
     this.priceByVariant = variant ?? this.priceByVariant;
-    this.form.patchValue({ price: 0 });
+    this.setPriceToZero();
   }
 
   /**
@@ -248,6 +248,13 @@ export class CreateProductPage implements OnInit {
       ],
     });
     await alert.present();
+  }
+
+  /**
+   * When the user clicks the button, set the price to zero.
+   */
+  setPriceToZero(): void {
+    this.form.patchValue({ price: 0 });
   }
 
   /**

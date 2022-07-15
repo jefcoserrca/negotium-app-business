@@ -92,6 +92,7 @@
         formControlName="dynamicPrice"
         slot="end"
         mode="md"
+        (ionChange)="setPriceToZero()"
       ></ion-toggle>
     </ion-item>
     <ion-label *ngIf="!form.value.dynamicPrice" position="floating"
@@ -114,7 +115,7 @@
           {{ priceByVariant ? priceByVariant.title : 'No añadidas' }}
         </p>
         <ion-text *ngIf="!priceByVariant" color="danger">
-          <p>Selecciona una opción</p>
+          <p>Crea las variantes</p>
         </ion-text>
       </ion-label>
     </ion-item>
