@@ -40,7 +40,7 @@ export class Product {
       name: this.name,
       price: this.price,
       dynamicPrice: this.dynamicPrice,
-      productVaraint: { ...this.productVaraint },
+      productVaraint: this.productVaraint ?  { ...this.productVaraint } : null,
       description: this.description,
       category: this.category,
       showOn: this.showOn,
@@ -49,7 +49,7 @@ export class Product {
       stock: { ...this.stock },
       userId: this.userId,
       storeId: this.storeId,
-      variations: this.variations.map((variation) => ({ ...variation })),
+      variations: this.variations ?  this.variations.map((variation) => ({ ...variation })) : null,
     };
   }
 
